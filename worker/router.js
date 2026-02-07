@@ -29,7 +29,7 @@ const ROUTES = {
 };
 
 // Landing page fallback
-const LANDING = 'https://neuhard-dev.pages.dev';
+const LANDING = 'https://landing-page-28t.pages.dev';
 
 export default {
   async fetch(request) {
