@@ -25,7 +25,7 @@
 // Map path prefixes → Pages project origins
 const ROUTES = {
   '/megabonk/':    'https://megabonk.pages.dev',
-  '/volttracker/': 'https://volttracker.pages.dev',  // placeholder
+  '/volttracker/': 'https://volttracker.neuhard.dev',
 };
 
 // Landing page fallback
