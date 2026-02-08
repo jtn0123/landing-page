@@ -44,12 +44,17 @@ header p {
 .projects {
   flex: 1;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  grid-template-columns: 1fr;
   gap: 2rem;
   max-width: 900px;
   width: 100%;
   margin: 2rem auto;
   padding: 0 1.5rem;
+}
+@media (min-width: 720px) {
+  .projects {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 /* Card */
