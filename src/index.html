@@ -3,40 +3,61 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>neuhard.dev — Justin Neuhard</title>
-  <meta name="description" content="Projects by Justin Neuhard — game guides, data tools, and more.">
-  <link rel="stylesheet" href="./style.css">
+  <title>neuhard.dev</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="bg-grid"></div>
-
   <header>
-    <h1>neuhard<span class="accent">.dev</span></h1>
-    <p class="tagline">projects &amp; experiments by <strong>Justin Neuhard</strong></p>
+    <h1>neuhard.dev</h1>
+    <p>Projects</p>
   </header>
 
-  <main>
-    <div class="cards">
-      <a href="/megabonk/" class="card">
-        <div class="card-icon">⚔️</div>
+  <main class="projects">
+    <article class="card">
+      <div class="card-img">
+        <span class="placeholder">MegaBonk</span>
+      </div>
+      <div class="card-body">
         <h2>MegaBonk</h2>
-        <p>Complete guide for MegaBonk roguelike with items, weapons, tomes, characters, build planner and calculator.</p>
-        <span class="card-link">Explore →</span>
-      </a>
+        <p class="desc">The ultimate reference guide for MegaBonk — items, weapons, tomes, characters, shrines, build planner, and breakpoint calculator in one interactive web app.</p>
+        <div class="tech">
+          <span>TypeScript</span>
+          <span>Vite</span>
+          <span>Playwright</span>
+          <span>Chart.js</span>
+        </div>
+        <div class="buttons">
+          <a href="https://neuhard.dev/megabonk/" class="btn btn-primary">Live App</a>
+          <a href="https://github.com/jtn0123/MegaBonk" class="btn">GitHub</a>
+        </div>
+      </div>
+    </article>
 
-      <a href="/volttracker/" class="card">
-        <div class="card-icon">⚡</div>
+    <article class="card">
+      <div class="card-img">
+        <span class="placeholder">VoltTracker</span>
+        <span class="coming-soon-badge">Coming Soon</span>
+      </div>
+      <div class="card-body">
         <h2>VoltTracker</h2>
-        <p>A self-hosted data logging and analysis system for the 2017 Chevy Volt. OBD-II telemetry, PostgreSQL storage, and web dashboard.</p>
-        <span class="card-link">Explore →</span>
-      </a>
-    </div>
+        <p class="desc">Self-hosted data logging and analysis system for the Chevy Volt. Receives OBD-II telemetry from Torque Pro, tracks fuel efficiency, battery health, and charging analytics.</p>
+        <div class="tech">
+          <span>Python</span>
+          <span>Flask</span>
+          <span>PostgreSQL</span>
+          <span>TimescaleDB</span>
+          <span>Redis</span>
+          <span>Docker</span>
+          <span>TypeScript</span>
+        </div>
+        <div class="buttons">
+          <a href="https://neuhard.dev/volttracker/" class="btn btn-primary btn-disabled">Live App</a>
+          <a href="https://github.com/jtn0123/VoltTracker" class="btn">GitHub</a>
+        </div>
+      </div>
+    </article>
   </main>
 
-  <footer>
-    <p>&copy; 2025 Justin Neuhard</p>
-  </footer>
-
-  <script type="module" src="./main.js"></script>
+  <footer>v1.0.0 · © 2026 neuhard.dev</footer>
 </body>
 </html>
