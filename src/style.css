@@ -298,10 +298,28 @@ header.scrolled p { font-size: 0.8rem; margin-top: 0.2rem; }
 }
 .repo-megabonk { background: rgba(79,195,247,0.15); color: #4fc3f7; }
 .repo-volttracker { background: rgba(76,175,80,0.15); color: #66bb6a; }
+.commit-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+.stat-add {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #66bb6a;
+  font-family: monospace;
+}
+.stat-del {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #ef5350;
+  font-family: monospace;
+}
 .commit-time {
   font-size: 0.72rem;
   color: var(--text-muted);
-  margin-left: 0.5rem;
+  margin-left: auto;
 }
 
 /* Timeline loading skeleton */

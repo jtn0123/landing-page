@@ -181,8 +181,12 @@
               <div class="timeline-dot"></div>
               <div class="timeline-content">
                 <p class="commit-msg">${truncate(c.message.split('\n')[0], 60)}</p>
-                <span class="repo-badge repo-${c.repo.toLowerCase()}">${c.repo}</span>
-                <span class="commit-time">${relativeTime(c.date)}</span>
+                <div class="commit-meta">
+                  <span class="repo-badge repo-${c.repo.toLowerCase()}">${c.repo}</span>
+                  ${c.additions != null ? `<span class="stat-add">+${c.additions}</span>` : ''}
+                  ${c.deletions != null ? `<span class="stat-del">-${c.deletions}</span>` : ''}
+                  <span class="commit-time">${relativeTime(c.date)}</span>
+                </div>
               </div>
             </div>
           `).join('');
@@ -211,7 +215,8 @@
             message: c.commit.message,
             date: c.commit.committer.date,
             repo,
-            url: c.html_url
+            url: c.html_url,
+            sha: c.sha
           }));
         };
 
@@ -219,6 +224,18 @@
           ...await parse(mbRes, 'MegaBonk'),
           ...await parse(vtRes, 'VoltTracker')
         ].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 10);
+
+        // Fetch stats for each commit (fire all in parallel)
+        await Promise.all(commits.map(async (c) => {
+          try {
+            const r = await fetch(`https://api.github.com/repos/jtn0123/${c.repo}/commits/${c.sha}`);
+            if (r.ok) {
+              const detail = await r.json();
+              c.additions = detail.stats?.additions || 0;
+              c.deletions = detail.stats?.deletions || 0;
+            }
+          } catch {}
+        }));
 
         sessionStorage.setItem(cacheKey, JSON.stringify({ ts: Date.now(), data: commits }));
         renderTimeline(commits);
