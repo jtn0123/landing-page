@@ -33,10 +33,14 @@
   <main id="main-content" class="projects">
     <article class="card fade-in" tabindex="0" data-link="https://neuhard.dev/megabonk/">
       <div class="card-img">
-        <picture>
-          <source srcset="images/megabonk.webp" type="image/webp">
-          <img src="images/megabonk.png" alt="MegaBonk screenshot" loading="lazy" class="lightbox-trigger">
-        </picture>
+        <div class="carousel" data-interval="4000">
+          <img src="images/megabonk-1.png" alt="MegaBonk items view" class="carousel-slide active lightbox-trigger">
+          <img src="images/megabonk-2.png" alt="MegaBonk scrolled view" class="carousel-slide lightbox-trigger">
+          <div class="carousel-dots">
+            <span class="dot active"></span>
+            <span class="dot"></span>
+          </div>
+        </div>
       </div>
       <div class="card-body">
         <h2>MegaBonk</h2>
@@ -56,10 +60,16 @@
 
     <article class="card fade-in" tabindex="0" data-link="https://neuhard.dev/volttracker/" style="--fade-delay: 200ms">
       <div class="card-img">
-        <picture>
-          <source srcset="images/volttracker.webp" type="image/webp">
-          <img src="images/volttracker.png" alt="VoltTracker dashboard" loading="lazy" class="lightbox-trigger">
-        </picture>
+        <div class="carousel" data-interval="4000">
+          <img src="images/volttracker-1.png" alt="VoltTracker dashboard" class="carousel-slide active lightbox-trigger">
+          <img src="images/volttracker-2.png" alt="VoltTracker trips section" class="carousel-slide lightbox-trigger">
+          <img src="images/volttracker-3.png" alt="VoltTracker map view" class="carousel-slide lightbox-trigger">
+          <div class="carousel-dots">
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+        </div>
       </div>
       <div class="card-body">
         <h2>VoltTracker</h2>
@@ -81,6 +91,93 @@
     </article>
   </main>
 
+  <!-- Stats Bar -->
+  <section class="stats-bar fade-in">
+    <div class="stat">
+      <span class="stat-value" id="total-loc">—</span>
+      <span class="stat-label">Lines of Code</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value" id="total-commits">—</span>
+      <span class="stat-label">Commits</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value" id="total-projects">2</span>
+      <span class="stat-label">Projects</span>
+    </div>
+  </section>
+
+  <!-- Tech Stack -->
+  <section class="tech-grid-section fade-in">
+    <h2>Tech Stack</h2>
+    <div class="tech-grid">
+      <div class="tech-item" style="--tc:#3178c6">
+        <svg viewBox="0 0 128 128" width="28" height="28"><path fill="#3178c6" d="M2 63.91v62.5h125v-125H2zm100.73-5.01h-23.9v68.18h-13.9V58.9h-23.9V47.01h61.7z"/></svg>
+        <span>TypeScript</span>
+      </div>
+      <div class="tech-item" style="--tc:#3572A5">
+        <span class="tech-icon">🐍</span>
+        <span>Python</span>
+      </div>
+      <div class="tech-item" style="--tc:#f7df1e">
+        <span class="tech-icon" style="color:#f7df1e;font-weight:900;font-size:1.2rem">JS</span>
+        <span>JavaScript</span>
+      </div>
+      <div class="tech-item" style="--tc:#e44d26">
+        <span class="tech-icon" style="color:#e44d26;font-weight:900;font-size:1rem">&lt;/&gt;</span>
+        <span>HTML/CSS</span>
+      </div>
+      <div class="tech-item" style="--tc:#000">
+        <span class="tech-icon">⚡</span>
+        <span>Flask</span>
+      </div>
+      <div class="tech-item" style="--tc:#646cff">
+        <span class="tech-icon" style="color:#646cff;font-weight:900;font-size:1.1rem">⚡</span>
+        <span>Vite</span>
+      </div>
+      <div class="tech-item" style="--tc:#ff6384">
+        <span class="tech-icon" style="color:#ff6384;font-size:1.1rem">📊</span>
+        <span>Chart.js</span>
+      </div>
+      <div class="tech-item" style="--tc:#199900">
+        <span class="tech-icon" style="color:#199900;font-size:1.1rem">🗺️</span>
+        <span>Leaflet</span>
+      </div>
+      <div class="tech-item" style="--tc:#336791">
+        <span class="tech-icon">🐘</span>
+        <span>PostgreSQL</span>
+      </div>
+      <div class="tech-item" style="--tc:#fdb515">
+        <span class="tech-icon" style="color:#fdb515;font-size:1.1rem">⏱️</span>
+        <span>TimescaleDB</span>
+      </div>
+      <div class="tech-item" style="--tc:#d82c20">
+        <span class="tech-icon" style="color:#d82c20;font-weight:900;font-size:0.9rem">◆</span>
+        <span>Redis</span>
+      </div>
+      <div class="tech-item" style="--tc:#2496ed">
+        <span class="tech-icon">🐳</span>
+        <span>Docker</span>
+      </div>
+      <div class="tech-item" style="--tc:#2088ff">
+        <span class="tech-icon">⚙️</span>
+        <span>GitHub Actions</span>
+      </div>
+      <div class="tech-item" style="--tc:#f38020">
+        <span class="tech-icon" style="color:#f38020;font-weight:900;font-size:0.9rem">☁️</span>
+        <span>Cloudflare</span>
+      </div>
+      <div class="tech-item" style="--tc:#2ead33">
+        <span class="tech-icon" style="color:#2ead33;font-size:1.1rem">🎭</span>
+        <span>Playwright</span>
+      </div>
+      <div class="tech-item" style="--tc:#729b1b">
+        <span class="tech-icon" style="color:#729b1b;font-weight:900;font-size:0.9rem">⚡</span>
+        <span>Vitest</span>
+      </div>
+    </div>
+  </section>
+
   <!-- Recent Activity Timeline -->
   <section id="activity" class="timeline-section">
     <h2>Recent Activity</h2>
@@ -98,12 +195,11 @@
     <img id="lightbox-img" src="" alt="">
   </div>
 
-  <footer>v2.0.0 · © 2026 neuhard.dev</footer>
+  <footer>v3.0.0 · © 2026 neuhard.dev</footer>
 
   <script>
     // --- Sticky header ---
     const header = document.getElementById('site-header');
-    let lastScroll = 0;
     window.addEventListener('scroll', () => {
       header.classList.toggle('scrolled', window.scrollY > 40);
     }, { passive: true });
@@ -148,11 +244,121 @@
       if (e.key === 'Escape') lightbox.classList.remove('active');
     });
 
-    // --- Commit Timeline ---
-    (async function loadTimeline() {
+    // --- Carousel ---
+    document.querySelectorAll('.carousel').forEach(carousel => {
+      const slides = carousel.querySelectorAll('.carousel-slide');
+      const dots = carousel.querySelectorAll('.dot');
+      if (slides.length < 2) return;
+
+      let current = 0;
+      let paused = false;
+      const interval = parseInt(carousel.dataset.interval) || 4000;
+
+      function goTo(idx) {
+        slides[current].classList.remove('active');
+        dots[current].classList.remove('active');
+        current = idx % slides.length;
+        slides[current].classList.add('active');
+        dots[current].classList.add('active');
+      }
+
+      carousel.addEventListener('mouseenter', () => paused = true);
+      carousel.addEventListener('mouseleave', () => paused = false);
+
+      dots.forEach((dot, i) => {
+        dot.addEventListener('click', e => { e.stopPropagation(); goTo(i); });
+      });
+
+      setInterval(() => { if (!paused) goTo(current + 1); }, interval);
+    });
+
+    // --- Animated counter ---
+    function animateCounter(el, target) {
+      const duration = 1200;
+      const start = performance.now();
+      function tick(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.floor(eased * target).toLocaleString();
+        if (progress < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    // --- Lazy Stats Loading ---
+    const statsBar = document.querySelector('.stats-bar');
+    let statsLoaded = false;
+    const statsObserver = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && !statsLoaded) {
+        statsLoaded = true;
+        statsObserver.unobserve(statsBar);
+        loadStats();
+      }
+    }, { rootMargin: '200px' });
+    statsObserver.observe(statsBar);
+
+    async function loadStats() {
+      const cacheKey = 'neuhard_stats';
+      const cacheTTL = 10 * 60 * 1000;
+
+      try {
+        const cached = JSON.parse(sessionStorage.getItem(cacheKey));
+        if (cached && Date.now() - cached.ts < cacheTTL) {
+          showStats(cached.data);
+          return;
+        }
+      } catch {}
+
+      try {
+        const [mbLang, vtLang, mbRepo, vtRepo] = await Promise.all([
+          fetch('https://api.github.com/repos/jtn0123/MegaBonk/languages').then(r => r.json()),
+          fetch('https://api.github.com/repos/jtn0123/VoltTracker/languages').then(r => r.json()),
+          fetch('https://api.github.com/repos/jtn0123/MegaBonk').then(r => r.json()),
+          fetch('https://api.github.com/repos/jtn0123/VoltTracker').then(r => r.json()),
+        ]);
+
+        const totalBytes = Object.values(mbLang).reduce((a, b) => a + b, 0)
+                         + Object.values(vtLang).reduce((a, b) => a + b, 0);
+        const loc = Math.round(totalBytes / 40);
+
+        // Fetch contributor stats for commit counts
+        const [mbContribs, vtContribs] = await Promise.all([
+          fetch('https://api.github.com/repos/jtn0123/MegaBonk/contributors').then(r => r.json()),
+          fetch('https://api.github.com/repos/jtn0123/VoltTracker/contributors').then(r => r.json()),
+        ]);
+        const commits = (Array.isArray(mbContribs) ? mbContribs.reduce((a, c) => a + c.contributions, 0) : 0)
+                      + (Array.isArray(vtContribs) ? vtContribs.reduce((a, c) => a + c.contributions, 0) : 0);
+
+        const data = { loc, commits };
+        sessionStorage.setItem(cacheKey, JSON.stringify({ ts: Date.now(), data }));
+        showStats(data);
+      } catch {
+        document.getElementById('total-loc').textContent = '—';
+        document.getElementById('total-commits').textContent = '—';
+      }
+    }
+
+    function showStats({ loc, commits }) {
+      animateCounter(document.getElementById('total-loc'), loc);
+      animateCounter(document.getElementById('total-commits'), commits);
+    }
+
+    // --- Lazy Timeline Loading ---
+    const timelineSection = document.getElementById('activity');
+    let timelineLoaded = false;
+    const timelineObserver = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && !timelineLoaded) {
+        timelineLoaded = true;
+        timelineObserver.unobserve(timelineSection);
+        loadTimeline();
+      }
+    }, { rootMargin: '200px' });
+    timelineObserver.observe(timelineSection);
+
+    async function loadTimeline() {
       const timelineEl = document.getElementById('timeline');
       const cacheKey = 'neuhard_commits';
-      const cacheTTL = 5 * 60 * 1000; // 5 min
+      const cacheTTL = 5 * 60 * 1000;
 
       function relativeTime(dateStr) {
         const diff = Date.now() - new Date(dateStr).getTime();
@@ -192,7 +398,6 @@
           `).join('');
       }
 
-      // Check cache
       try {
         const cached = JSON.parse(sessionStorage.getItem(cacheKey));
         if (cached && Date.now() - cached.ts < cacheTTL) {
@@ -225,7 +430,6 @@
           ...await parse(vtRes, 'VoltTracker')
         ].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 10);
 
-        // Fetch stats for each commit (fire all in parallel)
         await Promise.all(commits.map(async (c) => {
           try {
             const r = await fetch(`https://api.github.com/repos/jtn0123/${c.repo}/commits/${c.sha}`);
@@ -242,7 +446,7 @@
       } catch {
         timelineEl.innerHTML = '<p class="timeline-empty">Unable to load recent activity</p>';
       }
-    })();
+    }
   </script>
 </body>
 </html>
