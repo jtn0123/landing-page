@@ -323,18 +323,6 @@
         dot.addEventListener('click', e => { e.stopPropagation(); goTo(i); });
       });
 
-      // Touch swipe
-      let touchStartX = 0;
-      let touchEndX = 0;
-      carousel.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
-      carousel.addEventListener('touchend', e => {
-        touchEndX = e.changedTouches[0].screenX;
-        const diff = touchStartX - touchEndX;
-        if (Math.abs(diff) > 50) {
-          goTo(diff > 0 ? current + 1 : (current - 1 + slides.length) % slides.length);
-        }
-      });
-
       const timer = setInterval(() => { if (!paused) goTo(current + 1); }, interval);
 
       // Respect reduced motion
@@ -542,8 +530,9 @@
       }
       const total = Object.values(data).reduce((a, b) => a + b, 0);
       if (!total) return;
+      const totalLoc = Math.round(total / 40);
       const langs = Object.entries(data)
-        .map(([name, bytes]) => ({ name, pct: (bytes / total) * 100 }))
+        .map(([name, bytes]) => ({ name, pct: (bytes / total) * 100, lines: Math.round(bytes / 40) }))
         .filter(l => l.pct > 2);
 
       const fill = el.querySelector('.lang-bar-fill');
@@ -557,7 +546,8 @@
       });
 
       const legend = el.querySelector('.lang-legend');
-      legend.innerHTML = langs.slice(0, 4).map(l =>
+      legend.innerHTML = '<span class="lang-total">' + totalLoc.toLocaleString() + ' lines</span>' +
+        langs.slice(0, 4).map(l =>
         '<span class="lang-legend-item"><span class="lang-dot" style="background:' +
         (LANG_COLORS[l.name] || '#888') + '"></span>' + l.name + ' ' +
         l.pct.toFixed(1) + '%</span>'
