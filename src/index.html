@@ -19,8 +19,54 @@
   <meta name="twitter:description" content="Full-stack engineering projects — interactive web apps, data logging systems, and more.">
   <meta name="twitter:image" content="https://neuhard.dev/images/megabonk.png">
 
+  <!-- Preconnects -->
+  <link rel="preconnect" href="https://api.github.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- LCP preload -->
+  <link rel="preload" as="image" href="images/megabonk-1.png">
+
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="style.css">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "neuhard.dev",
+    "url": "https://neuhard.dev",
+    "description": "Engineering & Software Projects",
+    "author": {
+      "@type": "Person",
+      "name": "neuhard"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "MegaBonk",
+    "url": "https://neuhard.dev/megabonk/",
+    "applicationCategory": "GameApplication",
+    "operatingSystem": "Web"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "VoltTracker",
+    "url": "https://neuhard.dev/volttracker/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Web"
+  }
+  </script>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Skip to content</a>
@@ -34,8 +80,8 @@
     <article class="card fade-in" tabindex="0" data-link="https://neuhard.dev/megabonk/">
       <div class="card-img">
         <div class="carousel" data-interval="4000">
-          <img src="images/megabonk-1.png" alt="MegaBonk items view" class="carousel-slide active lightbox-trigger">
-          <img src="images/megabonk-2.png" alt="MegaBonk scrolled view" class="carousel-slide lightbox-trigger">
+          <img src="images/megabonk-1.png" alt="MegaBonk items page showing SS-tier item cards with scaling graphs" class="carousel-slide active lightbox-trigger">
+          <img src="images/megabonk-2.png" alt="MegaBonk items page scrolled view showing more item cards" class="carousel-slide lightbox-trigger">
           <div class="carousel-dots">
             <span class="dot active"></span>
             <span class="dot"></span>
@@ -43,7 +89,7 @@
         </div>
       </div>
       <div class="card-body">
-        <h2>MegaBonk</h2>
+        <h2>MegaBonk <span class="subtitle">Game Reference Guide</span></h2>
         <p class="desc">The ultimate reference guide for MegaBonk — items, weapons, tomes, characters, shrines, build planner, and breakpoint calculator in one interactive web app.</p>
         <div class="lang-bar" data-repo="jtn0123/MegaBonk">
           <div class="lang-bar-track"><div class="lang-bar-fill"></div></div>
@@ -65,9 +111,9 @@
     <article class="card fade-in" tabindex="0" data-link="https://neuhard.dev/volttracker/" style="--fade-delay: 200ms">
       <div class="card-img">
         <div class="carousel" data-interval="4000">
-          <img src="images/volttracker-1.png" alt="VoltTracker dashboard" class="carousel-slide active lightbox-trigger">
-          <img src="images/volttracker-2.png" alt="VoltTracker trips section" class="carousel-slide lightbox-trigger">
-          <img src="images/volttracker-3.png" alt="VoltTracker map view" class="carousel-slide lightbox-trigger">
+          <img src="images/volttracker-1.png" alt="VoltTracker dashboard showing electric efficiency metrics and trip data" class="carousel-slide active lightbox-trigger">
+          <img src="images/volttracker-2.png" alt="VoltTracker trips list with distance and efficiency details" class="carousel-slide lightbox-trigger">
+          <img src="images/volttracker-3.png" alt="VoltTracker GPS map view showing trip routes" class="carousel-slide lightbox-trigger">
           <div class="carousel-dots">
             <span class="dot active"></span>
             <span class="dot"></span>
@@ -76,7 +122,7 @@
         </div>
       </div>
       <div class="card-body">
-        <h2>VoltTracker</h2>
+        <h2>VoltTracker <span class="subtitle">Vehicle Telemetry Platform</span></h2>
         <p class="desc">Self-hosted data logging and analysis system for the Chevy Volt. Receives OBD-II telemetry from Torque Pro, tracks fuel efficiency, battery health, and charging analytics.</p>
         <div class="lang-bar" data-repo="jtn0123/VoltTracker">
           <div class="lang-bar-track"><div class="lang-bar-fill"></div></div>
@@ -277,7 +323,24 @@
         dot.addEventListener('click', e => { e.stopPropagation(); goTo(i); });
       });
 
-      setInterval(() => { if (!paused) goTo(current + 1); }, interval);
+      // Touch swipe
+      let touchStartX = 0;
+      let touchEndX = 0;
+      carousel.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+      carousel.addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        const diff = touchStartX - touchEndX;
+        if (Math.abs(diff) > 50) {
+          goTo(diff > 0 ? current + 1 : (current - 1 + slides.length) % slides.length);
+        }
+      });
+
+      const timer = setInterval(() => { if (!paused) goTo(current + 1); }, interval);
+
+      // Respect reduced motion
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        clearInterval(timer);
+      }
     });
 
     // --- Animated counter ---
@@ -393,7 +456,7 @@
           commits.map((c, i) => `
             <div class="timeline-item ${i % 2 === 0 ? 'left' : 'right'}">
               <div class="timeline-dot"></div>
-              <div class="timeline-content">
+              <a href="${c.url || '#'}" target="_blank" rel="noopener noreferrer" class="timeline-content timeline-link">
                 <p class="commit-msg">${truncate(c.message.split('\n')[0], 60)}</p>
                 <div class="commit-meta">
                   <span class="repo-badge repo-${c.repo.toLowerCase()}">${c.repo}</span>
@@ -401,7 +464,7 @@
                   ${c.deletions != null ? `<span class="stat-del">-${c.deletions}</span>` : ''}
                   <span class="commit-time">${relativeTime(c.date)}</span>
                 </div>
-              </div>
+              </a>
             </div>
           `).join('');
       }
