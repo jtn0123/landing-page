@@ -45,6 +45,10 @@
       <div class="card-body">
         <h2>MegaBonk</h2>
         <p class="desc">The ultimate reference guide for MegaBonk — items, weapons, tomes, characters, shrines, build planner, and breakpoint calculator in one interactive web app.</p>
+        <div class="lang-bar" data-repo="jtn0123/MegaBonk">
+          <div class="lang-bar-track"><div class="lang-bar-fill"></div></div>
+          <div class="lang-legend"></div>
+        </div>
         <div class="tech">
           <span>TypeScript</span>
           <span>Vite</span>
@@ -74,6 +78,10 @@
       <div class="card-body">
         <h2>VoltTracker</h2>
         <p class="desc">Self-hosted data logging and analysis system for the Chevy Volt. Receives OBD-II telemetry from Torque Pro, tracks fuel efficiency, battery health, and charging analytics.</p>
+        <div class="lang-bar" data-repo="jtn0123/VoltTracker">
+          <div class="lang-bar-track"><div class="lang-bar-fill"></div></div>
+          <div class="lang-legend"></div>
+        </div>
         <div class="tech">
           <span>Python</span>
           <span>Flask</span>
@@ -447,6 +455,61 @@
         timelineEl.innerHTML = '<p class="timeline-empty">Unable to load recent activity</p>';
       }
     }
+
+    // --- Language Bars ---
+    const LANG_COLORS = {
+      TypeScript: '#3178c6', JavaScript: '#f1e05a', Python: '#3572A5',
+      CSS: '#563d7c', HTML: '#e34c26', Shell: '#89e051', PLpgSQL: '#336790'
+    };
+
+    async function loadLangBar(el) {
+      const repo = el.dataset.repo;
+      const cacheKey = 'lang_' + repo;
+      let data;
+      try {
+        const cached = JSON.parse(sessionStorage.getItem(cacheKey));
+        if (cached && Date.now() - cached.ts < 600000) { data = cached.data; }
+      } catch {}
+      if (!data) {
+        try {
+          const r = await fetch('https://api.github.com/repos/' + repo + '/languages');
+          data = await r.json();
+          sessionStorage.setItem(cacheKey, JSON.stringify({ ts: Date.now(), data }));
+        } catch { return; }
+      }
+      const total = Object.values(data).reduce((a, b) => a + b, 0);
+      if (!total) return;
+      const langs = Object.entries(data)
+        .map(([name, bytes]) => ({ name, pct: (bytes / total) * 100 }))
+        .filter(l => l.pct > 2);
+
+      const fill = el.querySelector('.lang-bar-fill');
+      fill.innerHTML = '';
+      fill.style.display = 'flex';
+      langs.forEach(l => {
+        const seg = document.createElement('span');
+        seg.style.width = l.pct + '%';
+        seg.style.background = LANG_COLORS[l.name] || '#888';
+        fill.appendChild(seg);
+      });
+
+      const legend = el.querySelector('.lang-legend');
+      legend.innerHTML = langs.slice(0, 4).map(l =>
+        '<span class="lang-legend-item"><span class="lang-dot" style="background:' +
+        (LANG_COLORS[l.name] || '#888') + '"></span>' + l.name + ' ' +
+        l.pct.toFixed(1) + '%</span>'
+      ).join('');
+    }
+
+    const langObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          langObserver.unobserve(e.target);
+          loadLangBar(e.target);
+        }
+      });
+    }, { rootMargin: '200px' });
+    document.querySelectorAll('.lang-bar').forEach(el => langObserver.observe(el));
   </script>
 </body>
 </html>
