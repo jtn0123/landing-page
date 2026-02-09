@@ -76,10 +76,11 @@ header h1 {
   font-size: 1.8rem;
   font-weight: 600;
   letter-spacing: -0.02em;
-  background: linear-gradient(135deg, #4fc3f7, #81d4fa, #b3e5fc);
+  background: linear-gradient(135deg, #4fc3f7 0%, #ab47bc 35%, #ff7043 65%, #81d4fa 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  filter: drop-shadow(0 0 20px rgba(79,195,247,0.3)) drop-shadow(0 0 40px rgba(171,71,188,0.15));
   transition: font-size 0.3s ease;
 }
 header.scrolled h1 { font-size: 1.3rem; }
@@ -165,6 +166,8 @@ header.scrolled p { font-size: 0.8rem; margin-top: 0.2rem; }
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4), 0 1px 4px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.04);
 }
 .card-img img {
   width: 100%;
@@ -362,19 +365,48 @@ header.scrolled p { font-size: 0.8rem; margin-top: 0.2rem; }
   margin-left: auto;
 }
 
+/* Shimmer animation */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, var(--card) 25%, #2a2a2a 37%, var(--card) 63%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+
 /* Timeline loading skeleton */
 .timeline-loading { padding-left: 32px; }
 .skeleton-item {
   height: 52px;
-  background: var(--card);
   border: 1px solid var(--border);
   border-radius: 8px;
   margin-bottom: 1rem;
-  animation: pulse 1.5s ease-in-out infinite;
+  background: linear-gradient(90deg, var(--card) 25%, #2a2a2a 37%, var(--card) 63%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
 }
-@keyframes pulse {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.8; }
+
+/* Stats shimmer placeholder */
+.stat-value.shimmer-placeholder {
+  display: inline-block;
+  width: 4rem;
+  height: 1.5rem;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--card) 25%, #2a2a2a 37%, var(--card) 63%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+  color: transparent;
+}
+
+/* Lang bar shimmer */
+.lang-bar-track.shimmer-track .lang-bar-fill {
+  width: 100%;
+  background: linear-gradient(90deg, var(--card) 25%, #2a2a2a 37%, var(--card) 63%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
 }
 
 .timeline-empty {
@@ -382,6 +414,41 @@ header.scrolled p { font-size: 0.8rem; margin-top: 0.2rem; }
   color: var(--text-muted);
   font-size: 0.9rem;
   padding: 2rem 0;
+}
+
+/* Error state */
+.error-state {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  background: var(--card);
+  border: 1px solid #ef535033;
+  border-radius: 8px;
+}
+.error-state p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+.error-state .error-icon {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+}
+.retry-btn {
+  display: inline-block;
+  padding: 0.4rem 1.2rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  font-family: inherit;
+}
+.retry-btn:hover {
+  background: var(--accent);
+  color: #000;
 }
 
 /* Desktop alternating timeline */
@@ -600,7 +667,9 @@ a.timeline-link:hover {
   .carousel-slide {
     transition: none;
   }
-  .skeleton-item {
+  .skeleton-item,
+  .shimmer,
+  .shimmer-placeholder {
     animation: none;
   }
 }
