@@ -1035,60 +1035,6 @@ body.page-exit {
 }
 
 /* Active nav link */
-/* Commit popover (desktop) */
-.commit-popover {
-  position: absolute;
-  bottom: calc(100% + 8px);
-  left: 0;
-  right: 0;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 0.75rem;
-  z-index: 20;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
-  pointer-events: none;
-  animation: popoverIn 0.15s ease-out;
-}
-@keyframes popoverIn {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.popover-header {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-.popover-avatar {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-}
-.popover-author {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text);
-}
-.popover-sha {
-  font-size: 0.65rem;
-  color: var(--text-muted);
-  background: var(--badge-bg);
-  padding: 1px 6px;
-  border-radius: 4px;
-  margin-left: auto;
-}
-.popover-msg {
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  line-height: 1.5;
-  white-space: pre-wrap;
-  word-break: break-word;
-  margin: 0;
-  font-family: inherit;
-  max-height: 120px;
-  overflow-y: auto;
-}
 
 .header-nav a.active {
   color: var(--accent);

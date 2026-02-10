@@ -417,13 +417,10 @@ async function loadTimeline() {
           const firstLine = c.message.split('\n')[0];
           const truncated = truncate(firstLine, 60);
           const isExpandable = truncated !== firstLine;
-          const fullMsg = c.message.replace(/"/g, '&quot;').replace(/\n/g, '&#10;');
-          const shortSha = c.sha.slice(0, 7);
           return `
           <div class="timeline-item ${i % 2 === 0 ? 'left' : 'right'} content-fade-in">
             <div class="timeline-dot"></div>
-            <a href="${c.url || '#'}" target="_blank" rel="noopener noreferrer" class="timeline-content timeline-link"
-               data-popover-msg="${fullMsg}" data-popover-author="${(c.author || '').replace(/"/g, '&quot;')}" data-popover-sha="${shortSha}" data-popover-avatar="${c.avatar || ''}">
+            <a href="${c.url || '#'}" target="_blank" rel="noopener noreferrer" class="timeline-content timeline-link">
               <p class="commit-msg${isExpandable ? ' expandable' : ''}" ${isExpandable ? `data-full="${firstLine.replace(/"/g, '&quot;')}" data-short="${truncated.replace(/"/g, '&quot;')}"` : ''}>${truncated}</p>
               <div class="commit-meta">
                 <span class="repo-badge repo-${c.repo.toLowerCase()}">${c.repo}</span>
@@ -445,37 +442,6 @@ async function loadTimeline() {
         });
       });
 
-      // Desktop: popover on hover
-      if (!isMobile) {
-        timelineEl.querySelectorAll('.timeline-content[data-popover-msg]').forEach(el => {
-          let popover = null;
-          el.addEventListener('mouseenter', () => {
-            const msg = el.dataset.popoverMsg.replace(/&#10;/g, '\n');
-            const author = el.dataset.popoverAuthor;
-            const sha = el.dataset.popoverSha;
-            const avatar = el.dataset.popoverAvatar;
-            popover = document.createElement('div');
-            popover.className = 'commit-popover';
-            popover.innerHTML = `
-              <div class="popover-header">
-                ${avatar ? `<img src="${avatar}" alt="" class="popover-avatar">` : ''}
-                <span class="popover-author">${author}</span>
-                <code class="popover-sha">${sha}</code>
-              </div>
-              <pre class="popover-msg">${msg}</pre>
-            `;
-            el.appendChild(popover);
-            // Clamp to viewport
-            requestAnimationFrame(() => {
-              if (!popover) return;
-              const rect = popover.getBoundingClientRect();
-              if (rect.right > window.innerWidth) popover.style.left = 'auto';
-              if (rect.left < 0) popover.style.left = '0';
-            });
-          });
-          el.addEventListener('mouseleave', () => {
-            if (popover) { popover.remove(); popover = null; }
-          });
         });
       }
     }
