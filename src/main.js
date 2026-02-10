@@ -180,7 +180,8 @@ function animateCounter(el, target) {
   function tick(now) {
     const progress = Math.min((now - start) / duration, 1);
     const eased = 1 - Math.pow(1 - progress, 3);
-    el.textContent = Math.floor(eased * target).toLocaleString();
+    const val = Math.floor(eased * target);
+    el.textContent = val.toLocaleString();
     if (progress < 1) {
       requestAnimationFrame(tick);
     } else {
@@ -294,7 +295,7 @@ async function loadHeatmaps() {
       const weeks = (data.owner || data.all || []).slice(-12);
       const max = Math.max(...weeks, 1);
       row.innerHTML = '';
-      weeks.forEach(count => {
+      weeks.forEach((count, idx) => {
         const cell = document.createElement('span');
         cell.className = 'heatmap-cell';
         const intensity = count / max;
@@ -305,6 +306,7 @@ async function loadHeatmaps() {
         }
         cell.title = count + ' commit' + (count !== 1 ? 's' : '');
         row.appendChild(cell);
+        setTimeout(() => cell.classList.add('active'), 30 * idx);
       });
     } catch {}
   }
@@ -540,9 +542,10 @@ async function loadLangBar(el) {
   const fill = el.querySelector('.lang-bar-fill');
   fill.innerHTML = '';
   fill.style.display = 'flex';
+  const segElements = [];
   langs.forEach(l => {
     const seg = document.createElement('span');
-    seg.style.width = l.pct + '%';
+    seg.style.width = '0%';
     seg.style.background = LANG_COLORS[l.name] || '#888';
     seg.style.position = 'relative';
     seg.addEventListener('mouseenter', () => {
@@ -559,6 +562,12 @@ async function loadLangBar(el) {
       if (tip) tip.remove();
     });
     fill.appendChild(seg);
+    segElements.push({ seg, pct: l.pct });
+  });
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      segElements.forEach(({ seg, pct }) => { seg.style.width = pct + '%'; });
+    }, 50);
   });
 
   const legend = el.querySelector('.lang-legend');
@@ -590,6 +599,70 @@ if (scrollProgress) {
     scrollProgress.style.width = pct + '%';
   }, { passive: true });
 }
+
+// --- Parallax background mesh (desktop only) ---
+if (!isMobile) {
+  const mesh = document.getElementById('parallax-mesh');
+  if (mesh) {
+    window.addEventListener('scroll', () => {
+      mesh.style.transform = `translateY(${window.scrollY * 0.1}px)`;
+    }, { passive: true });
+  }
+}
+
+// --- Pinch-to-zoom on lightbox ---
+(function() {
+  let initialDist = 0, currentScale = 1;
+  function getDist(touches) {
+    const dx = touches[0].clientX - touches[1].clientX;
+    const dy = touches[0].clientY - touches[1].clientY;
+    return Math.hypot(dx, dy);
+  }
+  lightboxImg.addEventListener('touchstart', e => {
+    if (e.touches.length === 2) {
+      e.preventDefault();
+      initialDist = getDist(e.touches);
+    }
+  }, { passive: false });
+  lightboxImg.addEventListener('touchmove', e => {
+    if (e.touches.length === 2) {
+      e.preventDefault();
+      const dist = getDist(e.touches);
+      const scale = Math.min(Math.max(currentScale * (dist / initialDist), 1), 4);
+      lightboxImg.style.transform = `scale(${scale})`;
+    }
+  }, { passive: false });
+  lightboxImg.addEventListener('touchend', e => {
+    if (e.touches.length < 2) {
+      currentScale = parseFloat(lightboxImg.style.transform.replace(/[^0-9.]/g, '') || 1);
+      if (isNaN(currentScale) || currentScale < 1) currentScale = 1;
+    }
+  });
+  lightbox.addEventListener('click', () => {
+    lightboxImg.style.transform = '';
+    currentScale = 1;
+  });
+})();
+
+// --- Active nav link on scroll ---
+(function() {
+  const sections = [
+    { id: 'main-content', el: document.getElementById('main-content') },
+    { id: 'tech-section', el: document.getElementById('tech-section') },
+    { id: 'activity', el: document.getElementById('activity') }
+  ];
+  const navLinks = document.querySelectorAll('.header-nav a[data-scroll]');
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id);
+        });
+      }
+    });
+  }, { threshold: 0.2 });
+  sections.forEach(s => { if (s.el) sectionObserver.observe(s.el); });
+})();
 
 // --- Page exit transition for internal links ---
 document.querySelectorAll('.btn-primary').forEach(btn => {
