@@ -225,7 +225,7 @@ header.scrolled .theme-toggle {
   box-shadow: 0 0 0 3px var(--accent);
 }
 .card:hover {
-  box-shadow: 0 8px 40px rgba(79, 195, 247, 0.1), 0 0 20px rgba(171, 71, 188, 0.06);
+  box-shadow: 0 8px 40px rgba(107, 144, 128, 0.12), 0 0 20px rgba(140, 192, 168, 0.08);
 }
 
 /* Animated gradient border on hover — muted ambient glow */
@@ -234,8 +234,8 @@ header.scrolled .theme-toggle {
   position: absolute;
   inset: -2px;
   border-radius: 12px;
-  background: linear-gradient(90deg, #4fc3f7aa, #ab47bc88, #4fc3f7aa, #ab47bc88);
-  background-size: 300% 100%;
+  background: linear-gradient(90deg, #6b9080, #7889a0, #8cc0a8, #7889a0, #6b9080);
+  background-size: 400% 100%;
   z-index: -1;
   opacity: 0;
   transition: opacity 0.4s ease;
@@ -245,7 +245,7 @@ header.scrolled .theme-toggle {
 
 @keyframes gradientShift {
   0% { background-position: 0% 50%; }
-  100% { background-position: 300% 50%; }
+  100% { background-position: 400% 50%; }
 }
 
 .card-img {
