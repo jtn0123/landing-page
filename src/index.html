@@ -155,7 +155,7 @@
       <span class="stat-label">Commits</span>
     </div>
     <div class="stat">
-      <span class="stat-value" id="total-projects">2</span>
+      <span class="stat-value" id="total-projects">3</span>
       <span class="stat-label">Projects</span>
     </div>
   </section>
@@ -248,11 +248,13 @@
     <img id="lightbox-img" src="" alt="">
   </div>
 
-  <footer>v3.1.1 · © 2026 neuhard.dev</footer>
+  <footer>v3.2.0 · © 2026 neuhard.dev</footer>
 
   <script>
     // --- API base URL (proxied via Cloudflare Worker with 5-min cache) ---
     const API_BASE = '/api/github';
+    const REPOS = ['MegaBonk', 'VoltTracker', 'landing-page'];
+    const OWNER = 'jtn0123';
 
     // --- Sticky header ---
     const header = document.getElementById('site-header');
@@ -409,23 +411,18 @@
       } catch {}
 
       try {
-        const [mbLang, vtLang, mbRepo, vtRepo] = await Promise.all([
-          fetchJSON(`${API_BASE}/repos/jtn0123/MegaBonk/languages`).then(r => r.data),
-          fetchJSON(`${API_BASE}/repos/jtn0123/VoltTracker/languages`).then(r => r.data),
-          fetchJSON(`${API_BASE}/repos/jtn0123/MegaBonk`).then(r => r.data),
-          fetchJSON(`${API_BASE}/repos/jtn0123/VoltTracker`).then(r => r.data),
-        ]);
+        const langResults = await Promise.all(
+          REPOS.map(r => fetchJSON(`${API_BASE}/repos/${OWNER}/${r}/languages`).then(r => r.data).catch(() => ({})))
+        );
 
-        const totalBytes = Object.values(mbLang).reduce((a, b) => a + b, 0)
-                         + Object.values(vtLang).reduce((a, b) => a + b, 0);
+        const totalBytes = langResults.reduce((sum, lang) => sum + Object.values(lang).reduce((a, b) => a + b, 0), 0);
         const loc = Math.round(totalBytes / 40);
 
-        const [mbContribs, vtContribs] = await Promise.all([
-          fetchJSON(`${API_BASE}/repos/jtn0123/MegaBonk/contributors`).then(r => r.data),
-          fetchJSON(`${API_BASE}/repos/jtn0123/VoltTracker/contributors`).then(r => r.data),
-        ]);
-        const commits = (Array.isArray(mbContribs) ? mbContribs.reduce((a, c) => a + c.contributions, 0) : 0)
-                      + (Array.isArray(vtContribs) ? vtContribs.reduce((a, c) => a + c.contributions, 0) : 0);
+        const contribResults = await Promise.all(
+          REPOS.map(r => fetchJSON(`${API_BASE}/repos/${OWNER}/${r}/contributors`).then(r => r.data).catch(() => []))
+        );
+        const commits = contribResults.reduce((sum, contribs) =>
+          sum + (Array.isArray(contribs) ? contribs.reduce((a, c) => a + c.contributions, 0) : 0), 0);
 
         const data = { loc, commits };
         sessionStorage.setItem(cacheKey, JSON.stringify({ ts: Date.now(), data }));
@@ -437,7 +434,7 @@
           statsBar.innerHTML = `
             <div class="stat"><span class="stat-value shimmer-placeholder" id="total-loc">&nbsp;</span><span class="stat-label">Lines of Code</span></div>
             <div class="stat"><span class="stat-value shimmer-placeholder" id="total-commits">&nbsp;</span><span class="stat-label">Commits</span></div>
-            <div class="stat"><span class="stat-value" id="total-projects">2</span><span class="stat-label">Projects</span></div>`;
+            <div class="stat"><span class="stat-value" id="total-projects">3</span><span class="stat-label">Projects</span></div>`;
           loadStats();
         });
       }
@@ -512,20 +509,19 @@
       } catch {}
 
       try {
-        const [mbRes, vtRes] = await Promise.all([
-          fetch(`${API_BASE}/repos/jtn0123/MegaBonk/commits?per_page=5`),
-          fetch(`${API_BASE}/repos/jtn0123/VoltTracker/commits?per_page=5`)
-        ]);
+        const responses = await Promise.all(
+          REPOS.map(r => fetch(`${API_BASE}/repos/${OWNER}/${r}/commits?per_page=5`))
+        );
 
         // Check rate limits
-        for (const res of [mbRes, vtRes]) {
+        for (const res of responses) {
           if (res.status === 403 || res.status === 429) {
             const msg = parseRateLimit(res);
             if (msg) throw new Error(msg);
           }
         }
 
-        if (!mbRes.ok && !vtRes.ok) throw new Error('API error');
+        if (responses.every(r => !r.ok)) throw new Error('API error');
 
         const parse = async (res, repo) => {
           if (!res.ok) return [];
@@ -539,10 +535,9 @@
           }));
         };
 
-        const commits = [
-          ...await parse(mbRes, 'MegaBonk'),
-          ...await parse(vtRes, 'VoltTracker')
-        ].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 10);
+        const commits = (await Promise.all(
+          responses.map((res, i) => parse(res, REPOS[i]))
+        )).flat().sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 10);
 
         await Promise.all(commits.map(async (c) => {
           try {

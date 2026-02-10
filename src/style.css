@@ -341,6 +341,7 @@ header.scrolled p { font-size: 0.8rem; margin-top: 0.2rem; }
 }
 .repo-megabonk { background: rgba(79,195,247,0.15); color: #4fc3f7; }
 .repo-volttracker { background: rgba(76,175,80,0.15); color: #66bb6a; }
+.repo-landing-page { background: rgba(171,71,188,0.15); color: #ba68c8; }
 .commit-meta {
   display: flex;
   align-items: center;
