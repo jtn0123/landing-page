@@ -1,7 +1,7 @@
 // --- API base URL (proxied via Cloudflare Worker with 5-min cache) ---
 const API_BASE = '/api/github';
-const REPOS = ['MegaBonk', 'VoltTracker', 'landing-page'];
-const CARD_REPOS = ['MegaBonk', 'VoltTracker'];
+const REPOS = ['MegaBonk', 'VoltTracker', 'landing-page', 'satallite_processor', 'AudioWhisper'];
+const CARD_REPOS = ['MegaBonk', 'VoltTracker', 'satallite_processor', 'AudioWhisper'];
 const OWNER = 'jtn0123';
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const isMobile = window.matchMedia('(max-width: 720px)').matches;
@@ -282,7 +282,9 @@ loadCardMeta();
 const HEATMAP_COLORS = {
   MegaBonk: '79,195,247',
   VoltTracker: '76,175,80',
-  'landing-page': '171,71,188'
+  'landing-page': '171,71,188',
+  'satallite_processor': '255,152,0',
+  'AudioWhisper': '233,30,99'
 };
 
 async function loadHeatmaps() {
@@ -363,7 +365,7 @@ async function loadStats() {
       statsBar.innerHTML = `
         <div class="stat"><span class="stat-value shimmer-placeholder" id="total-loc">&nbsp;</span><span class="stat-label">Lines of Code</span></div>
         <div class="stat"><span class="stat-value shimmer-placeholder" id="total-commits">&nbsp;</span><span class="stat-label">Commits</span></div>
-        <div class="stat"><span class="stat-value" id="total-projects">3</span><span class="stat-label">Projects</span></div>`;
+        <div class="stat"><span class="stat-value" id="total-projects">5</span><span class="stat-label">Projects</span></div>`;
       loadStats();
     });
   }
