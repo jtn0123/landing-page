@@ -32,6 +32,15 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="style.css">
 
+  <!-- Theme: apply early to prevent flash -->
+  <script>
+    (function() {
+      var t = localStorage.getItem('theme');
+      if (!t) t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      if (t === 'light') document.documentElement.setAttribute('data-theme', 'light');
+    })();
+  </script>
+
   <!-- Structured Data -->
   <script type="application/ld+json">
   {
@@ -73,10 +82,18 @@
   <header id="site-header">
     <h1>neuhard.dev</h1>
     <p>Engineering &amp; Software Projects</p>
+    <div class="header-controls">
+      <nav class="header-nav">
+        <a href="#main-content" data-scroll>Projects</a>
+        <a href="#tech-section" data-scroll>Tech</a>
+        <a href="#activity" data-scroll>Activity</a>
+      </nav>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">🌙</button>
+    </div>
   </header>
 
   <main id="main-content" class="projects">
-    <article class="card fade-in" tabindex="0" data-link="https://neuhard.dev/megabonk/">
+    <article class="card fade-in" tabindex="0" data-link="https://neuhard.dev/megabonk/" data-repo="MegaBonk">
       <div class="card-img">
         <div class="carousel" data-interval="4000">
           <img src="images/megabonk-1.png" alt="MegaBonk items page showing SS-tier item cards with scaling graphs" class="carousel-slide active lightbox-trigger">
@@ -90,8 +107,10 @@
       <div class="card-body">
         <h2>MegaBonk <span class="subtitle">Game Reference Guide</span></h2>
         <p class="desc">The ultimate reference guide for MegaBonk — items, weapons, tomes, characters, shrines, build planner, and breakpoint calculator in one interactive web app.</p>
+        <div class="card-updated" data-repo="MegaBonk"></div>
         <div class="lang-bar" data-repo="jtn0123/MegaBonk">
           <div class="lang-bar-track shimmer-track"><div class="lang-bar-fill"></div></div>
+          <div class="heatmap-row" data-repo="MegaBonk"></div>
           <div class="lang-legend"></div>
         </div>
         <div class="tech">
@@ -107,7 +126,7 @@
       </div>
     </article>
 
-    <article class="card fade-in" tabindex="0" data-link="https://neuhard.dev/volttracker/" style="--fade-delay: 200ms">
+    <article class="card fade-in" tabindex="0" data-link="https://neuhard.dev/volttracker/" data-repo="VoltTracker" style="--fade-delay: 200ms">
       <div class="card-img">
         <div class="carousel" data-interval="4000">
           <img src="images/volttracker-1.png" alt="VoltTracker dashboard showing electric efficiency metrics and trip data" class="carousel-slide active lightbox-trigger">
@@ -123,8 +142,10 @@
       <div class="card-body">
         <h2>VoltTracker <span class="subtitle">Vehicle Telemetry Platform</span></h2>
         <p class="desc">Self-hosted data logging and analysis system for the Chevy Volt. Receives OBD-II telemetry from Torque Pro, tracks fuel efficiency, battery health, and charging analytics.</p>
+        <div class="card-updated" data-repo="VoltTracker"></div>
         <div class="lang-bar" data-repo="jtn0123/VoltTracker">
           <div class="lang-bar-track shimmer-track"><div class="lang-bar-fill"></div></div>
+          <div class="heatmap-row" data-repo="VoltTracker"></div>
           <div class="lang-legend"></div>
         </div>
         <div class="tech">
@@ -161,7 +182,7 @@
   </section>
 
   <!-- Tech Stack -->
-  <section class="tech-grid-section fade-in">
+  <section id="tech-section" class="tech-grid-section fade-in">
     <h2>Tech Stack</h2>
     <div class="tech-grid">
       <div class="tech-item" style="--tc:#3178c6">
@@ -248,13 +269,45 @@
     <img id="lightbox-img" src="" alt="">
   </div>
 
-  <footer>v3.2.0 · © 2026 neuhard.dev</footer>
+  <footer>v4.0.0 · © 2026 neuhard.dev</footer>
 
   <script>
     // --- API base URL (proxied via Cloudflare Worker with 5-min cache) ---
     const API_BASE = '/api/github';
     const REPOS = ['MegaBonk', 'VoltTracker', 'landing-page'];
     const OWNER = 'jtn0123';
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isMobile = window.matchMedia('(max-width: 720px)').matches;
+
+    // --- Feature 1: Theme toggle ---
+    const themeBtn = document.getElementById('theme-toggle');
+    function getTheme() {
+      return localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    }
+    function applyTheme(t) {
+      if (t === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        themeBtn.textContent = '☀️';
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        themeBtn.textContent = '🌙';
+      }
+    }
+    applyTheme(getTheme());
+    themeBtn.addEventListener('click', () => {
+      const next = getTheme() === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('theme', next);
+      applyTheme(next);
+    });
+
+    // --- Feature 6: Smooth scroll nav ---
+    document.querySelectorAll('[data-scroll]').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
 
     // --- Sticky header ---
     const header = document.getElementById('site-header');
@@ -302,7 +355,7 @@
       if (e.key === 'Escape') lightbox.classList.remove('active');
     });
 
-    // --- Carousel ---
+    // --- Carousel with swipe + Ken Burns ---
     document.querySelectorAll('.carousel').forEach(carousel => {
       const slides = carousel.querySelectorAll('.carousel-slide');
       const dots = carousel.querySelectorAll('.dot');
@@ -312,13 +365,22 @@
       let paused = false;
       const interval = parseInt(carousel.dataset.interval) || 4000;
 
+      function applyKenBurns(idx) {
+        if (reducedMotion) return;
+        slides.forEach(s => s.classList.remove('kb-zoom'));
+        slides[idx].classList.add('kb-zoom');
+      }
+
       function goTo(idx) {
-        slides[current].classList.remove('active');
+        slides[current].classList.remove('active', 'kb-zoom');
         dots[current].classList.remove('active');
-        current = idx % slides.length;
+        current = ((idx % slides.length) + slides.length) % slides.length;
         slides[current].classList.add('active');
         dots[current].classList.add('active');
+        applyKenBurns(current);
       }
+
+      applyKenBurns(0);
 
       carousel.addEventListener('mouseenter', () => paused = true);
       carousel.addEventListener('mouseleave', () => paused = false);
@@ -328,13 +390,60 @@
       });
 
       const timer = setInterval(() => { if (!paused) goTo(current + 1); }, interval);
+      if (reducedMotion) clearInterval(timer);
 
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        clearInterval(timer);
-      }
+      // Feature 3: Swipe support
+      let touchStartX = 0, touchStartY = 0, swiping = false;
+      carousel.addEventListener('touchstart', e => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        swiping = true;
+      }, { passive: true });
+      carousel.addEventListener('touchmove', e => {
+        if (!swiping) return;
+        const dy = Math.abs(e.touches[0].clientY - touchStartY);
+        const dx = Math.abs(e.touches[0].clientX - touchStartX);
+        if (dy > dx) swiping = false; // vertical scroll, bail
+      }, { passive: true });
+      carousel.addEventListener('touchend', e => {
+        if (!swiping) return;
+        const diff = e.changedTouches[0].clientX - touchStartX;
+        if (Math.abs(diff) > 50) {
+          goTo(diff < 0 ? current + 1 : current - 1);
+        }
+        swiping = false;
+      }, { passive: true });
     });
 
-    // --- Animated counter ---
+    // --- Feature 7: Card parallax tilt (desktop only) ---
+    if (!isMobile && !reducedMotion) {
+      document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('mousemove', e => {
+          const rect = card.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width - 0.5;
+          const y = (e.clientY - rect.top) / rect.height - 0.5;
+          card.style.transform = `perspective(1000px) rotateX(${-y * 6}deg) rotateY(${x * 6}deg) translateY(-4px)`;
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = '';
+        });
+      });
+    }
+
+    // --- Shared relativeTime function ---
+    function relativeTime(dateStr) {
+      const diff = Date.now() - new Date(dateStr).getTime();
+      const mins = Math.floor(diff / 60000);
+      if (mins < 1) return 'just now';
+      if (mins < 60) return mins + 'm ago';
+      const hrs = Math.floor(mins / 60);
+      if (hrs < 24) return hrs + 'h ago';
+      const days = Math.floor(hrs / 24);
+      if (days < 30) return days + 'd ago';
+      return Math.floor(days / 30) + 'mo ago';
+    }
+
+    // --- Animated counter (Feature 20: bounce at end) ---
     function animateCounter(el, target) {
       el.classList.remove('shimmer-placeholder');
       const duration = 1200;
@@ -343,7 +452,13 @@
         const progress = Math.min((now - start) / duration, 1);
         const eased = 1 - Math.pow(1 - progress, 3);
         el.textContent = Math.floor(eased * target).toLocaleString();
-        if (progress < 1) requestAnimationFrame(tick);
+        if (progress < 1) {
+          requestAnimationFrame(tick);
+        } else {
+          el.textContent = target.toLocaleString();
+          el.classList.add('bounce');
+          el.addEventListener('animationend', () => el.classList.remove('bounce'), { once: true });
+        }
       }
       requestAnimationFrame(tick);
     }
@@ -383,6 +498,68 @@
         retryFn();
       });
     }
+
+    // --- Feature 4: Last updated + Feature 17: CI badge ---
+    async function loadCardMeta() {
+      const cards = document.querySelectorAll('.card[data-repo]');
+      for (const card of cards) {
+        const repo = card.dataset.repo;
+        // Last updated
+        try {
+          const { data } = await fetchJSON(`${API_BASE}/repos/${OWNER}/${repo}`);
+          const updatedEl = card.querySelector('.card-updated');
+          if (updatedEl && data.pushed_at) {
+            updatedEl.textContent = 'Updated ' + relativeTime(data.pushed_at);
+          }
+        } catch {}
+        // CI status badge
+        try {
+          const { data } = await fetchJSON(`${API_BASE}/repos/${OWNER}/${repo}/actions/runs?per_page=1`);
+          if (data.workflow_runs && data.workflow_runs.length > 0) {
+            const run = data.workflow_runs[0];
+            const h2 = card.querySelector('h2');
+            const badge = document.createElement('span');
+            badge.className = 'ci-badge';
+            if (run.conclusion === 'success') {
+              badge.classList.add('ci-success');
+              badge.textContent = '✓';
+            } else if (run.conclusion === 'failure') {
+              badge.classList.add('ci-failure');
+              badge.textContent = '✗';
+            }
+            if (badge.textContent) h2.insertBefore(badge, h2.querySelector('.subtitle'));
+          }
+        } catch {}
+      }
+    }
+    loadCardMeta();
+
+    // --- Feature 16: Contribution heatmap ---
+    async function loadHeatmaps() {
+      const rows = document.querySelectorAll('.heatmap-row[data-repo]');
+      for (const row of rows) {
+        const repo = row.dataset.repo;
+        try {
+          const { data } = await fetchJSON(`${API_BASE}/repos/${OWNER}/${repo}/stats/participation`);
+          const weeks = (data.owner || data.all || []).slice(-12);
+          const max = Math.max(...weeks, 1);
+          row.innerHTML = '';
+          weeks.forEach(count => {
+            const cell = document.createElement('span');
+            cell.className = 'heatmap-cell';
+            const intensity = count / max;
+            if (count === 0) {
+              cell.style.background = 'var(--border)';
+            } else {
+              cell.style.background = `rgba(79,195,247,${0.2 + intensity * 0.8})`;
+            }
+            cell.title = count + ' commit' + (count !== 1 ? 's' : '');
+            row.appendChild(cell);
+          });
+        } catch {}
+      }
+    }
+    loadHeatmaps();
 
     // --- Lazy Stats Loading ---
     const statsBar = document.querySelector('.stats-bar');
@@ -462,18 +639,6 @@
       const cacheKey = 'neuhard_commits';
       const cacheTTL = 5 * 60 * 1000;
 
-      function relativeTime(dateStr) {
-        const diff = Date.now() - new Date(dateStr).getTime();
-        const mins = Math.floor(diff / 60000);
-        if (mins < 1) return 'just now';
-        if (mins < 60) return mins + 'm ago';
-        const hrs = Math.floor(mins / 60);
-        if (hrs < 24) return hrs + 'h ago';
-        const days = Math.floor(hrs / 24);
-        if (days < 30) return days + 'd ago';
-        return Math.floor(days / 30) + 'mo ago';
-      }
-
       function truncate(str, len) {
         return str.length > len ? str.slice(0, len) + '…' : str;
       }
@@ -483,21 +648,50 @@
           timelineEl.innerHTML = '<p class="timeline-empty">No recent activity</p>';
           return;
         }
-        timelineEl.innerHTML = '<div class="timeline-line"></div>' +
-          commits.map((c, i) => `
-            <div class="timeline-item ${i % 2 === 0 ? 'left' : 'right'}">
-              <div class="timeline-dot"></div>
-              <a href="${c.url || '#'}" target="_blank" rel="noopener noreferrer" class="timeline-content timeline-link">
-                <p class="commit-msg">${truncate(c.message.split('\n')[0], 60)}</p>
-                <div class="commit-meta">
-                  <span class="repo-badge repo-${c.repo.toLowerCase()}">${c.repo}</span>
-                  ${c.additions != null ? `<span class="stat-add">+${c.additions}</span>` : ''}
-                  ${c.deletions != null ? `<span class="stat-del">-${c.deletions}</span>` : ''}
-                  <span class="commit-time">${relativeTime(c.date)}</span>
-                </div>
-              </a>
-            </div>
-          `).join('');
+
+        // Feature 21: fade out skeleton
+        const loading = timelineEl.querySelector('.timeline-loading');
+        if (loading) {
+          loading.classList.add('skeleton-fade', 'fade-out');
+          setTimeout(() => {
+            buildTimeline(commits);
+          }, 400);
+        } else {
+          buildTimeline(commits);
+        }
+
+        function buildTimeline(commits) {
+          timelineEl.innerHTML = '<div class="timeline-line"></div>' +
+            commits.map((c, i) => {
+              const firstLine = c.message.split('\n')[0];
+              const truncated = truncate(firstLine, 60);
+              const isExpandable = truncated !== firstLine;
+              return `
+              <div class="timeline-item ${i % 2 === 0 ? 'left' : 'right'} content-fade-in">
+                <div class="timeline-dot"></div>
+                <a href="${c.url || '#'}" target="_blank" rel="noopener noreferrer" class="timeline-content timeline-link">
+                  <p class="commit-msg${isExpandable ? ' expandable' : ''}" ${isExpandable ? `data-full="${firstLine.replace(/"/g, '&quot;')}" data-short="${truncated.replace(/"/g, '&quot;')}"` : ''}>${truncated}</p>
+                  <div class="commit-meta">
+                    <span class="repo-badge repo-${c.repo.toLowerCase()}">${c.repo}</span>
+                    ${c.additions != null ? `<span class="stat-add">+${c.additions}</span>` : ''}
+                    ${c.deletions != null ? `<span class="stat-del">-${c.deletions}</span>` : ''}
+                    <span class="commit-time">${relativeTime(c.date)}</span>
+                  </div>
+                </a>
+              </div>
+            `;}).join('');
+
+          // Feature 11: Expandable commit messages
+          timelineEl.querySelectorAll('.commit-msg.expandable').forEach(msg => {
+            msg.addEventListener('click', e => {
+              e.preventDefault();
+              e.stopPropagation();
+              const isExpanded = msg.dataset.expanded === 'true';
+              msg.textContent = isExpanded ? msg.dataset.short : msg.dataset.full;
+              msg.dataset.expanded = isExpanded ? 'false' : 'true';
+            });
+          });
+        }
       }
 
       try {
@@ -513,7 +707,6 @@
           REPOS.map(r => fetch(`${API_BASE}/repos/${OWNER}/${r}/commits?per_page=5`))
         );
 
-        // Check rate limits
         for (const res of responses) {
           if (res.status === 403 || res.status === 429) {
             const msg = parseRateLimit(res);
@@ -541,7 +734,7 @@
 
         await Promise.all(commits.map(async (c) => {
           try {
-            const r = await fetch(`${API_BASE}/repos/jtn0123/${c.repo}/commits/${c.sha}`);
+            const r = await fetch(`${API_BASE}/repos/${OWNER}/${c.repo}/commits/${c.sha}`);
             if (r.ok) {
               const detail = await r.json();
               c.additions = detail.stats?.additions || 0;
@@ -560,7 +753,7 @@
       }
     }
 
-    // --- Language Bars ---
+    // --- Language Bars (Feature 2: tooltips) ---
     const LANG_COLORS = {
       TypeScript: '#3178c6', JavaScript: '#f1e05a', Python: '#3572A5',
       CSS: '#563d7c', HTML: '#e34c26', Shell: '#89e051', PLpgSQL: '#336790'
@@ -604,6 +797,18 @@
         const seg = document.createElement('span');
         seg.style.width = l.pct + '%';
         seg.style.background = LANG_COLORS[l.name] || '#888';
+        seg.style.position = 'relative';
+        // Feature 2: Tooltip on hover
+        seg.addEventListener('mouseenter', () => {
+          const tip = document.createElement('div');
+          tip.className = 'lang-tooltip';
+          tip.textContent = `${l.name}: ${l.pct.toFixed(1)}% · ${l.lines.toLocaleString()} lines`;
+          seg.appendChild(tip);
+        });
+        seg.addEventListener('mouseleave', () => {
+          const tip = seg.querySelector('.lang-tooltip');
+          if (tip) tip.remove();
+        });
         fill.appendChild(seg);
       });
 
