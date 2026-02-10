@@ -225,7 +225,7 @@ header.scrolled .theme-toggle {
   box-shadow: 0 0 0 3px var(--accent);
 }
 .card:hover {
-  box-shadow: 0 8px 40px rgba(91, 168, 181, 0.12), 0 0 20px rgba(109, 207, 184, 0.08);
+  box-shadow: 0 8px 40px rgba(61, 90, 115, 0.15), 0 0 20px rgba(192, 204, 214, 0.08);
 }
 
 /* Animated gradient border on hover — muted ambient glow */
@@ -234,7 +234,7 @@ header.scrolled .theme-toggle {
   position: absolute;
   inset: -2px;
   border-radius: 12px;
-  background: linear-gradient(90deg, #5ba8b5, #8a9bb0, #6dcfb8, #8a9bb0, #5ba8b5);
+  background: linear-gradient(90deg, #3d5a73, #7a8a98, #c0ccd6, #7a8a98, #3d5a73);
   background-size: 400% 100%;
   z-index: -1;
   opacity: 0;
