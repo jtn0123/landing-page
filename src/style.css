@@ -225,23 +225,23 @@ header.scrolled .theme-toggle {
   box-shadow: 0 0 0 3px var(--accent);
 }
 .card:hover {
-  box-shadow: 0 8px 30px rgba(79, 195, 247, 0.08);
+  box-shadow: 0 8px 40px rgba(79, 195, 247, 0.1), 0 0 20px rgba(171, 71, 188, 0.06);
 }
 
-/* Animated gradient border on hover */
+/* Animated gradient border on hover — muted ambient glow */
 .card::before {
   content: '';
   position: absolute;
   inset: -2px;
   border-radius: 12px;
-  background: linear-gradient(90deg, #4fc3f7, #ab47bc, #4fc3f7, #ab47bc);
+  background: linear-gradient(90deg, #4fc3f7aa, #ab47bc88, #4fc3f7aa, #ab47bc88);
   background-size: 300% 100%;
   z-index: -1;
   opacity: 0;
-  transition: opacity 0.3s ease;
-  animation: gradientShift 3s linear infinite;
+  transition: opacity 0.4s ease;
+  animation: gradientShift 8s linear infinite;
 }
-.card:hover::before { opacity: 1; }
+.card:hover::before { opacity: 0.35; }
 
 @keyframes gradientShift {
   0% { background-position: 0% 50%; }
