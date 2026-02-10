@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 — neuhard.dev</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a0a;
+      color: #e0e0e0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    }
+    a { color: #4fc3f7; text-decoration: none; }
+    .header { margin-bottom: 3rem; }
+    .header a {
+      font-size: 1.2rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #4fc3f7 0%, #ab47bc 35%, #ff7043 65%, #81d4fa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .code {
+      font-size: clamp(6rem, 20vw, 12rem);
+      font-weight: 700;
+      line-height: 1;
+      background: linear-gradient(135deg, #4fc3f7 0%, #ab47bc 35%, #ff7043 65%, #81d4fa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 30px rgba(79,195,247,0.3)) drop-shadow(0 0 60px rgba(171,71,188,0.15));
+      animation: glitch 3s ease-in-out infinite;
+    }
+    @keyframes glitch {
+      0%, 90%, 100% { transform: translate(0); }
+      92% { transform: translate(-2px, 1px); }
+      94% { transform: translate(2px, -1px); }
+      96% { transform: translate(-1px, -1px); }
+      98% { transform: translate(1px, 1px); }
+    }
+    .subtitle {
+      font-size: 1.2rem;
+      color: #888;
+      margin: 1rem 0 0.5rem;
+    }
+    .message {
+      font-size: 0.9rem;
+      color: #555;
+      margin-bottom: 2.5rem;
+    }
+    .btn {
+      display: inline-block;
+      padding: 0.7rem 2rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      background: #4fc3f7;
+      color: #000;
+      transition: background 0.15s;
+    }
+    .btn:hover { background: #81d4fa; }
+  </style>
+</head>
+<body>
+  <div class="header"><a href="/">neuhard.dev</a></div>
+  <div class="code">404</div>
+  <p class="subtitle">Page not found</p>
+  <p class="message">The bits you're looking for have wandered off into the void.</p>
+  <a href="/" class="btn">Back to home</a>
+</body>
+</html>
