@@ -72,6 +72,8 @@ document.querySelectorAll('.lightbox-trigger').forEach(img => {
   img.addEventListener('click', e => {
     e.preventDefault();
     e.stopPropagation();
+    lightboxImg.style.transform = '';
+    currentScale = 1;
     lightboxImg.src = img.src;
     lightboxImg.alt = img.alt;
     lightbox.classList.add('active');
@@ -159,6 +161,13 @@ if (!isMobile && !reducedMotion) {
   });
 }
 
+// --- Abbreviate large numbers ---
+function abbreviateNum(n) {
+  if (n >= 100000) return Math.round(n / 1000) + 'k';
+  if (n >= 10000) return (n / 1000).toFixed(1) + 'k';
+  return n.toLocaleString();
+}
+
 // --- Shared relativeTime function ---
 function relativeTime(dateStr) {
   const diff = Date.now() - new Date(dateStr).getTime();
@@ -222,9 +231,11 @@ function renderError(container, message, retryFn) {
     <div class="error-state">
       <div class="error-icon">⚠️</div>
       <p>${message}</p>
-      <button class="retry-btn" onclick="this.disabled=true;this.textContent='Retrying…';">Retry</button>
+      <button class="retry-btn">Retry</button>
     </div>`;
   container.querySelector('.retry-btn').addEventListener('click', function() {
+    this.disabled = true;
+    this.textContent = 'Retrying…';
     retryFn();
   });
 }
@@ -233,7 +244,7 @@ function renderError(container, message, retryFn) {
 const apiCache = {};
 
 async function cachedFetchJSON(url, ttl = 30 * 60 * 1000) {
-  const cacheKey = 'api_' + url;
+  const cacheKey = 'nd_api_' + url;
   try {
     const cached = JSON.parse(sessionStorage.getItem(cacheKey));
     if (cached && Date.now() - cached.ts < ttl) {
@@ -248,7 +259,7 @@ async function cachedFetchJSON(url, ttl = 30 * 60 * 1000) {
 // --- Feature 4: Last updated + Feature 17: CI badge ---
 async function loadCardMeta() {
   const cards = document.querySelectorAll('.card[data-repo]');
-  for (const card of cards) {
+  await Promise.all([...cards].map(async (card) => {
     const repo = card.dataset.repo;
     try {
       const { data } = await cachedFetchJSON(`${API_BASE}/repos/${OWNER}/${repo}`);
@@ -274,7 +285,7 @@ async function loadCardMeta() {
         if (badge.textContent) h2.insertBefore(badge, h2.querySelector('.subtitle'));
       }
     } catch {}
-  }
+  }));
 }
 loadCardMeta();
 
@@ -328,7 +339,7 @@ const statsObserver = new IntersectionObserver((entries) => {
 statsObserver.observe(statsBar);
 
 async function loadStats() {
-  const cacheKey = 'neuhard_stats';
+  const cacheKey = 'nd_stats';
   const cacheTTL = 30 * 60 * 1000;
   const locEl = document.getElementById('total-loc');
   const commitsEl = document.getElementById('total-commits');
@@ -390,7 +401,7 @@ timelineObserver.observe(timelineSection);
 
 async function loadTimeline() {
   const timelineEl = document.getElementById('timeline');
-  const cacheKey = 'neuhard_commits';
+  const cacheKey = 'nd_commits';
   const cacheTTL = 30 * 60 * 1000;
 
   function truncate(str, len) {
@@ -426,8 +437,8 @@ async function loadTimeline() {
               <p class="commit-msg${isExpandable ? ' expandable' : ''}" ${isExpandable ? `data-full="${firstLine.replace(/"/g, '&quot;')}" data-short="${truncated.replace(/"/g, '&quot;')}"` : ''}>${truncated}</p>
               <div class="commit-meta">
                 <span class="repo-badge repo-${c.repo.toLowerCase()}">${c.repo}</span>
-                ${c.additions != null ? `<span class="stat-add">+${c.additions}</span>` : ''}
-                ${c.deletions != null ? `<span class="stat-del">-${c.deletions}</span>` : ''}
+                ${c.additions != null ? `<span class="stat-add">+${abbreviateNum(c.additions)}</span>` : ''}
+                ${c.deletions != null ? `<span class="stat-del">-${abbreviateNum(c.deletions)}</span>` : ''}
                 <span class="commit-time">${relativeTime(c.date)}</span>
               </div>
             </a>
@@ -455,45 +466,32 @@ async function loadTimeline() {
   } catch {}
 
   try {
-    const responses = await Promise.all(
-      REPOS.map(r => fetch(`${API_BASE}/repos/${OWNER}/${r}/commits?per_page=5`))
+    const repoCommits = await Promise.all(
+      REPOS.map(async (repo) => {
+        try {
+          const { data } = await cachedFetchJSON(`${API_BASE}/repos/${OWNER}/${repo}/commits?per_page=5`);
+          return data.map(c => ({
+            message: c.commit.message,
+            date: c.commit.committer.date,
+            author: c.commit.author.name,
+            avatar: c.author?.avatar_url || '',
+            repo,
+            url: c.html_url,
+            sha: c.sha
+          }));
+        } catch { return []; }
+      })
     );
 
-    for (const res of responses) {
-      if (res.status === 403 || res.status === 429) {
-        const msg = parseRateLimit(res);
-        if (msg) throw new Error(msg);
-      }
-    }
+    const commits = repoCommits.flat().sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 10);
 
-    if (responses.every(r => !r.ok)) throw new Error('API error');
-
-    const parse = async (res, repo) => {
-      if (!res.ok) return [];
-      const data = await res.json();
-      return data.map(c => ({
-        message: c.commit.message,
-        date: c.commit.committer.date,
-        author: c.commit.author.name,
-        avatar: c.author?.avatar_url || '',
-        repo,
-        url: c.html_url,
-        sha: c.sha
-      }));
-    };
-
-    const commits = (await Promise.all(
-      responses.map((res, i) => parse(res, REPOS[i]))
-    )).flat().sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 10);
+    if (!commits.length) throw new Error('API error');
 
     await Promise.all(commits.map(async (c) => {
       try {
-        const r = await fetch(`${API_BASE}/repos/${OWNER}/${c.repo}/commits/${c.sha}`);
-        if (r.ok) {
-          const detail = await r.json();
-          c.additions = detail.stats?.additions || 0;
-          c.deletions = detail.stats?.deletions || 0;
-        }
+        const { data: detail } = await cachedFetchJSON(`${API_BASE}/repos/${OWNER}/${c.repo}/commits/${c.sha}`);
+        c.additions = detail.stats?.additions || 0;
+        c.deletions = detail.stats?.deletions || 0;
       } catch {}
     }));
 
@@ -515,7 +513,7 @@ const LANG_COLORS = {
 
 async function loadLangBar(el) {
   const repo = el.dataset.repo;
-  const cacheKey = 'lang_' + repo;
+  const cacheKey = 'nd_lang_' + repo;
   const track = el.querySelector('.lang-bar-track');
   let data;
   try {
@@ -615,8 +613,9 @@ if (!isMobile) {
 }
 
 // --- Pinch-to-zoom on lightbox ---
+let currentScale = 1;
 (function() {
-  let initialDist = 0, currentScale = 1;
+  let initialDist = 0;
   function getDist(touches) {
     const dx = touches[0].clientX - touches[1].clientX;
     const dy = touches[0].clientY - touches[1].clientY;

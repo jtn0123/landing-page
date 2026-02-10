@@ -50,7 +50,6 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
 }
 
 a { color: var(--accent); text-decoration: none; }
@@ -133,8 +132,6 @@ header.scrolled p { font-size: 0.8rem; margin-top: 0.2rem; }
   margin-top: 0.6rem;
 }
 header.scrolled .header-controls { margin-top: 0.3rem; }
-
-/* Theme toggle — pinned to top-right corner */
 
 /* Nav links */
 .header-nav {
@@ -802,6 +799,7 @@ header.scrolled .theme-toggle {
   min-width: 2px;
   filter: blur(0.3px);
   position: relative;
+  transition: width 0.6s ease-out;
 }
 
 /* Feature 2: Language bar tooltip */
@@ -869,8 +867,10 @@ header.scrolled .theme-toggle {
   height: 10px;
   border-radius: 2px;
   background: var(--border);
-  transition: background 0.2s;
+  opacity: 0;
+  transition: background 0.2s, opacity 0.3s ease;
 }
+.heatmap-cell.active { opacity: 1; }
 
 /* Clickable timeline commits */
 a.timeline-link {
@@ -986,18 +986,7 @@ body.page-exit {
 /* Card click cursor */
 .card[data-link] { cursor: pointer; }
 
-/* Animated heatmap load */
-.heatmap-cell {
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-.heatmap-cell.active { opacity: 1; }
-
 /* Language bar animation */
-.lang-bar-fill span {
-  transition: width 0.6s ease-out;
-}
-
 /* View all commits link */
 .view-all-link {
   display: block;
