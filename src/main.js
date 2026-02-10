@@ -579,3 +579,27 @@ const langObserver = new IntersectionObserver((entries) => {
   });
 }, { rootMargin: '200px' });
 document.querySelectorAll('.lang-bar').forEach(el => langObserver.observe(el));
+
+// --- Scroll progress bar ---
+const scrollProgress = document.getElementById('scroll-progress');
+if (scrollProgress) {
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    scrollProgress.style.width = pct + '%';
+  }, { passive: true });
+}
+
+// --- Page exit transition for internal links ---
+document.querySelectorAll('.btn-primary').forEach(btn => {
+  const url = btn.getAttribute('href');
+  if (!url || btn.classList.contains('btn-disabled')) return;
+  if (url.includes('neuhard.dev') || url.startsWith('/')) {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      document.body.classList.add('page-exit');
+      setTimeout(() => { window.location = url; }, 300);
+    });
+  }
+});
