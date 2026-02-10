@@ -208,7 +208,6 @@ header.scrolled .header-controls { margin-top: 0.3rem; }
   box-shadow: 0 0 0 3px var(--accent);
 }
 .card:hover {
-  transform: translateY(-4px);
   box-shadow: 0 8px 30px rgba(79, 195, 247, 0.08);
 }
 
@@ -509,6 +508,9 @@ header.scrolled .header-controls { margin-top: 0.3rem; }
   background: linear-gradient(90deg, var(--card) 25%, var(--shimmer-mid) 37%, var(--card) 63%);
   background-size: 200% 100%;
   animation: shimmer 1.8s ease-in-out infinite;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
   color: transparent;
 }
 
@@ -613,7 +615,7 @@ header.scrolled .header-controls { margin-top: 0.3rem; }
   to { transform: scale(1.05); }
 }
 .carousel-slide.active.kb-zoom {
-  animation: kenBurns 4s ease-out forwards;
+  animation: kenBurns 3.5s ease-out forwards;
 }
 
 .carousel-dots {
