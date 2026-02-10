@@ -1057,3 +1057,84 @@ footer {
   color: var(--text-muted);
   font-size: 0.8rem;
 }
+
+/* ===== Desktop-only enhancements (v4.5.0) ===== */
+
+/* #11: Larger body text on desktop */
+@media (min-width: 1024px) {
+  body { font-size: 17px; }
+}
+
+/* #1: Wider card layout on desktop */
+@media (min-width: 1024px) {
+  .projects { max-width: 1100px; }
+  .tech-grid-section { max-width: 1100px; }
+  .stats-bar { max-width: 900px; }
+  .timeline-section { max-width: 900px; }
+}
+
+/* #2: Hero section with more presence on desktop */
+@keyframes subtitleFadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (min-width: 1024px) {
+  header { padding: 3.5rem 1rem 2rem; }
+  header h1 { font-size: clamp(1.3rem, 4vw, 2.2rem); }
+  header p { animation: subtitleFadeUp 0.8s ease-out both; }
+}
+
+/* #5: Card image zoom on desktop hover */
+@media (min-width: 1024px) {
+  .card-img {
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+  .card:hover .card-img {
+    transform: scale(1.02);
+  }
+}
+
+/* #6: Glassmorphism on cards (desktop) */
+@media (min-width: 1024px) {
+  .card {
+    background: rgba(26, 26, 26, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  [data-theme="light"] .card {
+    background: rgba(255, 255, 255, 0.85);
+  }
+}
+
+/* #7: Larger heatmap cells on desktop */
+@media (min-width: 720px) {
+  .heatmap-cell {
+    height: 14px;
+    border-radius: 3px;
+  }
+}
+
+/* #9: Timeline hover expand (desktop) */
+@media (min-width: 720px) {
+  .timeline-content {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .timeline-item.left:hover .timeline-content {
+    transform: translateX(-4px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  }
+  .timeline-item.right:hover .timeline-content {
+    transform: translateX(4px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  }
+}
+
+/* #12: Letter spacing on section headers */
+@media (min-width: 1024px) {
+  .tech-grid-section h2,
+  .timeline-section h2 {
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+}
