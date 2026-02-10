@@ -731,9 +731,14 @@ header.scrolled .theme-toggle {
 }
 .tech-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 0.45rem;
-  width: 100%;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+@media (min-width: 720px) {
+  .tech-grid { grid-template-columns: repeat(5, 1fr); }
+}
+@media (min-width: 900px) {
+  .tech-grid { grid-template-columns: repeat(6, 1fr); }
 }
 .tech-item {
   display: flex;
