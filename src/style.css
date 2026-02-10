@@ -462,14 +462,14 @@ header.scrolled .theme-toggle {
 .repo-megabonk { background: rgba(79,195,247,0.15); color: #4fc3f7; }
 .repo-volttracker { background: rgba(76,175,80,0.15); color: #66bb6a; }
 .repo-landing-page { background: rgba(171,71,188,0.15); color: #ba68c8; }
-.repo-satallite_processor { background: rgba(255,152,0,0.15); color: #ffa726; }
+.repo-satellite_processor { background: rgba(255,152,0,0.15); color: #ffa726; }
 .repo-audiowhisper { background: rgba(233,30,99,0.15); color: #ec407a; }
 
 /* Feature 22: Repo badge hover glow */
 .repo-megabonk:hover { box-shadow: 0 0 8px rgba(79,195,247,0.5); }
 .repo-volttracker:hover { box-shadow: 0 0 8px rgba(76,175,80,0.5); }
 .repo-landing-page:hover { box-shadow: 0 0 8px rgba(171,71,188,0.5); }
-.repo-satallite_processor:hover { box-shadow: 0 0 8px rgba(255,152,0,0.5); }
+.repo-satellite_processor:hover { box-shadow: 0 0 8px rgba(255,152,0,0.5); }
 .repo-audiowhisper:hover { box-shadow: 0 0 8px rgba(233,30,99,0.5); }
 
 .commit-meta {

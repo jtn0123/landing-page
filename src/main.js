@@ -1,7 +1,7 @@
 // --- API base URL (proxied via Cloudflare Worker with 5-min cache) ---
 const API_BASE = '/api/github';
-const REPOS = ['MegaBonk', 'VoltTracker', 'landing-page', 'satallite_processor', 'AudioWhisper'];
-const CARD_REPOS = ['MegaBonk', 'VoltTracker', 'satallite_processor', 'AudioWhisper'];
+const REPOS = ['MegaBonk', 'VoltTracker', 'landing-page', 'satellite_processor', 'AudioWhisper'];
+const CARD_REPOS = ['MegaBonk', 'VoltTracker', 'satellite_processor', 'AudioWhisper'];
 const OWNER = 'jtn0123';
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const isMobile = window.matchMedia('(max-width: 720px)').matches;
@@ -283,7 +283,7 @@ const HEATMAP_COLORS = {
   MegaBonk: '79,195,247',
   VoltTracker: '76,175,80',
   'landing-page': '171,71,188',
-  'satallite_processor': '255,152,0',
+  'satellite_processor': '255,152,0',
   'AudioWhisper': '233,30,99'
 };
 
