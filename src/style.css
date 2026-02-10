@@ -129,6 +129,8 @@ header.scrolled p { font-size: 0.8rem; margin-top: 0.2rem; }
 }
 header.scrolled .header-controls { margin-top: 0.3rem; }
 
+/* Theme toggle — pinned to top-right corner */
+
 /* Nav links */
 .header-nav {
   display: flex;
@@ -144,21 +146,25 @@ header.scrolled .header-controls { margin-top: 0.3rem; }
 }
 .header-nav a:hover { color: var(--accent); }
 
-/* Theme toggle */
+/* Theme toggle — pinned top-right */
 .theme-toggle {
-  background: none;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: var(--card);
   border: 1px solid var(--border);
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   color: var(--text-muted);
   font-size: 1rem;
-  transition: color 0.2s, border-color 0.2s;
+  transition: color 0.2s, border-color 0.2s, opacity 0.2s;
   line-height: 1;
+  z-index: 101;
 }
 .theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
 
