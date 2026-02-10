@@ -1,4 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="6" fill="#0a0a0a"/>
-  <path d="M8 24V8h2.5l7.5 11V8H20.5v16H18L10.5 13v11z" fill="#4fc3f7"/>
+  <style>
+    .bg { fill: #0a0a0a; }
+    .fg { fill: #4fc3f7; }
+    @media (prefers-color-scheme: light) {
+      .bg { fill: #e8e8e8; }
+      .fg { fill: #0277bd; }
+    }
+  </style>
+  <rect width="32" height="32" rx="6" class="bg"/>
+  <path d="M8 24V8h2.5l7.5 11V8H20.5v16H18L10.5 13v11z" class="fg"/>
 </svg>

@@ -505,7 +505,13 @@ header.scrolled .theme-toggle {
 }
 
 /* Timeline loading skeleton */
-.timeline-loading { padding-left: 32px; }
+.timeline-loading {
+  padding-left: 32px;
+  transition: opacity 0.4s ease;
+}
+.timeline-loading.fade-out {
+  opacity: 0;
+}
 .skeleton-item {
   height: 52px;
   border: 1px solid var(--border);
@@ -514,6 +520,11 @@ header.scrolled .theme-toggle {
   background: linear-gradient(90deg, var(--card) 25%, var(--shimmer-mid) 37%, var(--card) 63%);
   background-size: 200% 100%;
   animation: shimmer 1.8s ease-in-out infinite;
+}
+
+/* Crossfade: real content fades in when shimmer classes are removed */
+.stat-value {
+  transition: opacity 0.4s ease;
 }
 
 /* Stats shimmer placeholder */
