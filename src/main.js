@@ -441,9 +441,6 @@ async function loadTimeline() {
           msg.dataset.expanded = isExpanded ? 'false' : 'true';
         });
       });
-
-        });
-      }
     }
   }
 
