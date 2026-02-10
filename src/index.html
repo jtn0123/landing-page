@@ -251,9 +251,8 @@
   <footer>v3.1.0 · © 2026 neuhard.dev</footer>
 
   <script>
-    // --- API base URL ---
-    // Use direct GitHub API (proxy via /api/github/ available when worker is deployed)
-    const API_BASE = 'https://api.github.com';
+    // --- API base URL (proxied via Cloudflare Worker with 5-min cache) ---
+    const API_BASE = '/api/github';
 
     // --- Sticky header ---
     const header = document.getElementById('site-header');

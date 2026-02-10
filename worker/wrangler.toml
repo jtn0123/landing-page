@@ -1,0 +1,4 @@
+name = "neuhard-router"
+main = "router.js"
+compatibility_date = "2024-01-01"
+account_id = "f6bd284f1c28f23b0db3daf7fe9469e5"
