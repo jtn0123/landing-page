@@ -251,8 +251,9 @@
   <footer>v3.1.0 · © 2026 neuhard.dev</footer>
 
   <script>
-    // --- API base URL (proxied via Cloudflare Worker) ---
-    const API_BASE = '/api/github';
+    // --- API base URL ---
+    // Use direct GitHub API (proxy via /api/github/ available when worker is deployed)
+    const API_BASE = 'https://api.github.com';
 
     // --- Sticky header ---
     const header = document.getElementById('site-header');
@@ -365,6 +366,8 @@
         if (rateLimitMsg) throw new Error(rateLimitMsg);
       }
       if (!res.ok) throw new Error(`API error (${res.status})`);
+      const ct = res.headers.get('content-type') || '';
+      if (!ct.includes('application/json')) throw new Error('Non-JSON response');
       return { data: await res.json(), response: res };
     }
 
