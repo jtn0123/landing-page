@@ -24,7 +24,7 @@ export default {
 
     // GitHub API proxy
     if (path.startsWith('/api/github/')) {
-      return handleGitHubProxy(request, url, ctx);
+      return handleGitHubProxy(request, url, ctx, env);
     }
 
     for (const [prefix, origin] of Object.entries(ROUTES)) {
@@ -41,7 +41,7 @@ export default {
   },
 };
 
-async function handleGitHubProxy(request, url, ctx) {
+async function handleGitHubProxy(request, url, ctx, env) {
   const ghPath = url.pathname.replace('/api/github/', '/');
   const ghUrl = GITHUB_API + ghPath + url.search;
 
@@ -70,6 +70,7 @@ async function handleGitHubProxy(request, url, ctx) {
     headers: {
       'User-Agent': 'neuhard-dev-worker',
       'Accept': 'application/vnd.github.v3+json',
+      ...(env.GITHUB_TOKEN ? { 'Authorization': `Bearer ${env.GITHUB_TOKEN}` } : {}),
     },
   });
 

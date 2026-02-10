@@ -269,7 +269,7 @@
     <img id="lightbox-img" src="" alt="">
   </div>
 
-  <footer>v4.0.1 · © 2026 neuhard.dev</footer>
+  <footer>v4.1.0 · © 2026 neuhard.dev</footer>
 
   <script>
     // --- API base URL (proxied via Cloudflare Worker with 5-min cache) ---
@@ -730,7 +730,7 @@
 
       try {
         const responses = await Promise.all(
-          REPOS.map(r => fetch(`${API_BASE}/repos/${OWNER}/${r}/commits?per_page=3`))
+          REPOS.map(r => fetch(`${API_BASE}/repos/${OWNER}/${r}/commits?per_page=5`))
         );
 
         for (const res of responses) {
@@ -758,8 +758,17 @@
           responses.map((res, i) => parse(res, REPOS[i]))
         )).flat().sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 10);
 
-        // Individual commit detail fetches removed to reduce API calls
-        // (was ~10 extra calls per page load for +/- line stats)
+        // Fetch individual commit details for +/- line stats (authenticated: 5000 req/hr)
+        await Promise.all(commits.map(async (c) => {
+          try {
+            const r = await fetch(`${API_BASE}/repos/${OWNER}/${c.repo}/commits/${c.sha}`);
+            if (r.ok) {
+              const detail = await r.json();
+              c.additions = detail.stats?.additions || 0;
+              c.deletions = detail.stats?.deletions || 0;
+            }
+          } catch {}
+        }));
 
         sessionStorage.setItem(cacheKey, JSON.stringify({ ts: Date.now(), data: commits }));
         renderTimeline(commits);
