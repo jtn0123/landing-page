@@ -1,3 +1,5 @@
+import './style.css';
+
 // --- Shared constants ---
 export const API_BASE: string = '/api/github';
 export const REPOS: string[] = ['MegaBonk', 'VoltTracker', 'landing-page', 'satellite_processor', 'AudioWhisper'];
