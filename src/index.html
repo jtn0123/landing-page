@@ -44,6 +44,9 @@
     <!-- LCP preload -->
     <link rel="preload" as="image" href="images/megabonk-1.webp" />
 
+    <!-- Prefetch most-clicked card destination -->
+    <link rel="prefetch" href="/megabonk/" />
+
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <style>
       *,
@@ -710,6 +713,12 @@
     <!-- Lightbox -->
     <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Image preview">
       <img id="lightbox-img" src="" alt="" />
+    </div>
+
+    <div class="wave-divider" aria-hidden="true">
+      <svg viewBox="0 0 1200 36" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 18 Q150 0 300 18 T600 18 T900 18 T1200 18 T1500 18 T1800 18 T2100 18 T2400 18 V36 H0 Z"/>
+      </svg>
     </div>
 
     <footer>

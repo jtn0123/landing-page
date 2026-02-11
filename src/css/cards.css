@@ -91,6 +91,13 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: opacity 0.3s ease;
+}
+
+/* Blur-up placeholders — dominant color gradient shows while lazy images load */
+.card-img .carousel {
+  background: linear-gradient(135deg, #1a1520 0%, #2d1f3a 50%, #1a2030 100%);
+  background-size: cover;
 }
 .card-img .carousel::after {
   content: '';
