@@ -1,6 +1,6 @@
 export function init(): void {
   // Smooth scroll nav
-  document.querySelectorAll('[data-scroll]').forEach(a => {
+  document.querySelectorAll('[data-scroll]').forEach((a) => {
     a.addEventListener('click', (e: Event) => {
       e.preventDefault();
       const href = a.getAttribute('href');
@@ -13,28 +13,37 @@ export function init(): void {
   // Sticky header
   const header = document.getElementById('site-header');
   if (header) {
-    window.addEventListener('scroll', () => {
-      header.classList.toggle('scrolled', window.scrollY > 40);
-    }, { passive: true });
+    window.addEventListener(
+      'scroll',
+      () => {
+        header.classList.toggle('scrolled', window.scrollY > 40);
+      },
+      { passive: true },
+    );
   }
 
   // Active nav link on scroll
   const sections = [
     { id: 'main-content', el: document.getElementById('main-content') },
     { id: 'tech-section', el: document.getElementById('tech-section') },
-    { id: 'activity', el: document.getElementById('activity') }
+    { id: 'activity', el: document.getElementById('activity') },
   ];
   const navLinks = document.querySelectorAll('.header-nav a[data-scroll]');
-  const sectionObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        navLinks.forEach(a => {
-          a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id);
-        });
-      }
-    });
-  }, { threshold: 0.2 });
-  sections.forEach(s => { if (s.el) sectionObserver.observe(s.el); });
+  const sectionObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          navLinks.forEach((a) => {
+            a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id);
+          });
+        }
+      });
+    },
+    { threshold: 0.2 },
+  );
+  sections.forEach((s) => {
+    if (s.el) sectionObserver.observe(s.el);
+  });
 
   // Hamburger menu
   const hamburger = document.getElementById('hamburger');
@@ -58,7 +67,7 @@ export function init(): void {
       }
     });
 
-    overlay.querySelectorAll('a[data-scroll]').forEach(a => {
+    overlay.querySelectorAll('a[data-scroll]').forEach((a) => {
       a.addEventListener('click', () => {
         overlay.classList.remove('active');
       });
@@ -71,8 +80,17 @@ export function init(): void {
     });
   }
 
+  // Logo click scrolls to top
+  const logo = document.querySelector('header h1');
+  if (logo) {
+    (logo as HTMLElement).style.cursor = 'pointer';
+    logo.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
   // Keyboard nav for cards
-  document.querySelectorAll('.card[data-link]').forEach(card => {
+  document.querySelectorAll('.card[data-link]').forEach((card) => {
     card.addEventListener('keydown', (e: Event) => {
       if ((e as KeyboardEvent).key === 'Enter') {
         const link = card.querySelector('.btn-primary') as HTMLElement | null;
@@ -82,14 +100,16 @@ export function init(): void {
   });
 
   // Page exit transition for internal links
-  document.querySelectorAll('.btn-primary').forEach(btn => {
+  document.querySelectorAll('.btn-primary').forEach((btn) => {
     const url = btn.getAttribute('href');
     if (!url || btn.classList.contains('btn-disabled')) return;
     if (url.includes('neuhard.dev') || url.startsWith('/')) {
       btn.addEventListener('click', (e: Event) => {
         e.preventDefault();
         document.body.classList.add('page-exit');
-        setTimeout(() => { window.location.href = url; }, 300);
+        setTimeout(() => {
+          window.location.href = url;
+        }, 300);
       });
     }
   });

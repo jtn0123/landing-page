@@ -4,7 +4,7 @@ export function init(): void {
   if (!lightbox || !lightboxImg) return;
   let currentScale = 1;
 
-  document.querySelectorAll('.lightbox-trigger').forEach(img => {
+  document.querySelectorAll('.lightbox-trigger').forEach((img) => {
     (img as HTMLElement).style.cursor = 'zoom-in';
     img.addEventListener('click', (e: Event) => {
       e.preventDefault();
@@ -34,20 +34,28 @@ export function init(): void {
     const dy = touches[0].clientY - touches[1].clientY;
     return Math.hypot(dx, dy);
   }
-  lightboxImg.addEventListener('touchstart', (e: TouchEvent) => {
-    if (e.touches.length === 2) {
-      e.preventDefault();
-      initialDist = getDist(e.touches);
-    }
-  }, { passive: false });
-  lightboxImg.addEventListener('touchmove', (e: TouchEvent) => {
-    if (e.touches.length === 2) {
-      e.preventDefault();
-      const dist = getDist(e.touches);
-      const scale = Math.min(Math.max(currentScale * (dist / initialDist), 1), 4);
-      lightboxImg.style.transform = `scale(${scale})`;
-    }
-  }, { passive: false });
+  lightboxImg.addEventListener(
+    'touchstart',
+    (e: TouchEvent) => {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        initialDist = getDist(e.touches);
+      }
+    },
+    { passive: false },
+  );
+  lightboxImg.addEventListener(
+    'touchmove',
+    (e: TouchEvent) => {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        const dist = getDist(e.touches);
+        const scale = Math.min(Math.max(currentScale * (dist / initialDist), 1), 4);
+        lightboxImg.style.transform = `scale(${scale})`;
+      }
+    },
+    { passive: false },
+  );
   lightboxImg.addEventListener('touchend', (e: TouchEvent) => {
     if (e.touches.length < 2) {
       currentScale = parseFloat(lightboxImg.style.transform.replace(/[^0-9.]/g, '') || '1');

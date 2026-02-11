@@ -26,21 +26,37 @@ async function loadStats(): Promise<void> {
         return;
       }
     }
-  } catch { /* ignore */ }
+  } catch {
+    /* ignore */
+  }
 
   try {
     const langResults = await Promise.all(
-      CARD_REPOS.map(r => cachedFetchJSON<LanguageData>(`${API_BASE}/repos/${OWNER}/${r}/languages`).then(res => res.data).catch(() => ({} as LanguageData)))
+      CARD_REPOS.map((r) =>
+        cachedFetchJSON<LanguageData>(`${API_BASE}/repos/${OWNER}/${r}/languages`)
+          .then((res) => res.data)
+          .catch(() => ({}) as LanguageData),
+      ),
     );
 
-    const totalBytes = langResults.reduce((sum, lang) => sum + Object.values(lang).reduce((a, b) => a + b, 0), 0);
+    const totalBytes = langResults.reduce(
+      (sum, lang) => sum + Object.values(lang).reduce((a, b) => a + b, 0),
+      0,
+    );
     const loc = Math.round(totalBytes / 40);
 
     const contribResults = await Promise.all(
-      CARD_REPOS.map(r => cachedFetchJSON<ContributorData[]>(`${API_BASE}/repos/${OWNER}/${r}/contributors`).then(res => res.data).catch(() => [] as ContributorData[]))
+      CARD_REPOS.map((r) =>
+        cachedFetchJSON<ContributorData[]>(`${API_BASE}/repos/${OWNER}/${r}/contributors`)
+          .then((res) => res.data)
+          .catch(() => [] as ContributorData[]),
+      ),
     );
-    const commits = contribResults.reduce((sum, contribs) =>
-      sum + (Array.isArray(contribs) ? contribs.reduce((a, c) => a + c.contributions, 0) : 0), 0);
+    const commits = contribResults.reduce(
+      (sum, contribs) =>
+        sum + (Array.isArray(contribs) ? contribs.reduce((a, c) => a + c.contributions, 0) : 0),
+      0,
+    );
 
     const data: StatsData = { loc, commits };
     sessionStorage.setItem(cacheKey, JSON.stringify({ ts: Date.now(), data }));
@@ -62,12 +78,15 @@ export function init(): void {
   const statsBar = document.querySelector('.stats-bar');
   if (!statsBar) return;
   let statsLoaded = false;
-  const statsObserver = new IntersectionObserver((entries) => {
-    if (entries[0].isIntersecting && !statsLoaded) {
-      statsLoaded = true;
-      statsObserver.unobserve(statsBar);
-      loadStats();
-    }
-  }, { rootMargin: '200px' });
+  const statsObserver = new IntersectionObserver(
+    (entries) => {
+      if (entries[0].isIntersecting && !statsLoaded) {
+        statsLoaded = true;
+        statsObserver.unobserve(statsBar);
+        loadStats();
+      }
+    },
+    { rootMargin: '200px' },
+  );
   statsObserver.observe(statsBar);
 }

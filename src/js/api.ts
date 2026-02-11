@@ -59,7 +59,7 @@ export async function fetchJSON<T = unknown>(url: string): Promise<FetchResult<T
   if (!res.ok) throw new Error(`API error (${res.status})`);
   const ct = res.headers.get('content-type') || '';
   if (!ct.includes('application/json')) throw new Error('Non-JSON response');
-  return { data: await res.json() as T, response: res };
+  return { data: (await res.json()) as T, response: res };
 }
 
 export function renderError(container: Element, message: string, retryFn: () => void): void {
@@ -77,7 +77,10 @@ export function renderError(container: Element, message: string, retryFn: () => 
   });
 }
 
-export async function cachedFetchJSON<T = unknown>(url: string, ttl: number = 30 * 60 * 1000): Promise<FetchResult<T>> {
+export async function cachedFetchJSON<T = unknown>(
+  url: string,
+  ttl: number = 30 * 60 * 1000,
+): Promise<FetchResult<T>> {
   const cacheKey = 'nd_api_' + url;
   try {
     const raw = sessionStorage.getItem(cacheKey);
@@ -87,8 +90,14 @@ export async function cachedFetchJSON<T = unknown>(url: string, ttl: number = 30
         return { data: cached.data };
       }
     }
-  } catch { /* ignore */ }
+  } catch {
+    /* ignore */
+  }
   const result = await fetchJSON<T>(url);
-  try { sessionStorage.setItem(cacheKey, JSON.stringify({ ts: Date.now(), data: result.data })); } catch { /* ignore */ }
+  try {
+    sessionStorage.setItem(cacheKey, JSON.stringify({ ts: Date.now(), data: result.data }));
+  } catch {
+    /* ignore */
+  }
   return result;
 }

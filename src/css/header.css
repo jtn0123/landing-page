@@ -1,7 +1,13 @@
 @keyframes headerMesh {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 header {
@@ -13,14 +19,21 @@ header {
   background: var(--header-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  transition: padding 0.3s ease, background 0.3s ease;
+  transition:
+    padding 0.3s ease,
+    background 0.3s ease;
   overflow: hidden;
 }
 header::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(79,195,247,0.06), rgba(171,71,188,0.04), rgba(79,195,247,0.06));
+  background: linear-gradient(
+    135deg,
+    rgba(79, 195, 247, 0.06),
+    rgba(171, 71, 188, 0.04),
+    rgba(79, 195, 247, 0.06)
+  );
   background-size: 400% 400%;
   animation: headerMesh 20s ease infinite;
   pointer-events: none;
@@ -39,16 +52,22 @@ header h1 {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  filter: drop-shadow(0 0 20px rgba(79,195,247,0.3)) drop-shadow(0 0 40px rgba(171,71,188,0.15));
+  filter: drop-shadow(0 0 20px rgba(79, 195, 247, 0.3))
+    drop-shadow(0 0 40px rgba(171, 71, 188, 0.15));
   transition: font-size 0.3s ease;
 }
 header p {
   color: var(--text-muted);
   margin-top: 0.4rem;
   font-size: 0.95rem;
-  transition: font-size 0.3s ease, margin 0.3s ease;
+  transition:
+    font-size 0.3s ease,
+    margin 0.3s ease;
 }
-header.scrolled p { font-size: 0.8rem; margin-top: 0.2rem; }
+header.scrolled p {
+  font-size: 0.8rem;
+  margin-top: 0.2rem;
+}
 
 /* Header controls row */
 .header-controls {
@@ -58,7 +77,9 @@ header.scrolled p { font-size: 0.8rem; margin-top: 0.2rem; }
   gap: 1.5rem;
   margin-top: 0.6rem;
 }
-header.scrolled .header-controls { margin-top: 0.3rem; }
+header.scrolled .header-controls {
+  margin-top: 0.3rem;
+}
 
 /* Nav links */
 .header-nav {
@@ -73,7 +94,9 @@ header.scrolled .header-controls { margin-top: 0.3rem; }
   transition: color 0.2s;
   text-decoration: none;
 }
-.header-nav a:hover { color: var(--accent); }
+.header-nav a:hover {
+  color: var(--accent);
+}
 
 /* Active nav link */
 .header-nav a.active {
@@ -108,7 +131,12 @@ header.scrolled .header-controls { margin-top: 0.3rem; }
   cursor: pointer;
   color: var(--text-muted);
   font-size: 1rem;
-  transition: color 0.2s, border-color 0.2s, width 0.3s, height 0.3s, font-size 0.3s;
+  transition:
+    color 0.2s,
+    border-color 0.2s,
+    width 0.3s,
+    height 0.3s,
+    font-size 0.3s;
   line-height: 1;
   z-index: 101;
 }
@@ -117,7 +145,10 @@ header.scrolled .theme-toggle {
   height: 30px;
   font-size: 0.85rem;
 }
-.theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
+.theme-toggle:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
 
 /* Hamburger menu button — pinned top-left */
 .hamburger {
@@ -140,12 +171,25 @@ header.scrolled .theme-toggle {
 }
 
 @media (max-width: 480px) {
-  .header-nav { display: none; }
-  .hamburger { display: flex; }
-  header { padding: 1.5rem 1rem 0.8rem; }
-  header.scrolled { padding: 0.8rem 1rem 0.5rem; }
-  header h1 { font-size: 1.3rem; }
-  header p { font-size: 0.8rem; margin-top: 0.2rem; }
+  .header-nav {
+    display: none;
+  }
+  .hamburger {
+    display: flex;
+  }
+  header {
+    padding: 1.5rem 1rem 0.8rem;
+  }
+  header.scrolled {
+    padding: 0.8rem 1rem 0.5rem;
+  }
+  header h1 {
+    font-size: 1.3rem;
+  }
+  header p {
+    font-size: 0.8rem;
+    margin-top: 0.2rem;
+  }
 }
 
 /* Mobile nav overlay */
@@ -161,7 +205,9 @@ header.scrolled .theme-toggle {
   opacity: 0;
   pointer-events: none;
   transform: translateX(100%);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
 }
 .mobile-nav-overlay.active {
   opacity: 1;
@@ -193,4 +239,6 @@ header.scrolled .theme-toggle {
   text-decoration: none;
   transition: color 0.2s;
 }
-.mobile-nav-links a:hover { color: var(--accent); }
+.mobile-nav-links a:hover {
+  color: var(--accent);
+}

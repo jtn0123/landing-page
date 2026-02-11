@@ -1,7 +1,7 @@
 import { reducedMotion } from '../main.ts';
 
 export function init(): void {
-  document.querySelectorAll('.carousel').forEach(carousel => {
+  document.querySelectorAll('.carousel').forEach((carousel) => {
     const slides = carousel.querySelectorAll('.carousel-slide');
     const dots = carousel.querySelectorAll('.dot');
     if (slides.length < 2) return;
@@ -12,7 +12,7 @@ export function init(): void {
 
     function applyKenBurns(idx: number): void {
       if (reducedMotion) return;
-      slides.forEach(s => s.classList.remove('kb-zoom'));
+      slides.forEach((s) => s.classList.remove('kb-zoom'));
       slides[idx].classList.add('kb-zoom');
     }
 
@@ -27,39 +27,58 @@ export function init(): void {
 
     applyKenBurns(0);
 
-    carousel.addEventListener('mouseenter', () => paused = true);
-    carousel.addEventListener('mouseleave', () => paused = false);
+    carousel.addEventListener('mouseenter', () => (paused = true));
+    carousel.addEventListener('mouseleave', () => (paused = false));
 
     dots.forEach((dot, i) => {
-      dot.addEventListener('click', (e: Event) => { e.stopPropagation(); goTo(i); });
+      dot.addEventListener('click', (e: Event) => {
+        e.stopPropagation();
+        goTo(i);
+      });
     });
 
-    const timer = setInterval(() => { if (!paused) goTo(current + 1); }, interval);
+    const timer = setInterval(() => {
+      if (!paused) goTo(current + 1);
+    }, interval);
     if (reducedMotion) clearInterval(timer);
 
     // Swipe support
-    let touchStartX = 0, touchStartY = 0, swiping = false;
-    carousel.addEventListener('touchstart', (e: Event) => {
-      const te = e as TouchEvent;
-      touchStartX = te.touches[0].clientX;
-      touchStartY = te.touches[0].clientY;
-      swiping = true;
-    }, { passive: true });
-    carousel.addEventListener('touchmove', (e: Event) => {
-      if (!swiping) return;
-      const te = e as TouchEvent;
-      const dy = Math.abs(te.touches[0].clientY - touchStartY);
-      const dx = Math.abs(te.touches[0].clientX - touchStartX);
-      if (dy > dx) swiping = false;
-    }, { passive: true });
-    carousel.addEventListener('touchend', (e: Event) => {
-      if (!swiping) return;
-      const te = e as TouchEvent;
-      const diff = te.changedTouches[0].clientX - touchStartX;
-      if (Math.abs(diff) > 50) {
-        goTo(diff < 0 ? current + 1 : current - 1);
-      }
+    let touchStartX = 0,
+      touchStartY = 0,
       swiping = false;
-    }, { passive: true });
+    carousel.addEventListener(
+      'touchstart',
+      (e: Event) => {
+        const te = e as TouchEvent;
+        touchStartX = te.touches[0].clientX;
+        touchStartY = te.touches[0].clientY;
+        swiping = true;
+      },
+      { passive: true },
+    );
+    carousel.addEventListener(
+      'touchmove',
+      (e: Event) => {
+        if (!swiping) return;
+        const te = e as TouchEvent;
+        const dy = Math.abs(te.touches[0].clientY - touchStartY);
+        const dx = Math.abs(te.touches[0].clientX - touchStartX);
+        if (dy > dx) swiping = false;
+      },
+      { passive: true },
+    );
+    carousel.addEventListener(
+      'touchend',
+      (e: Event) => {
+        if (!swiping) return;
+        const te = e as TouchEvent;
+        const diff = te.changedTouches[0].clientX - touchStartX;
+        if (Math.abs(diff) > 50) {
+          goTo(diff < 0 ? current + 1 : current - 1);
+        }
+        swiping = false;
+      },
+      { passive: true },
+    );
   });
 }

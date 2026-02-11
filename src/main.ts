@@ -2,8 +2,19 @@ import './style.css';
 
 // --- Shared constants ---
 export const API_BASE: string = '/api/github';
-export const REPOS: string[] = ['MegaBonk', 'VoltTracker', 'landing-page', 'satellite_processor', 'AudioWhisper'];
-export const CARD_REPOS: string[] = ['MegaBonk', 'VoltTracker', 'satellite_processor', 'AudioWhisper'];
+export const REPOS: string[] = [
+  'MegaBonk',
+  'VoltTracker',
+  'landing-page',
+  'satellite_processor',
+  'AudioWhisper',
+];
+export const CARD_REPOS: string[] = [
+  'MegaBonk',
+  'VoltTracker',
+  'satellite_processor',
+  'AudioWhisper',
+];
 export const OWNER: string = 'jtn0123';
 export const reducedMotion: boolean = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 export const isMobile: boolean = window.matchMedia('(max-width: 720px)').matches;
