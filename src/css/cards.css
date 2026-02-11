@@ -323,34 +323,17 @@
 }
 .heatmap-cell.active { opacity: 1; }
 
-/* Mobile card swipe */
+/* Mobile cards — vertical stack */
 @media (max-width: 719px) {
   .projects {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    gap: 1rem;
+    gap: 1.5rem;
     padding: 0 1rem;
-    scrollbar-width: none;
-  }
-  .projects::-webkit-scrollbar { display: none; }
-  .projects .card {
-    min-width: 85vw;
-    scroll-snap-align: center;
-    flex-shrink: 0;
   }
 }
 
-/* Card dots indicator */
+/* Card dots indicator (disabled — vertical stack on mobile) */
 .card-dots {
   display: none;
-  justify-content: center;
-  gap: 6px;
-  padding: 0.75rem 0;
-}
-@media (max-width: 719px) {
-  .card-dots { display: flex; }
 }
 .card-dot {
   width: 8px;
