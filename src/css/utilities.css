@@ -348,6 +348,17 @@ body.page-exit {
   }
 }
 
+/* Back-to-top on small screens */
+@media (max-width: 480px) {
+  .back-to-top {
+    bottom: 1rem;
+    right: 1rem;
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+}
+
 /* Letter spacing on section headers */
 @media (min-width: 1024px) {
   .tech-grid-section h2,

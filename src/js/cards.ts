@@ -22,7 +22,6 @@ const LANG_COLORS: Record<string, string> = {
 
 async function loadCardMeta(): Promise<void> {
   const cards = document.querySelectorAll('.card[data-repo]');
-  const repoTimestamps: { card: Element; pushedAt: string }[] = [];
   await Promise.all(
     [...cards].map(async (card) => {
       const repo = (card as HTMLElement).dataset.repo;
@@ -32,21 +31,30 @@ async function loadCardMeta(): Promise<void> {
         const updatedEl = card.querySelector('.card-updated');
         if (updatedEl && data.pushed_at) {
           updatedEl.textContent = 'Updated ' + relativeTime(data.pushed_at);
-          repoTimestamps.push({ card, pushedAt: data.pushed_at });
         }
-        // Star/fork badges
-        if (updatedEl && data.stargazers_count !== undefined) {
-          const badgesContainer = document.createElement('div');
-          badgesContainer.className = 'card-meta-badges';
-          const starsEl = document.createElement('span');
-          starsEl.className = 'card-meta-badge';
-          starsEl.textContent = `⭐ ${data.stargazers_count}`;
-          const forksEl = document.createElement('span');
-          forksEl.className = 'card-meta-badge';
-          forksEl.textContent = `🔀 ${data.forks_count ?? 0}`;
-          badgesContainer.appendChild(starsEl);
-          badgesContainer.appendChild(forksEl);
-          updatedEl.after(badgesContainer);
+        // Star/fork badges — only show when count > 0
+        if (updatedEl) {
+          const stars = data.stargazers_count ?? 0;
+          const forks = data.forks_count ?? 0;
+          if (stars > 0 || forks > 0) {
+            const badgesContainer = document.createElement('div');
+            badgesContainer.className = 'card-meta-badges';
+            if (stars > 0) {
+              const starsEl = document.createElement('span');
+              starsEl.className = 'card-meta-badge';
+              starsEl.textContent = `⭐ ${stars}`;
+              starsEl.setAttribute('aria-label', `${stars} stars`);
+              badgesContainer.appendChild(starsEl);
+            }
+            if (forks > 0) {
+              const forksEl = document.createElement('span');
+              forksEl.className = 'card-meta-badge';
+              forksEl.textContent = `🔀 ${forks}`;
+              forksEl.setAttribute('aria-label', `${forks} forks`);
+              badgesContainer.appendChild(forksEl);
+            }
+            updatedEl.after(badgesContainer);
+          }
         }
       } catch {
         /* ignore */
@@ -75,19 +83,6 @@ async function loadCardMeta(): Promise<void> {
       }
     }),
   );
-
-  // Add "Active" pill to most recently updated card
-  if (repoTimestamps.length > 0) {
-    repoTimestamps.sort((a, b) => new Date(b.pushedAt).getTime() - new Date(a.pushedAt).getTime());
-    const mostRecent = repoTimestamps[0].card;
-    const h2 = mostRecent.querySelector('h2');
-    if (h2) {
-      const pill = document.createElement('span');
-      pill.className = 'status-active';
-      pill.textContent = 'Active';
-      h2.insertBefore(pill, h2.querySelector('.subtitle'));
-    }
-  }
 }
 
 async function loadHeatmaps(): Promise<void> {
@@ -129,30 +124,16 @@ async function loadLangBar(el: HTMLElement): Promise<void> {
   if (!track) return;
   let data: LanguageData | undefined;
   try {
-    const cacheKey = 'nd_lang_' + repo;
-    const raw = sessionStorage.getItem(cacheKey);
-    if (raw) {
-      const cached = JSON.parse(raw) as { ts: number; data: LanguageData };
-      if (cached && Date.now() - cached.ts < 600000) {
-        data = cached.data;
-      }
-    }
-  } catch {
-    /* ignore */
-  }
-  if (!data) {
-    try {
-      const result = await cachedFetchJSON<LanguageData>(`${API_BASE}/repos/${repo}/languages`);
-      data = result.data;
-    } catch (err) {
-      track.classList.remove('shimmer-track');
-      renderError(el, (err as Error).message || 'Failed to load languages', () => {
-        el.innerHTML =
-          '<div class="lang-bar-track shimmer-track"><div class="lang-bar-fill"></div></div><div class="lang-legend"></div>';
-        loadLangBar(el);
-      });
-      return;
-    }
+    const result = await cachedFetchJSON<LanguageData>(`${API_BASE}/repos/${repo}/languages`);
+    data = result.data;
+  } catch (err) {
+    track.classList.remove('shimmer-track');
+    renderError(el, (err as Error).message || 'Failed to load languages', () => {
+      el.innerHTML =
+        '<div class="lang-bar-track shimmer-track"><div class="lang-bar-fill"></div></div><div class="lang-legend"></div>';
+      loadLangBar(el);
+    });
+    return;
   }
   track.classList.remove('shimmer-track');
   const total = Object.values(data).reduce((a, b) => a + b, 0);

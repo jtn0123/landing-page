@@ -221,6 +221,13 @@
 }
 
 /* Landing-page card gradient image */
+/* Skip dark overlay on gradient placeholder cards */
+.card-img-gradient::before,
+.card-img-gradient-sat::before,
+.card-img-gradient-audio::before {
+  display: none;
+}
+
 .card-img-gradient {
   background: linear-gradient(135deg, #4fc3f7 0%, #ab47bc 35%, #ff7043 65%, #81d4fa 100%);
   display: flex;
@@ -249,15 +256,6 @@
 .card-meta-badge {
   font-size: 0.7rem;
   color: var(--text-muted);
-}
-
-/* Active status pill */
-.status-active {
-  background: rgba(76, 175, 80, 0.15);
-  color: #66bb6a;
-  font-size: 0.65rem;
-  padding: 2px 8px;
-  border-radius: 10px;
 }
 
 .card-img-text {

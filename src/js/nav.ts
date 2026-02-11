@@ -103,7 +103,7 @@ export function init(): void {
   document.querySelectorAll('.btn-primary').forEach((btn) => {
     const url = btn.getAttribute('href');
     if (!url || btn.classList.contains('btn-disabled')) return;
-    if (url.includes('neuhard.dev') || url.startsWith('/')) {
+    if (url.startsWith('/') || url === window.location.origin) {
       btn.addEventListener('click', (e: Event) => {
         e.preventDefault();
         document.body.classList.add('page-exit');
