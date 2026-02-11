@@ -37,7 +37,8 @@ test.describe('Cards', () => {
 
   test('lightbox opens on image click and closes on Escape', async ({ page }) => {
     const trigger = page.locator('.lightbox-trigger').first();
-    await trigger.click();
+    // Force click — Ken Burns animation keeps the element "unstable"
+    await trigger.click({ force: true });
 
     const lightbox = page.locator('#lightbox');
     await expect(lightbox).toHaveClass(/active/, { timeout: 3000 });

@@ -21,8 +21,8 @@ test.describe('Accessibility', () => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
 
-    // Ensure we start dark, then toggle to light
-    await page.evaluate(() => localStorage.removeItem('theme'));
+    // Force dark mode, then toggle to light
+    await page.evaluate(() => localStorage.setItem('theme', 'dark'));
     await page.reload();
     await page.waitForLoadState('networkidle');
     await page.click('#theme-toggle');
