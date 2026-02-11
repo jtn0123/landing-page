@@ -1,17 +1,26 @@
 export function init(): void {
-  // Scroll progress bar
+  // Scroll progress bar + back-to-top (single listener)
   const scrollProgress = document.getElementById('scroll-progress');
-  if (scrollProgress) {
-    window.addEventListener(
-      'scroll',
-      () => {
-        const scrollTop = window.scrollY;
+  const backToTop = document.getElementById('back-to-top');
+
+  if (scrollProgress || backToTop) {
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      if (scrollProgress) {
         const docHeight = document.documentElement.scrollHeight - window.innerHeight;
         const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
         scrollProgress.style.width = pct + '%';
-      },
-      { passive: true },
-    );
+      }
+      if (backToTop) {
+        backToTop.classList.toggle('visible', scrollTop > 400);
+      }
+    }, { passive: true });
+  }
+
+  if (backToTop) {
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
   }
 
   // Fade-in on scroll
@@ -28,15 +37,4 @@ export function init(): void {
     { threshold: 0.15 },
   );
   fadeEls.forEach((el) => fadeObserver.observe(el));
-
-  // Back to top button
-  const backToTop = document.getElementById('back-to-top');
-  if (backToTop) {
-    window.addEventListener('scroll', () => {
-      backToTop.classList.toggle('visible', window.scrollY > 400);
-    }, { passive: true });
-    backToTop.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  }
 }
