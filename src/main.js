@@ -64,6 +64,18 @@ document.querySelectorAll('.card[data-link]').forEach(card => {
   });
 });
 
+// --- Click anywhere on card → GitHub for cards without live apps ---
+document.querySelectorAll('.card:not([data-link])').forEach(card => {
+  const ghLink = card.querySelector('.btn:not(.btn-primary)');
+  if (ghLink) {
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', e => {
+      if (e.target.closest('a, button')) return;
+      window.open(ghLink.href, '_blank', 'noopener');
+    });
+  }
+});
+
 // --- Lightbox ---
 const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightbox-img');

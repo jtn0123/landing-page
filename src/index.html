@@ -22,6 +22,7 @@
   <!-- Preconnects -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://api.github.com">
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&subset=latin&display=swap" rel="stylesheet">
@@ -30,7 +31,24 @@
   <link rel="preload" as="image" href="images/megabonk-1.webp">
 
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="style.css">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --bg: #0a0a0a; --bg-secondary: #111; --card: #1a1a1a; --border: #2a2a2a; --text: #e0e0e0; --text-heading: #fff; --text-muted: #888; --accent: #4fc3f7; --accent-hover: #81d4fa; --badge-bg: #252525; --header-bg: rgba(10,10,10,0.85); --header-bg-scrolled: rgba(10,10,10,0.95); --shimmer-mid: #2a2a2a; color-scheme: dark; }
+    [data-theme="light"] { --bg: #f5f5f5; --bg-secondary: #eee; --card: #fff; --border: #ddd; --text: #333; --text-heading: #111; --text-muted: #666; --accent: #0288d1; --accent-hover: #0277bd; --badge-bg: #e8e8e8; --header-bg: rgba(245,245,245,0.85); --header-bg-scrolled: rgba(245,245,245,0.95); --shimmer-mid: #e0e0e0; color-scheme: light; }
+    html { overflow-x: hidden; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+    header { text-align: center; padding: 2.5rem 1rem 1rem; position: sticky; top: 0; z-index: 100; background: var(--header-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transition: padding 0.3s ease, background 0.3s ease; overflow: hidden; }
+    header h1 { font-size: clamp(1.3rem,4vw,1.8rem); font-weight: 600; letter-spacing: -0.02em; background: linear-gradient(135deg,#4fc3f7 0%,#ab47bc 35%,#ff7043 65%,#81d4fa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    header p { color: var(--text-muted); margin-top: 0.4rem; font-size: 0.95rem; }
+    .projects { flex: 1; display: grid; grid-template-columns: 1fr; gap: 2rem; max-width: 900px; width: 100%; margin: 2rem auto; padding: 0 1.5rem; }
+    @media (min-width: 720px) { .projects { grid-template-columns: repeat(2,1fr); } }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; position: relative; outline: none; will-change: transform; }
+    .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; transition-delay: var(--fade-delay, 0ms); }
+    .fade-in.visible { opacity: 1; transform: translateY(0) translateX(0); }
+    .theme-toggle { position: absolute; top: 50%; right: 1rem; transform: translateY(-50%); background: var(--card); border: 1px solid var(--border); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem; z-index: 101; }
+    #scroll-progress { position: fixed; top: 0; left: 0; height: 3px; width: 0%; background: var(--accent); z-index: 101; pointer-events: none; }
+  </style>
+  <link rel="stylesheet" href="style.css" media="all">
   <link rel="modulepreload" href="main.js">
 
   <!-- Theme: apply early to prevent flash -->
@@ -91,19 +109,28 @@
         <a href="#tech-section" data-scroll>Tech</a>
         <a href="#activity" data-scroll>Activity</a>
       </nav>
+      <button class="hamburger" id="hamburger" aria-label="Open menu">☰</button>
       <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">🌙</button>
+    </div>
+    <div class="mobile-nav-overlay" id="mobile-nav-overlay">
+      <button class="mobile-nav-close" id="mobile-nav-close" aria-label="Close menu">✕</button>
+      <nav class="mobile-nav-links">
+        <a href="#main-content" data-scroll>Projects</a>
+        <a href="#tech-section" data-scroll>Tech</a>
+        <a href="#activity" data-scroll>Activity</a>
+      </nav>
     </div>
   </header>
 
   <main id="main-content" class="projects">
-    <article class="card fade-in" tabindex="0" data-link="https://neuhard.dev/megabonk/" data-repo="MegaBonk">
+    <article class="card fade-in fade-in-left" tabindex="0" data-link="https://neuhard.dev/megabonk/" data-repo="MegaBonk">
       <div class="card-img">
         <div class="carousel" data-interval="4000">
-          <img src="images/megabonk-1.webp" alt="MegaBonk items page showing SS-tier item cards with scaling graphs" class="carousel-slide active lightbox-trigger">
-          <img src="images/megabonk-2.webp" alt="MegaBonk items page scrolled view showing more item cards" class="carousel-slide lightbox-trigger" loading="lazy">
-          <div class="carousel-dots">
-            <span class="dot active"></span>
-            <span class="dot"></span>
+          <img src="images/megabonk-1.webp" alt="MegaBonk game reference app showing SS-tier weapon cards with damage scaling graphs and rarity indicators" decoding="async" class="carousel-slide active lightbox-trigger">
+          <img src="images/megabonk-2.webp" alt="MegaBonk item catalog with searchable grid of game items, filter controls, and detailed stat breakdowns" decoding="async" class="carousel-slide lightbox-trigger" loading="lazy">
+          <div class="carousel-dots" role="tablist">
+            <span class="dot active" role="tab" aria-label="Slide 1 of 2"></span>
+            <span class="dot" role="tab" aria-label="Slide 2 of 2"></span>
           </div>
         </div>
         <div class="card-img-badges">
@@ -114,6 +141,7 @@
       <div class="card-body">
         <h2>MegaBonk <span class="subtitle">Game Reference Guide</span></h2>
         <p class="desc">The ultimate reference guide for MegaBonk — items, weapons, tomes, characters, shrines, build planner, and breakpoint calculator in one interactive web app.</p>
+        <p class="card-highlight">9,237 tests · PWA · Offline-ready</p>
         <div class="card-updated" data-repo="MegaBonk"></div>
         <div class="lang-bar" data-repo="jtn0123/MegaBonk">
           <div class="lang-bar-track shimmer-track"><div class="lang-bar-fill"></div></div>
@@ -134,16 +162,16 @@
       </div>
     </article>
 
-    <article class="card fade-in" tabindex="0" data-link="https://neuhard.dev/volttracker/" data-repo="VoltTracker" style="--fade-delay: 300ms">
+    <article class="card fade-in fade-in-right" tabindex="0" data-link="https://neuhard.dev/volttracker/" data-repo="VoltTracker" style="--fade-delay: 300ms">
       <div class="card-img">
         <div class="carousel" data-interval="4000">
-          <img src="images/volttracker-1.webp" alt="VoltTracker dashboard showing electric efficiency metrics and trip data" class="carousel-slide active lightbox-trigger" loading="lazy">
-          <img src="images/volttracker-2.webp" alt="VoltTracker trips list with distance and efficiency details" class="carousel-slide lightbox-trigger" loading="lazy">
-          <img src="images/volttracker-3.webp" alt="VoltTracker GPS map view showing trip routes" class="carousel-slide lightbox-trigger" loading="lazy">
-          <div class="carousel-dots">
-            <span class="dot active"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
+          <img src="images/volttracker-1.webp" alt="VoltTracker dashboard displaying real-time electric vehicle efficiency metrics, battery voltage, and trip summary statistics" decoding="async" class="carousel-slide active lightbox-trigger" loading="lazy">
+          <img src="images/volttracker-2.webp" alt="VoltTracker trip history list showing distance, fuel efficiency, and electric range for each recorded drive" decoding="async" class="carousel-slide lightbox-trigger" loading="lazy">
+          <img src="images/volttracker-3.webp" alt="VoltTracker GPS map visualization with color-coded trip routes overlaid on street-level mapping" decoding="async" class="carousel-slide lightbox-trigger" loading="lazy">
+          <div class="carousel-dots" role="tablist">
+            <span class="dot active" role="tab" aria-label="Slide 1 of 3"></span>
+            <span class="dot" role="tab" aria-label="Slide 2 of 3"></span>
+            <span class="dot" role="tab" aria-label="Slide 3 of 3"></span>
           </div>
         </div>
         <div class="card-img-badges">
@@ -154,6 +182,7 @@
       <div class="card-body">
         <h2>VoltTracker <span class="subtitle">Vehicle Telemetry Platform</span></h2>
         <p class="desc">Self-hosted data logging and analysis system for the Chevy Volt. Receives OBD-II telemetry from Torque Pro, tracks fuel efficiency, battery health, and charging analytics.</p>
+        <p class="card-highlight">73 trips logged · Real-time WebSocket updates</p>
         <div class="card-updated" data-repo="VoltTracker"></div>
         <div class="lang-bar" data-repo="jtn0123/VoltTracker">
           <div class="lang-bar-track shimmer-track"><div class="lang-bar-fill"></div></div>
@@ -176,7 +205,7 @@
         </div>
       </div>
     </article>
-    <article class="card fade-in" tabindex="0" data-repo="landing-page" style="--fade-delay: 400ms">
+    <article class="card fade-in fade-in-left" tabindex="0" data-repo="landing-page" style="--fade-delay: 400ms">
       <div class="card-img card-img-gradient">
         <span class="card-img-text">neuhard.dev</span>
         <div class="card-img-badges">
@@ -186,6 +215,7 @@
       <div class="card-body">
         <h2>neuhard.dev <span class="subtitle">Portfolio &amp; Dashboard</span></h2>
         <p class="desc">This very site — a responsive portfolio dashboard with live GitHub data, contribution heatmaps, theme switching, and a Cloudflare Worker API proxy.</p>
+        <p class="card-highlight">Live GitHub data · 5-min cached API proxy</p>
         <div class="card-updated" data-repo="landing-page"></div>
         <div class="lang-bar" data-repo="jtn0123/landing-page">
           <div class="lang-bar-track shimmer-track"><div class="lang-bar-fill"></div></div>
@@ -205,7 +235,7 @@
       </div>
     </article>
 
-    <article class="card fade-in" tabindex="0" data-repo="satellite_processor" style="--fade-delay: 500ms">
+    <article class="card fade-in fade-in-right" tabindex="0" data-link="https://sat.neuhard.dev/" data-repo="satellite_processor" style="--fade-delay: 500ms">
       <div class="card-img card-img-gradient">
         <span class="card-img-text">🛰️ Satellite Processor</span>
         <div class="card-img-badges">
@@ -216,6 +246,7 @@
       <div class="card-body">
         <h2>Satellite Processor <span class="subtitle">GOES Imagery Pipeline</span></h2>
         <p class="desc">Web application for processing GOES satellite imagery — upload images, apply false color, crop regions, add timestamps, and generate timelapse videos from the browser.</p>
+        <p class="card-highlight">5-service Docker stack · WebSocket job progress</p>
         <div class="card-updated" data-repo="satellite_processor"></div>
         <div class="lang-bar" data-repo="jtn0123/satellite_processor">
           <div class="lang-bar-track shimmer-track"><div class="lang-bar-fill"></div></div>
@@ -232,12 +263,13 @@
           <span>Docker</span>
         </div>
         <div class="buttons">
+          <a href="https://sat.neuhard.dev/" class="btn btn-primary">Live App</a>
           <a href="https://github.com/jtn0123/satellite_processor" class="btn">GitHub</a>
         </div>
       </div>
     </article>
 
-    <article class="card fade-in" tabindex="0" data-repo="AudioWhisper" style="--fade-delay: 600ms">
+    <article class="card fade-in fade-in-left" tabindex="0" data-repo="AudioWhisper" style="--fade-delay: 600ms">
       <div class="card-img card-img-gradient">
         <span class="card-img-text">🎙️ AudioWhisper</span>
         <div class="card-img-badges">
@@ -248,6 +280,7 @@
       <div class="card-body">
         <h2>AudioWhisper <span class="subtitle">macOS Transcription App</span></h2>
         <p class="desc">Lightweight macOS menu bar app for audio transcription — supports OpenAI Whisper, Google Gemini, and on-device WhisperKit. Global hotkey, smart paste, and transcription history.</p>
+        <p class="card-highlight">4 transcription engines · On-device WhisperKit</p>
         <div class="card-updated" data-repo="AudioWhisper"></div>
         <div class="lang-bar" data-repo="jtn0123/AudioWhisper">
           <div class="lang-bar-track shimmer-track"><div class="lang-bar-fill"></div></div>
@@ -266,9 +299,16 @@
       </div>
     </article>
   </main>
+  <div class="card-dots" id="card-dots" aria-hidden="true">
+    <span class="card-dot active"></span>
+    <span class="card-dot"></span>
+    <span class="card-dot"></span>
+    <span class="card-dot"></span>
+    <span class="card-dot"></span>
+  </div>
 
   <!-- Stats Bar -->
-  <section class="stats-bar fade-in" style="--fade-delay: 700ms">
+  <section class="stats-bar fade-in" aria-live="polite" style="--fade-delay: 700ms">
     <div class="stat">
       <span class="stat-value shimmer-placeholder" id="total-loc">&nbsp;</span>
       <span class="stat-label">Lines of Code</span>
@@ -357,14 +397,14 @@
   <!-- Recent Activity Timeline -->
   <section id="activity" class="timeline-section fade-in" style="--fade-delay: 900ms">
     <h2>Recent Activity</h2>
-    <div id="timeline" class="timeline">
+    <div id="timeline" class="timeline" role="list" aria-live="polite">
       <div class="timeline-loading">
         <div class="skeleton-item"></div>
         <div class="skeleton-item"></div>
         <div class="skeleton-item"></div>
       </div>
     </div>
-    <a href="https://github.com/jtn0123" class="view-all-link" target="_blank" rel="noopener noreferrer">View all commits →</a>
+    <a href="https://github.com/jtn0123" class="view-all-link" target="_blank" rel="noopener noreferrer" aria-label="View all commits on GitHub">View all commits →</a>
   </section>
 
   <!-- Lightbox -->

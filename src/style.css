@@ -204,7 +204,15 @@ header.scrolled .theme-toggle {
 }
 .fade-in.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) translateX(0);
+}
+
+/* Directional card entrance on desktop */
+@media (min-width: 720px) {
+  .fade-in.fade-in-left { transform: translateX(-24px); }
+  .fade-in.fade-in-right { transform: translateX(24px); }
+  .fade-in.fade-in-left.visible,
+  .fade-in.fade-in-right.visible { transform: translateX(0); }
 }
 
 /* Card */
@@ -299,6 +307,12 @@ header.scrolled .theme-toggle {
   font-size: 0.9rem;
   color: var(--text-muted);
   line-height: 1.5;
+  margin-bottom: 0.4rem;
+}
+.card-highlight {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--accent);
   margin-bottom: 0.4rem;
 }
 
@@ -1142,4 +1156,9 @@ footer {
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
+}
+
+/* Smaller card image on mobile */
+@media (max-width: 719px) {
+  .card-img { aspect-ratio: 3/2; }
 }
