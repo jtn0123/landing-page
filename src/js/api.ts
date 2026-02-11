@@ -62,11 +62,15 @@ export async function fetchJSON<T = unknown>(url: string): Promise<FetchResult<T
   return { data: (await res.json()) as T, response: res };
 }
 
+function escapeHTML(str: string): string {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 export function renderError(container: Element, message: string, retryFn: () => void): void {
   container.innerHTML = `
     <div class="error-state">
       <div class="error-icon">⚠️</div>
-      <p>${message}</p>
+      <p>${escapeHTML(message)}</p>
       <button class="retry-btn">Retry</button>
     </div>`;
   const btn = container.querySelector('.retry-btn') as HTMLButtonElement;

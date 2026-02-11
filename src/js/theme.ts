@@ -1,6 +1,7 @@
 export function init(): void {
-  const themeBtn = document.getElementById('theme-toggle');
-  if (!themeBtn) return;
+  const themeBtnEl = document.getElementById('theme-toggle');
+  if (!themeBtnEl) return;
+  const themeBtn = themeBtnEl;
 
   function getTheme(): string {
     return (
@@ -12,10 +13,10 @@ export function init(): void {
   function applyTheme(t: string): void {
     if (t === 'light') {
       document.documentElement.setAttribute('data-theme', 'light');
-      themeBtn!.textContent = '☀️';
+      themeBtn.textContent = '☀️';
     } else {
       document.documentElement.removeAttribute('data-theme');
-      themeBtn!.textContent = '🌙';
+      themeBtn.textContent = '🌙';
     }
     const metaTheme = document.getElementById('meta-theme-color') as HTMLMetaElement | null;
     if (metaTheme) metaTheme.content = t === 'light' ? '#f5f5f5' : '#0a0a0a';

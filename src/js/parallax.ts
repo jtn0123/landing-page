@@ -27,17 +27,13 @@ export function init(): void {
     });
   }
 
-  // Parallax background mesh (desktop only)
-  if (!isMobile) {
-    const mesh = document.getElementById('parallax-mesh');
-    if (mesh) {
-      window.addEventListener(
-        'scroll',
-        () => {
-          mesh.style.transform = `translateY(${window.scrollY * 0.1}px)`;
-        },
-        { passive: true },
-      );
-    }
+}
+
+/** Called from the unified scroll listener in scroll.ts */
+export function updateParallaxMesh(): void {
+  if (isMobile) return;
+  const mesh = document.getElementById('parallax-mesh');
+  if (mesh) {
+    mesh.style.transform = `translateY(${window.scrollY * 0.1}px)`;
   }
 }

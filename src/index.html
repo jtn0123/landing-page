@@ -417,7 +417,7 @@
             This very site — a responsive portfolio dashboard with live GitHub data, contribution
             heatmaps, theme switching, and a Cloudflare Worker API proxy.
           </p>
-          <p class="card-highlight">Live GitHub data · 5-min cached API proxy</p>
+          <p class="card-highlight">Live GitHub data · 30-min cached API proxy</p>
           <div class="card-updated" data-repo="landing-page"></div>
           <div class="lang-bar" aria-live="polite" data-repo="jtn0123/landing-page">
             <div class="lang-bar-track shimmer-track"><div class="lang-bar-fill"></div></div>
@@ -429,6 +429,8 @@
             <span>CSS</span>
             <span>Vite</span>
             <span>Cloudflare Workers</span>
+            <span>Vitest</span>
+            <span>ESLint</span>
           </div>
           <div class="buttons">
             <a class="btn btn-primary btn-disabled" aria-disabled="true">You're here!</a>
@@ -688,7 +690,7 @@
     <!-- Recent Activity Timeline -->
     <section id="activity" class="timeline-section fade-in" style="--fade-delay: 900ms">
       <h2>Recent Activity</h2>
-      <div id="timeline" class="timeline" role="list" aria-live="polite">
+      <div id="timeline" class="timeline" role="list">
         <div class="timeline-loading">
           <div class="skeleton-item"></div>
           <div class="skeleton-item"></div>
@@ -719,7 +721,7 @@
           rel="noopener noreferrer"
           aria-label="GitHub profile"
         >
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
             <path
               d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"
             />
