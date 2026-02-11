@@ -102,10 +102,20 @@ export function init(): void {
     if (isSameOrigin) {
       btn.addEventListener('click', (e: Event) => {
         e.preventDefault();
-        document.body.classList.add('page-exit');
-        setTimeout(() => {
+        const navigate = (): void => {
           window.location.href = url;
-        }, 300);
+        };
+        const vt = (document as unknown as Record<string, unknown>).startViewTransition as
+          | ((cb: () => void) => void)
+          | undefined;
+        if (vt) {
+          vt(() => {
+            navigate();
+          });
+        } else {
+          document.body.classList.add('page-exit');
+          setTimeout(navigate, 300);
+        }
       });
     }
   });

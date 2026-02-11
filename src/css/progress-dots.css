@@ -1,0 +1,31 @@
+/* Reading progress dots - mobile only */
+.progress-dots {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  .progress-dots {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: fixed;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 90;
+  }
+  .progress-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+    transition: background 0.3s, transform 0.3s;
+    cursor: pointer;
+    border: none;
+    padding: 0;
+  }
+  .progress-dot.active {
+    background: var(--accent);
+    transform: scale(1.3);
+  }
+}

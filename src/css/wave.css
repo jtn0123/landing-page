@@ -1,0 +1,29 @@
+/* Footer wave SVG divider */
+.wave-divider {
+  width: 100%;
+  height: 36px;
+  overflow: hidden;
+  line-height: 0;
+}
+.wave-divider svg {
+  display: block;
+  width: 200%;
+  height: 100%;
+  animation: waveShift 12s linear infinite;
+}
+.wave-divider path {
+  fill: var(--accent);
+  opacity: 0.12;
+}
+
+@keyframes waveShift {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wave-divider svg {
+    animation: none;
+    width: 100%;
+  }
+}
