@@ -3,7 +3,10 @@ export function init(): void {
   if (!themeBtn) return;
 
   function getTheme(): string {
-    return localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    return (
+      localStorage.getItem('theme') ||
+      (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')
+    );
   }
 
   function applyTheme(t: string): void {
@@ -14,6 +17,8 @@ export function init(): void {
       document.documentElement.removeAttribute('data-theme');
       themeBtn!.textContent = '🌙';
     }
+    const metaTheme = document.getElementById('meta-theme-color') as HTMLMetaElement | null;
+    if (metaTheme) metaTheme.content = t === 'light' ? '#f5f5f5' : '#0a0a0a';
   }
 
   applyTheme(getTheme());

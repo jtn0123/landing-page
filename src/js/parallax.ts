@@ -3,7 +3,7 @@ import { isMobile, reducedMotion } from '../main.ts';
 export function init(): void {
   // Card parallax tilt (desktop only)
   if (!isMobile && !reducedMotion) {
-    document.querySelectorAll('.card').forEach(card => {
+    document.querySelectorAll('.card').forEach((card) => {
       card.addEventListener('mousemove', (e: Event) => {
         const me = e as MouseEvent;
         const el = card as HTMLElement;
@@ -16,7 +16,13 @@ export function init(): void {
         const el = card as HTMLElement;
         el.style.transition = 'transform 0.3s ease';
         el.style.transform = '';
-        el.addEventListener('transitionend', () => { el.style.transition = ''; }, { once: true });
+        el.addEventListener(
+          'transitionend',
+          () => {
+            el.style.transition = '';
+          },
+          { once: true },
+        );
       });
     });
   }
@@ -25,9 +31,13 @@ export function init(): void {
   if (!isMobile) {
     const mesh = document.getElementById('parallax-mesh');
     if (mesh) {
-      window.addEventListener('scroll', () => {
-        mesh.style.transform = `translateY(${window.scrollY * 0.1}px)`;
-      }, { passive: true });
+      window.addEventListener(
+        'scroll',
+        () => {
+          mesh.style.transform = `translateY(${window.scrollY * 0.1}px)`;
+        },
+        { passive: true },
+      );
     }
   }
 }

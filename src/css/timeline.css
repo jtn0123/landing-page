@@ -69,18 +69,43 @@
   letter-spacing: 0.03em;
   transition: box-shadow 0.2s ease;
 }
-.repo-megabonk { background: rgba(79,195,247,0.15); color: #4fc3f7; }
-.repo-volttracker { background: rgba(76,175,80,0.15); color: #66bb6a; }
-.repo-landing-page { background: rgba(171,71,188,0.15); color: #ba68c8; }
-.repo-satellite_processor { background: rgba(255,152,0,0.15); color: #ffa726; }
-.repo-audiowhisper { background: rgba(233,30,99,0.15); color: #ec407a; }
+.repo-megabonk {
+  background: rgba(79, 195, 247, 0.15);
+  color: #4fc3f7;
+}
+.repo-volttracker {
+  background: rgba(76, 175, 80, 0.15);
+  color: #66bb6a;
+}
+.repo-landing-page {
+  background: rgba(171, 71, 188, 0.15);
+  color: #ba68c8;
+}
+.repo-satellite_processor {
+  background: rgba(255, 152, 0, 0.15);
+  color: #ffa726;
+}
+.repo-audiowhisper {
+  background: rgba(233, 30, 99, 0.15);
+  color: #ec407a;
+}
 
 /* Repo badge hover glow */
-.repo-megabonk:hover { box-shadow: 0 0 8px rgba(79,195,247,0.5); }
-.repo-volttracker:hover { box-shadow: 0 0 8px rgba(76,175,80,0.5); }
-.repo-landing-page:hover { box-shadow: 0 0 8px rgba(171,71,188,0.5); }
-.repo-satellite_processor:hover { box-shadow: 0 0 8px rgba(255,152,0,0.5); }
-.repo-audiowhisper:hover { box-shadow: 0 0 8px rgba(233,30,99,0.5); }
+.repo-megabonk:hover {
+  box-shadow: 0 0 8px rgba(79, 195, 247, 0.5);
+}
+.repo-volttracker:hover {
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+}
+.repo-landing-page:hover {
+  box-shadow: 0 0 8px rgba(171, 71, 188, 0.5);
+}
+.repo-satellite_processor:hover {
+  box-shadow: 0 0 8px rgba(255, 152, 0, 0.5);
+}
+.repo-audiowhisper:hover {
+  box-shadow: 0 0 8px rgba(233, 30, 99, 0.5);
+}
 
 .commit-meta {
   display: flex;
@@ -134,11 +159,16 @@ a.timeline-link:hover {
   text-decoration: none;
   transition: color 0.2s;
 }
-.view-all-link:hover { color: var(--accent); }
+.view-all-link:hover {
+  color: var(--accent);
+}
 
 /* Desktop alternating timeline */
 @media (min-width: 720px) {
-  .timeline-line { left: 50%; transform: translateX(-50%); }
+  .timeline-line {
+    left: 50%;
+    transform: translateX(-50%);
+  }
 
   .timeline-item {
     width: 50%;
@@ -152,7 +182,9 @@ a.timeline-link:hover {
     left: auto;
     right: -7px;
   }
-  .timeline-item.left .timeline-content { text-align: left; }
+  .timeline-item.left .timeline-content {
+    text-align: left;
+  }
 
   .timeline-item.right {
     margin-left: 50%;

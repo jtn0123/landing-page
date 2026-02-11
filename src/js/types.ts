@@ -12,6 +12,8 @@ export interface Commit {
 
 export interface RepoData {
   pushed_at?: string;
+  stargazers_count?: number;
+  forks_count?: number;
   [key: string]: unknown;
 }
 
