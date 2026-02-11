@@ -8,6 +8,7 @@
   width: 100%;
   margin: 2rem auto;
   padding: 0 1.5rem;
+  overflow: hidden;
 }
 @media (min-width: 720px) {
   .projects {

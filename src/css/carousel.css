@@ -75,9 +75,9 @@
 
 @media (max-width: 719px) {
   .dot {
-    width: 10px;
-    height: 10px;
-    padding: 8px;
+    width: 7px;
+    height: 7px;
+    padding: 6px;
     box-sizing: content-box;
   }
 }
