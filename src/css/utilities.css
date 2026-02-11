@@ -53,6 +53,7 @@
   background: linear-gradient(90deg, var(--card) 25%, var(--shimmer-mid) 37%, var(--card) 63%);
   background-size: 200% 100%;
   animation: shimmer 1.8s ease-in-out infinite;
+  animation-delay: var(--shimmer-delay, 0ms);
 }
 
 /* Skeleton fade-out transition */
