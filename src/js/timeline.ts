@@ -26,6 +26,8 @@ function renderTimeline(commits: Commit[]): void {
 }
 
 function buildTimeline(commits: Commit[], timelineEl: HTMLElement): void {
+  // Add aria-live after content is built so screen readers don't announce all items on load
+  requestAnimationFrame(() => timelineEl.setAttribute('aria-live', 'polite'));
   timelineEl.innerHTML =
     '<div class="timeline-line"></div>' +
     commits

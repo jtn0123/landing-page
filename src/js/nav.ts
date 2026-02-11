@@ -10,18 +10,6 @@ export function init(): void {
     });
   });
 
-  // Sticky header
-  const header = document.getElementById('site-header');
-  if (header) {
-    window.addEventListener(
-      'scroll',
-      () => {
-        header.classList.toggle('scrolled', window.scrollY > 40);
-      },
-      { passive: true },
-    );
-  }
-
   // Active nav link on scroll
   const sections = [
     { id: 'main-content', el: document.getElementById('main-content') },
@@ -68,8 +56,15 @@ export function init(): void {
     });
 
     overlay.querySelectorAll('a[data-scroll]').forEach((a) => {
-      a.addEventListener('click', () => {
+      a.addEventListener('click', (e: Event) => {
+        e.preventDefault();
         overlay.classList.remove('active');
+        const href = a.getAttribute('href');
+        if (!href) return;
+        const target = document.querySelector(href);
+        if (target) {
+          setTimeout(() => target.scrollIntoView({ behavior: 'smooth' }), 300);
+        }
       });
     });
 
@@ -99,11 +94,12 @@ export function init(): void {
     });
   });
 
-  // Page exit transition for internal links
+  // Page exit transition for same-origin links
   document.querySelectorAll('.btn-primary').forEach((btn) => {
     const url = btn.getAttribute('href');
     if (!url || btn.classList.contains('btn-disabled')) return;
-    if (url.startsWith('/') || url === window.location.origin) {
+    const isSameOrigin = url.startsWith('/') || url.startsWith(window.location.origin);
+    if (isSameOrigin) {
       btn.addEventListener('click', (e: Event) => {
         e.preventDefault();
         document.body.classList.add('page-exit');

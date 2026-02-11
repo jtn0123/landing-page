@@ -1,21 +1,26 @@
+import { updateParallaxMesh } from './parallax.ts';
+
 export function init(): void {
-  // Scroll progress bar + back-to-top (single listener)
+  // Unified scroll listener — progress bar, back-to-top, parallax mesh, sticky header
   const scrollProgress = document.getElementById('scroll-progress');
   const backToTop = document.getElementById('back-to-top');
+  const header = document.getElementById('site-header');
 
-  if (scrollProgress || backToTop) {
-    window.addEventListener('scroll', () => {
-      const scrollTop = window.scrollY;
-      if (scrollProgress) {
-        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-        scrollProgress.style.width = pct + '%';
-      }
-      if (backToTop) {
-        backToTop.classList.toggle('visible', scrollTop > 400);
-      }
-    }, { passive: true });
-  }
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    if (scrollProgress) {
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      scrollProgress.style.width = pct + '%';
+    }
+    if (backToTop) {
+      backToTop.classList.toggle('visible', scrollTop > 400);
+    }
+    if (header) {
+      header.classList.toggle('scrolled', scrollTop > 40);
+    }
+    updateParallaxMesh();
+  }, { passive: true });
 
   if (backToTop) {
     backToTop.addEventListener('click', () => {

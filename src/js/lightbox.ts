@@ -24,7 +24,11 @@ export function init(): void {
   });
 
   document.addEventListener('keydown', (e: KeyboardEvent) => {
-    if (e.key === 'Escape') lightbox.classList.remove('active');
+    if (e.key === 'Escape') {
+      lightbox.classList.remove('active');
+      lightboxImg.style.transform = '';
+      currentScale = 1;
+    }
   });
 
   // Pinch-to-zoom

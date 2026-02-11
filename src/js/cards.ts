@@ -18,6 +18,8 @@ const LANG_COLORS: Record<string, string> = {
   HTML: '#e34c26',
   Shell: '#89e051',
   PLpgSQL: '#336790',
+  Swift: '#F05138',
+  Makefile: '#427819',
 };
 
 async function loadCardMeta(): Promise<void> {
@@ -87,34 +89,38 @@ async function loadCardMeta(): Promise<void> {
 
 async function loadHeatmaps(): Promise<void> {
   const rows = document.querySelectorAll('.heatmap-row[data-repo]');
-  for (const row of rows) {
-    const repo = (row as HTMLElement).dataset.repo;
-    if (!repo) continue;
-    const rgb = HEATMAP_COLORS[repo] || '79,195,247';
-    try {
-      const { data } = await cachedFetchJSON<ParticipationData>(
-        `${API_BASE}/repos/${OWNER}/${repo}/stats/participation`,
-      );
-      const weeks = (data.owner || data.all || []).slice(-12);
-      const max = Math.max(...weeks, 1);
-      row.innerHTML = '';
-      weeks.forEach((count, idx) => {
-        const cell = document.createElement('span');
-        cell.className = 'heatmap-cell';
-        const intensity = count / max;
-        if (count === 0) {
-          cell.style.background = 'var(--border)';
-        } else {
-          cell.style.background = `rgba(${rgb},${0.2 + intensity * 0.8})`;
-        }
-        cell.title = count + ' commit' + (count !== 1 ? 's' : '');
-        row.appendChild(cell);
-        setTimeout(() => cell.classList.add('active'), 30 * idx);
-      });
-    } catch {
-      /* ignore */
-    }
-  }
+  await Promise.all(
+    [...rows].map(async (row) => {
+      const repo = (row as HTMLElement).dataset.repo;
+      if (!repo) return;
+      const rgb = HEATMAP_COLORS[repo] || '79,195,247';
+      try {
+        const { data } = await cachedFetchJSON<ParticipationData>(
+          `${API_BASE}/repos/${OWNER}/${repo}/stats/participation`,
+        );
+        const weeks = (data.owner || data.all || []).slice(-12);
+        const max = Math.max(...weeks, 1);
+        row.innerHTML = '';
+        weeks.forEach((count, idx) => {
+          const cell = document.createElement('span');
+          cell.className = 'heatmap-cell';
+          const intensity = count / max;
+          if (count === 0) {
+            cell.style.background = 'var(--border)';
+          } else {
+            cell.style.background = `rgba(${rgb},${0.2 + intensity * 0.8})`;
+          }
+          const label = count + ' commit' + (count !== 1 ? 's' : '');
+          cell.title = label;
+          cell.setAttribute('aria-label', label);
+          row.appendChild(cell);
+          setTimeout(() => cell.classList.add('active'), 30 * idx);
+        });
+      } catch {
+        /* ignore */
+      }
+    }),
+  );
 }
 
 async function loadLangBar(el: HTMLElement): Promise<void> {
