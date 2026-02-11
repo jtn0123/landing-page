@@ -153,28 +153,9 @@ async function loadLangBar(el: HTMLElement): Promise<void> {
   ).join('');
 }
 
-function initCardDots(): void {
-  const projects = document.querySelector('.projects');
-  const dots = document.querySelectorAll('.card-dot');
-  const cards = projects?.querySelectorAll('.card');
-  if (!projects || !dots.length || !cards?.length) return;
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const idx = [...cards].indexOf(entry.target);
-        dots.forEach((d, i) => d.classList.toggle('active', i === idx));
-      }
-    });
-  }, { root: projects, threshold: 0.5 });
-
-  cards.forEach(card => observer.observe(card));
-}
-
 export function init(): void {
   loadCardMeta();
   loadHeatmaps();
-  initCardDots();
 
   // Lazy lang bars
   const langObserver = new IntersectionObserver((entries) => {
