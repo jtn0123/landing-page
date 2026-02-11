@@ -1,12 +1,14 @@
-import { API_BASE, REPOS, OWNER } from '../main.js';
-import { cachedFetchJSON, renderError, abbreviateNum, relativeTime } from './api.js';
+import { API_BASE, REPOS, OWNER } from '../main.ts';
+import { cachedFetchJSON, renderError, abbreviateNum, relativeTime } from './api.ts';
+import type { Commit, GitHubCommitResponse, CommitDetailResponse, CacheEntry } from './types.ts';
 
-function truncate(str, len) {
+function truncate(str: string, len: number): string {
   return str.length > len ? str.slice(0, len) + '…' : str;
 }
 
-function renderTimeline(commits) {
+function renderTimeline(commits: Commit[]): void {
   const timelineEl = document.getElementById('timeline');
+  if (!timelineEl) return;
   if (!commits.length) {
     timelineEl.innerHTML = '<p class="timeline-empty">No recent activity</p>';
     return;
@@ -23,7 +25,7 @@ function renderTimeline(commits) {
   }
 }
 
-function buildTimeline(commits, timelineEl) {
+function buildTimeline(commits: Commit[], timelineEl: HTMLElement): void {
   timelineEl.innerHTML = '<div class="timeline-line"></div>' +
     commits.map((c, i) => {
       const firstLine = c.message.split('\n')[0];
@@ -45,26 +47,31 @@ function buildTimeline(commits, timelineEl) {
     `;}).join('');
 
   timelineEl.querySelectorAll('.commit-msg.expandable').forEach(msg => {
-    msg.addEventListener('click', e => {
+    msg.addEventListener('click', (e: Event) => {
       e.preventDefault();
       e.stopPropagation();
-      const isExpanded = msg.dataset.expanded === 'true';
-      msg.textContent = isExpanded ? msg.dataset.short : msg.dataset.full;
-      msg.dataset.expanded = isExpanded ? 'false' : 'true';
+      const el = msg as HTMLElement;
+      const isExpanded = el.dataset.expanded === 'true';
+      el.textContent = isExpanded ? el.dataset.short! : el.dataset.full!;
+      el.dataset.expanded = isExpanded ? 'false' : 'true';
     });
   });
 }
 
-async function loadTimeline() {
+async function loadTimeline(): Promise<void> {
   const timelineEl = document.getElementById('timeline');
+  if (!timelineEl) return;
   const cacheKey = 'nd_commits';
   const cacheTTL = 30 * 60 * 1000;
 
   try {
-    const cached = JSON.parse(sessionStorage.getItem(cacheKey));
-    if (cached && Date.now() - cached.ts < cacheTTL) {
-      renderTimeline(cached.data);
-      return;
+    const raw = sessionStorage.getItem(cacheKey);
+    if (raw) {
+      const cached: CacheEntry<Commit[]> = JSON.parse(raw);
+      if (cached && Date.now() - cached.ts < cacheTTL) {
+        renderTimeline(cached.data);
+        return;
+      }
     }
   } catch { /* ignore */ }
 
@@ -72,7 +79,7 @@ async function loadTimeline() {
     const repoCommits = await Promise.all(
       REPOS.map(async (repo) => {
         try {
-          const { data } = await cachedFetchJSON(`${API_BASE}/repos/${OWNER}/${repo}/commits?per_page=5`);
+          const { data } = await cachedFetchJSON<GitHubCommitResponse[]>(`${API_BASE}/repos/${OWNER}/${repo}/commits?per_page=5`);
           return data.map(c => ({
             message: c.commit.message,
             date: c.commit.committer.date,
@@ -80,19 +87,23 @@ async function loadTimeline() {
             avatar: c.author?.avatar_url || '',
             repo,
             url: c.html_url,
-            sha: c.sha
+            sha: c.sha,
+            additions: null as number | null,
+            deletions: null as number | null,
           }));
-        } catch { return []; }
+        } catch { return [] as Commit[]; }
       })
     );
 
-    const commits = repoCommits.flat().sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 10);
+    const commits = repoCommits.flat()
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      .slice(0, 10);
 
     if (!commits.length) throw new Error('API error');
 
     await Promise.all(commits.map(async (c) => {
       try {
-        const { data: detail } = await cachedFetchJSON(`${API_BASE}/repos/${OWNER}/${c.repo}/commits/${c.sha}`);
+        const { data: detail } = await cachedFetchJSON<CommitDetailResponse>(`${API_BASE}/repos/${OWNER}/${c.repo}/commits/${c.sha}`);
         c.additions = detail.stats?.additions || 0;
         c.deletions = detail.stats?.deletions || 0;
       } catch { /* ignore */ }
@@ -101,15 +112,16 @@ async function loadTimeline() {
     sessionStorage.setItem(cacheKey, JSON.stringify({ ts: Date.now(), data: commits }));
     renderTimeline(commits);
   } catch (err) {
-    renderError(timelineEl, err.message || 'Unable to load recent activity', () => {
+    renderError(timelineEl, (err as Error).message || 'Unable to load recent activity', () => {
       timelineEl.innerHTML = '<div class="timeline-loading"><div class="skeleton-item"></div><div class="skeleton-item"></div><div class="skeleton-item"></div></div>';
       loadTimeline();
     });
   }
 }
 
-export function init() {
+export function init(): void {
   const timelineSection = document.getElementById('activity');
+  if (!timelineSection) return;
   let timelineLoaded = false;
   const timelineObserver = new IntersectionObserver((entries) => {
     if (entries[0].isIntersecting && !timelineLoaded) {

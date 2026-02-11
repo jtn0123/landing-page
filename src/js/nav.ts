@@ -1,18 +1,22 @@
-export function init() {
+export function init(): void {
   // Smooth scroll nav
   document.querySelectorAll('[data-scroll]').forEach(a => {
-    a.addEventListener('click', e => {
+    a.addEventListener('click', (e: Event) => {
       e.preventDefault();
-      const target = document.querySelector(a.getAttribute('href'));
+      const href = a.getAttribute('href');
+      if (!href) return;
+      const target = document.querySelector(href);
       if (target) target.scrollIntoView({ behavior: 'smooth' });
     });
   });
 
   // Sticky header
   const header = document.getElementById('site-header');
-  window.addEventListener('scroll', () => {
-    header.classList.toggle('scrolled', window.scrollY > 40);
-  }, { passive: true });
+  if (header) {
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+  }
 
   // Active nav link on scroll
   const sections = [
@@ -42,11 +46,13 @@ export function init() {
       overlay.classList.add('active');
     });
 
-    closeBtn.addEventListener('click', () => {
-      overlay.classList.remove('active');
-    });
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        overlay.classList.remove('active');
+      });
+    }
 
-    overlay.addEventListener('click', (e) => {
+    overlay.addEventListener('click', (e: Event) => {
       if (e.target === overlay) {
         overlay.classList.remove('active');
       }
@@ -58,7 +64,7 @@ export function init() {
       });
     });
 
-    document.addEventListener('keydown', (e) => {
+    document.addEventListener('keydown', (e: KeyboardEvent) => {
       if (e.key === 'Escape' && overlay.classList.contains('active')) {
         overlay.classList.remove('active');
       }
@@ -67,9 +73,9 @@ export function init() {
 
   // Keyboard nav for cards
   document.querySelectorAll('.card[data-link]').forEach(card => {
-    card.addEventListener('keydown', e => {
-      if (e.key === 'Enter') {
-        const link = card.querySelector('.btn-primary');
+    card.addEventListener('keydown', (e: Event) => {
+      if ((e as KeyboardEvent).key === 'Enter') {
+        const link = card.querySelector('.btn-primary') as HTMLElement | null;
         if (link) link.click();
       }
     });
@@ -80,10 +86,10 @@ export function init() {
     const url = btn.getAttribute('href');
     if (!url || btn.classList.contains('btn-disabled')) return;
     if (url.includes('neuhard.dev') || url.startsWith('/')) {
-      btn.addEventListener('click', e => {
+      btn.addEventListener('click', (e: Event) => {
         e.preventDefault();
         document.body.classList.add('page-exit');
-        setTimeout(() => { window.location = url; }, 300);
+        setTimeout(() => { window.location.href = url; }, 300);
       });
     }
   });

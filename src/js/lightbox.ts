@@ -1,17 +1,18 @@
-export function init() {
+export function init(): void {
   const lightbox = document.getElementById('lightbox');
-  const lightboxImg = document.getElementById('lightbox-img');
+  const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement | null;
+  if (!lightbox || !lightboxImg) return;
   let currentScale = 1;
 
   document.querySelectorAll('.lightbox-trigger').forEach(img => {
-    img.style.cursor = 'zoom-in';
-    img.addEventListener('click', e => {
+    (img as HTMLElement).style.cursor = 'zoom-in';
+    img.addEventListener('click', (e: Event) => {
       e.preventDefault();
       e.stopPropagation();
       lightboxImg.style.transform = '';
       currentScale = 1;
-      lightboxImg.src = img.src;
-      lightboxImg.alt = img.alt;
+      lightboxImg.src = (img as HTMLImageElement).src;
+      lightboxImg.alt = (img as HTMLImageElement).alt;
       lightbox.classList.add('active');
     });
   });
@@ -22,24 +23,24 @@ export function init() {
     currentScale = 1;
   });
 
-  document.addEventListener('keydown', e => {
+  document.addEventListener('keydown', (e: KeyboardEvent) => {
     if (e.key === 'Escape') lightbox.classList.remove('active');
   });
 
   // Pinch-to-zoom
   let initialDist = 0;
-  function getDist(touches) {
+  function getDist(touches: TouchList): number {
     const dx = touches[0].clientX - touches[1].clientX;
     const dy = touches[0].clientY - touches[1].clientY;
     return Math.hypot(dx, dy);
   }
-  lightboxImg.addEventListener('touchstart', e => {
+  lightboxImg.addEventListener('touchstart', (e: TouchEvent) => {
     if (e.touches.length === 2) {
       e.preventDefault();
       initialDist = getDist(e.touches);
     }
   }, { passive: false });
-  lightboxImg.addEventListener('touchmove', e => {
+  lightboxImg.addEventListener('touchmove', (e: TouchEvent) => {
     if (e.touches.length === 2) {
       e.preventDefault();
       const dist = getDist(e.touches);
@@ -47,9 +48,9 @@ export function init() {
       lightboxImg.style.transform = `scale(${scale})`;
     }
   }, { passive: false });
-  lightboxImg.addEventListener('touchend', e => {
+  lightboxImg.addEventListener('touchend', (e: TouchEvent) => {
     if (e.touches.length < 2) {
-      currentScale = parseFloat(lightboxImg.style.transform.replace(/[^0-9.]/g, '') || 1);
+      currentScale = parseFloat(lightboxImg.style.transform.replace(/[^0-9.]/g, '') || '1');
       if (isNaN(currentScale) || currentScale < 1) currentScale = 1;
     }
   });
