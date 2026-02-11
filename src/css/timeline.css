@@ -1,0 +1,164 @@
+/* Timeline Section */
+.timeline-section {
+  max-width: 700px;
+  width: 100%;
+  margin: 0.5rem auto 1.5rem;
+  padding: 0 1.5rem;
+}
+.timeline-section h2 {
+  font-size: clamp(1.1rem, 3vw, 1.3rem);
+  color: var(--text-heading);
+  margin-bottom: 1rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+.timeline {
+  position: relative;
+  padding: 1rem 0;
+}
+.timeline-line {
+  position: absolute;
+  left: 8px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--border);
+}
+
+.timeline-item {
+  position: relative;
+  padding-left: 32px;
+  margin-bottom: 1rem;
+}
+.timeline-dot {
+  position: absolute;
+  left: 2px;
+  top: 4px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 2px solid var(--accent);
+}
+.timeline-content {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.6rem 0.85rem;
+}
+.commit-msg {
+  font-size: 0.82rem;
+  color: var(--text);
+  margin-bottom: 0.35rem;
+  line-height: 1.4;
+  word-break: break-word;
+}
+.commit-msg.expandable {
+  cursor: pointer;
+}
+.commit-msg.expandable:hover {
+  color: var(--accent);
+}
+.repo-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  transition: box-shadow 0.2s ease;
+}
+.repo-megabonk { background: rgba(79,195,247,0.15); color: #4fc3f7; }
+.repo-volttracker { background: rgba(76,175,80,0.15); color: #66bb6a; }
+.repo-landing-page { background: rgba(171,71,188,0.15); color: #ba68c8; }
+.repo-satellite_processor { background: rgba(255,152,0,0.15); color: #ffa726; }
+.repo-audiowhisper { background: rgba(233,30,99,0.15); color: #ec407a; }
+
+/* Repo badge hover glow */
+.repo-megabonk:hover { box-shadow: 0 0 8px rgba(79,195,247,0.5); }
+.repo-volttracker:hover { box-shadow: 0 0 8px rgba(76,175,80,0.5); }
+.repo-landing-page:hover { box-shadow: 0 0 8px rgba(171,71,188,0.5); }
+.repo-satellite_processor:hover { box-shadow: 0 0 8px rgba(255,152,0,0.5); }
+.repo-audiowhisper:hover { box-shadow: 0 0 8px rgba(233,30,99,0.5); }
+
+.commit-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+.stat-add {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #66bb6a;
+  font-family: monospace;
+}
+.stat-del {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #ef5350;
+  font-family: monospace;
+}
+.commit-time {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-left: auto;
+}
+
+.timeline-empty {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  padding: 2rem 0;
+}
+
+/* Clickable timeline commits */
+a.timeline-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.15s ease;
+}
+a.timeline-link:hover {
+  background: var(--link-hover-bg);
+}
+
+/* View all commits link */
+.view-all-link {
+  display: block;
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.view-all-link:hover { color: var(--accent); }
+
+/* Desktop alternating timeline */
+@media (min-width: 720px) {
+  .timeline-line { left: 50%; transform: translateX(-50%); }
+
+  .timeline-item {
+    width: 50%;
+    padding-left: 0;
+  }
+  .timeline-item.left {
+    padding-right: 32px;
+    text-align: right;
+  }
+  .timeline-item.left .timeline-dot {
+    left: auto;
+    right: -7px;
+  }
+  .timeline-item.left .timeline-content { text-align: left; }
+
+  .timeline-item.right {
+    margin-left: 50%;
+    padding-left: 32px;
+  }
+  .timeline-item.right .timeline-dot {
+    left: -7px;
+  }
+}

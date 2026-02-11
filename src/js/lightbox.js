@@ -1,0 +1,56 @@
+export function init() {
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  let currentScale = 1;
+
+  document.querySelectorAll('.lightbox-trigger').forEach(img => {
+    img.style.cursor = 'zoom-in';
+    img.addEventListener('click', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      lightboxImg.style.transform = '';
+      currentScale = 1;
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+      lightbox.classList.add('active');
+    });
+  });
+
+  lightbox.addEventListener('click', () => {
+    lightbox.classList.remove('active');
+    lightboxImg.style.transform = '';
+    currentScale = 1;
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') lightbox.classList.remove('active');
+  });
+
+  // Pinch-to-zoom
+  let initialDist = 0;
+  function getDist(touches) {
+    const dx = touches[0].clientX - touches[1].clientX;
+    const dy = touches[0].clientY - touches[1].clientY;
+    return Math.hypot(dx, dy);
+  }
+  lightboxImg.addEventListener('touchstart', e => {
+    if (e.touches.length === 2) {
+      e.preventDefault();
+      initialDist = getDist(e.touches);
+    }
+  }, { passive: false });
+  lightboxImg.addEventListener('touchmove', e => {
+    if (e.touches.length === 2) {
+      e.preventDefault();
+      const dist = getDist(e.touches);
+      const scale = Math.min(Math.max(currentScale * (dist / initialDist), 1), 4);
+      lightboxImg.style.transform = `scale(${scale})`;
+    }
+  }, { passive: false });
+  lightboxImg.addEventListener('touchend', e => {
+    if (e.touches.length < 2) {
+      currentScale = parseFloat(lightboxImg.style.transform.replace(/[^0-9.]/g, '') || 1);
+      if (isNaN(currentScale) || currentScale < 1) currentScale = 1;
+    }
+  });
+}

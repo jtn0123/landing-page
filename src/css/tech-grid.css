@@ -1,0 +1,46 @@
+/* Tech Grid */
+.tech-grid-section {
+  max-width: 900px;
+  margin: 0 auto 1.5rem;
+  padding: 0 1.5rem;
+}
+.tech-grid-section h2 {
+  font-size: clamp(1.1rem, 3vw, 1.3rem);
+  color: var(--text-heading);
+  margin-bottom: 1.2rem;
+  text-align: center;
+  font-weight: 600;
+}
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+@media (min-width: 720px) {
+  .tech-grid { grid-template-columns: repeat(5, 1fr); }
+}
+@media (min-width: 900px) {
+  .tech-grid { grid-template-columns: repeat(6, 1fr); }
+}
+.tech-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.6rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  transition: border-color 0.2s, transform 0.2s;
+}
+.tech-item:hover {
+  border-color: var(--tc, var(--accent));
+  transform: translateY(-2px);
+}
+.tech-item svg { flex-shrink: 0; }
+.tech-icon { font-size: 1rem; flex-shrink: 0; }
+
+@media (max-width: 480px) {
+  .tech-grid { grid-template-columns: repeat(3, 1fr); }
+}

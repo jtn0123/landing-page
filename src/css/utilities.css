@@ -1,0 +1,268 @@
+/* Shimmer animation */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, var(--card) 25%, var(--shimmer-mid) 37%, var(--card) 63%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+
+/* Timeline loading skeleton */
+.timeline-loading {
+  padding-left: 32px;
+  transition: opacity 0.4s ease;
+}
+.timeline-loading.fade-out {
+  opacity: 0;
+}
+.skeleton-item {
+  height: 52px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  background: linear-gradient(90deg, var(--card) 25%, var(--shimmer-mid) 37%, var(--card) 63%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+
+/* Stats shimmer placeholder */
+.stat-value.shimmer-placeholder {
+  display: inline-block;
+  width: 4rem;
+  height: 1.5rem;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--card) 25%, var(--shimmer-mid) 37%, var(--card) 63%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  color: transparent;
+}
+
+/* Lang bar shimmer */
+.lang-bar-track.shimmer-track .lang-bar-fill {
+  width: 100%;
+  background: linear-gradient(90deg, var(--card) 25%, var(--shimmer-mid) 37%, var(--card) 63%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+
+/* Skeleton fade-out transition */
+.skeleton-fade {
+  transition: opacity 0.4s ease;
+}
+.skeleton-fade.fade-out {
+  opacity: 0;
+}
+.content-fade-in {
+  animation: contentAppear 0.4s ease forwards;
+}
+@keyframes contentAppear {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Fade-in animations */
+.fade-in {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  transition-delay: var(--fade-delay, 0ms);
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Scroll progress bar */
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: var(--accent);
+  z-index: 101;
+  transition: width 0.1s linear;
+  pointer-events: none;
+}
+
+/* Error state */
+.error-state {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  background: var(--card);
+  border: 1px solid var(--error-border);
+  border-radius: 8px;
+}
+.error-state p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+.error-state .error-icon {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+}
+.retry-btn {
+  display: inline-block;
+  padding: 0.4rem 1.2rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  font-family: inherit;
+}
+.retry-btn:hover {
+  background: var(--accent);
+  color: #000;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 1.2rem 1rem;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+/* Parallax background mesh */
+.parallax-mesh {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 600px 400px at 20% 30%, rgba(79,195,247,0.04), transparent),
+    radial-gradient(ellipse 500px 500px at 80% 70%, rgba(171,71,188,0.03), transparent),
+    radial-gradient(ellipse 400px 300px at 50% 50%, rgba(255,112,67,0.02), transparent);
+  will-change: transform;
+  transition: transform 0.1s linear;
+}
+@media (max-width: 720px) {
+  .parallax-mesh { display: none; }
+}
+
+/* Page exit transition */
+body.page-exit {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .fade-in {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  header::after {
+    animation: none;
+  }
+  .card:hover {
+    transform: none;
+  }
+  .carousel-slide {
+    transition: none;
+  }
+  .carousel-slide.active.kb-zoom {
+    animation: none;
+  }
+  .dot.active {
+    animation: none;
+  }
+  .skeleton-item,
+  .shimmer,
+  .shimmer-placeholder {
+    animation: none;
+  }
+}
+
+/* ===== Desktop-only enhancements ===== */
+
+/* Larger body text on desktop */
+@media (min-width: 1024px) {
+  body { font-size: 17px; }
+}
+
+/* Wider card layout on desktop */
+@media (min-width: 1024px) {
+  .projects { max-width: 1100px; }
+  .tech-grid-section { max-width: 1100px; }
+  .stats-bar { max-width: 900px; }
+  .timeline-section { max-width: 900px; }
+}
+
+/* Hero section with more presence on desktop */
+@keyframes subtitleFadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (min-width: 1024px) {
+  header { padding: 3.5rem 1rem 2rem; }
+  header h1 { font-size: clamp(1.3rem, 4vw, 2.2rem); }
+  header p { animation: subtitleFadeUp 0.8s ease-out both; }
+}
+
+/* Card image zoom on desktop hover */
+@media (min-width: 1024px) {
+  .card-img {
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+  .card:hover .card-img {
+    transform: scale(1.02);
+  }
+}
+
+/* Glassmorphism on cards (desktop) */
+@media (min-width: 1024px) {
+  .card {
+    background: rgba(26, 26, 26, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  [data-theme="light"] .card {
+    background: rgba(255, 255, 255, 0.85);
+  }
+}
+
+/* Larger heatmap cells on desktop */
+@media (min-width: 720px) {
+  .heatmap-cell {
+    height: 14px;
+    border-radius: 3px;
+  }
+}
+
+/* Timeline hover expand (desktop) */
+@media (min-width: 720px) {
+  .timeline-content {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .timeline-item.left:hover .timeline-content {
+    transform: translateX(-4px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  }
+  .timeline-item.right:hover .timeline-content {
+    transform: translateX(4px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  }
+}
+
+/* Letter spacing on section headers */
+@media (min-width: 1024px) {
+  .tech-grid-section h2,
+  .timeline-section h2 {
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+}
