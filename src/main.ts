@@ -32,7 +32,6 @@ import { init as initCards } from './js/cards.ts';
 import { init as initStats } from './js/stats.ts';
 import { init as initTimeline } from './js/timeline.ts';
 import { init as initScroll } from './js/scroll.ts';
-import { init as initFilter } from './js/filter.ts';
 
 // --- Initialize all modules ---
 initTheme();
@@ -49,4 +48,3 @@ initScroll();
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js');
 }
-initFilter();
