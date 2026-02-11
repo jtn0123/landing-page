@@ -1,7 +1,8 @@
-import { API_BASE, OWNER } from '../main.js';
-import { cachedFetchJSON, renderError, relativeTime } from './api.js';
+import { API_BASE, OWNER } from '../main.ts';
+import { cachedFetchJSON, renderError, relativeTime } from './api.ts';
+import type { RepoData, WorkflowResponse, ParticipationData, LanguageData } from './types.ts';
 
-const HEATMAP_COLORS = {
+const HEATMAP_COLORS: Record<string, string> = {
   MegaBonk: '79,195,247',
   VoltTracker: '76,175,80',
   'landing-page': '171,71,188',
@@ -9,27 +10,29 @@ const HEATMAP_COLORS = {
   'AudioWhisper': '233,30,99'
 };
 
-const LANG_COLORS = {
+const LANG_COLORS: Record<string, string> = {
   TypeScript: '#3178c6', JavaScript: '#f1e05a', Python: '#3572A5',
   CSS: '#563d7c', HTML: '#e34c26', Shell: '#89e051', PLpgSQL: '#336790'
 };
 
-async function loadCardMeta() {
+async function loadCardMeta(): Promise<void> {
   const cards = document.querySelectorAll('.card[data-repo]');
   await Promise.all([...cards].map(async (card) => {
-    const repo = card.dataset.repo;
+    const repo = (card as HTMLElement).dataset.repo;
+    if (!repo) return;
     try {
-      const { data } = await cachedFetchJSON(`${API_BASE}/repos/${OWNER}/${repo}`);
+      const { data } = await cachedFetchJSON<RepoData>(`${API_BASE}/repos/${OWNER}/${repo}`);
       const updatedEl = card.querySelector('.card-updated');
       if (updatedEl && data.pushed_at) {
         updatedEl.textContent = 'Updated ' + relativeTime(data.pushed_at);
       }
     } catch { /* ignore */ }
     try {
-      const { data } = await cachedFetchJSON(`${API_BASE}/repos/${OWNER}/${repo}/actions/runs?per_page=1`);
+      const { data } = await cachedFetchJSON<WorkflowResponse>(`${API_BASE}/repos/${OWNER}/${repo}/actions/runs?per_page=1`);
       if (data.workflow_runs && data.workflow_runs.length > 0) {
         const run = data.workflow_runs[0];
         const h2 = card.querySelector('h2');
+        if (!h2) return;
         const badge = document.createElement('span');
         badge.className = 'ci-badge';
         if (run.conclusion === 'success') {
@@ -45,13 +48,14 @@ async function loadCardMeta() {
   }));
 }
 
-async function loadHeatmaps() {
+async function loadHeatmaps(): Promise<void> {
   const rows = document.querySelectorAll('.heatmap-row[data-repo]');
   for (const row of rows) {
-    const repo = row.dataset.repo;
+    const repo = (row as HTMLElement).dataset.repo;
+    if (!repo) continue;
     const rgb = HEATMAP_COLORS[repo] || '79,195,247';
     try {
-      const { data } = await cachedFetchJSON(`${API_BASE}/repos/${OWNER}/${repo}/stats/participation`);
+      const { data } = await cachedFetchJSON<ParticipationData>(`${API_BASE}/repos/${OWNER}/${repo}/stats/participation`);
       const weeks = (data.owner || data.all || []).slice(-12);
       const max = Math.max(...weeks, 1);
       row.innerHTML = '';
@@ -72,22 +76,27 @@ async function loadHeatmaps() {
   }
 }
 
-async function loadLangBar(el) {
+async function loadLangBar(el: HTMLElement): Promise<void> {
   const repo = el.dataset.repo;
+  if (!repo) return;
   const track = el.querySelector('.lang-bar-track');
-  let data;
+  if (!track) return;
+  let data: LanguageData | undefined;
   try {
     const cacheKey = 'nd_lang_' + repo;
-    const cached = JSON.parse(sessionStorage.getItem(cacheKey));
-    if (cached && Date.now() - cached.ts < 600000) { data = cached.data; }
+    const raw = sessionStorage.getItem(cacheKey);
+    if (raw) {
+      const cached = JSON.parse(raw) as { ts: number; data: LanguageData };
+      if (cached && Date.now() - cached.ts < 600000) { data = cached.data; }
+    }
   } catch { /* ignore */ }
   if (!data) {
     try {
-      const result = await cachedFetchJSON(`${API_BASE}/repos/${repo}/languages`);
+      const result = await cachedFetchJSON<LanguageData>(`${API_BASE}/repos/${repo}/languages`);
       data = result.data;
     } catch (err) {
       track.classList.remove('shimmer-track');
-      renderError(el, err.message || 'Failed to load languages', () => {
+      renderError(el, (err as Error).message || 'Failed to load languages', () => {
         el.innerHTML = '<div class="lang-bar-track shimmer-track"><div class="lang-bar-fill"></div></div><div class="lang-legend"></div>';
         loadLangBar(el);
       });
@@ -102,10 +111,11 @@ async function loadLangBar(el) {
     .map(([name, bytes]) => ({ name, pct: (bytes / total) * 100, lines: Math.round(bytes / 40) }))
     .filter(l => l.pct > 2);
 
-  const fill = el.querySelector('.lang-bar-fill');
+  const fill = el.querySelector('.lang-bar-fill') as HTMLElement | null;
+  if (!fill) return;
   fill.innerHTML = '';
   fill.style.display = 'flex';
-  const segElements = [];
+  const segElements: { seg: HTMLElement; pct: number }[] = [];
   langs.forEach(l => {
     const seg = document.createElement('span');
     seg.style.width = '0%';
@@ -134,6 +144,7 @@ async function loadLangBar(el) {
   });
 
   const legend = el.querySelector('.lang-legend');
+  if (!legend) return;
   legend.innerHTML = '<span class="lang-total">' + totalLoc.toLocaleString() + ' lines</span>' +
     langs.slice(0, 4).map(l =>
     '<span class="lang-legend-item"><span class="lang-dot" style="background:' +
@@ -142,11 +153,11 @@ async function loadLangBar(el) {
   ).join('');
 }
 
-function initCardDots() {
+function initCardDots(): void {
   const projects = document.querySelector('.projects');
   const dots = document.querySelectorAll('.card-dot');
-  const cards = projects.querySelectorAll('.card');
-  if (!dots.length || !cards.length) return;
+  const cards = projects?.querySelectorAll('.card');
+  if (!projects || !dots.length || !cards?.length) return;
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -160,7 +171,7 @@ function initCardDots() {
   cards.forEach(card => observer.observe(card));
 }
 
-export function init() {
+export function init(): void {
   loadCardMeta();
   loadHeatmaps();
   initCardDots();
@@ -170,7 +181,7 @@ export function init() {
     entries.forEach(e => {
       if (e.isIntersecting) {
         langObserver.unobserve(e.target);
-        loadLangBar(e.target);
+        loadLangBar(e.target as HTMLElement);
       }
     });
   }, { rootMargin: '200px' });

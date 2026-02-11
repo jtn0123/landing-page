@@ -1,17 +1,18 @@
-export function init() {
+export function init(): void {
   const themeBtn = document.getElementById('theme-toggle');
+  if (!themeBtn) return;
 
-  function getTheme() {
+  function getTheme(): string {
     return localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
   }
 
-  function applyTheme(t) {
+  function applyTheme(t: string): void {
     if (t === 'light') {
       document.documentElement.setAttribute('data-theme', 'light');
-      themeBtn.textContent = '☀️';
+      themeBtn!.textContent = '☀️';
     } else {
       document.documentElement.removeAttribute('data-theme');
-      themeBtn.textContent = '🌙';
+      themeBtn!.textContent = '🌙';
     }
   }
 

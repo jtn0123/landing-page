@@ -1,4 +1,4 @@
-export function init() {
+export function init(): void {
   // Scroll progress bar
   const scrollProgress = document.getElementById('scroll-progress');
   if (scrollProgress) {
