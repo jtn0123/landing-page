@@ -39,10 +39,10 @@ test.describe('Cards', () => {
     const trigger = page.locator('.lightbox-trigger').first();
     await trigger.click();
 
-    const lightbox = page.locator('.lightbox-overlay, .lightbox, [class*="lightbox"]').first();
-    await expect(lightbox).toBeVisible({ timeout: 3000 });
+    const lightbox = page.locator('#lightbox');
+    await expect(lightbox).toHaveClass(/active/, { timeout: 3000 });
 
     await page.keyboard.press('Escape');
-    await expect(lightbox).not.toBeVisible({ timeout: 3000 });
+    await expect(lightbox).not.toHaveClass(/active/, { timeout: 3000 });
   });
 });

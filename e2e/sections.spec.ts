@@ -36,9 +36,10 @@ test.describe('Sections', () => {
 
   test('back-to-top button appears on scroll', async ({ page }) => {
     const btn = page.locator('#back-to-top');
-    await expect(btn).not.toBeVisible();
+    // Button starts with opacity: 0 and pointer-events: none (no .visible class)
+    await expect(btn).not.toHaveClass(/visible/);
 
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-    await expect(btn).toBeVisible({ timeout: 3000 });
+    await expect(btn).toHaveClass(/visible/, { timeout: 3000 });
   });
 });

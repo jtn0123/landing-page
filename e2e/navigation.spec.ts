@@ -6,6 +6,10 @@ test.describe('Navigation', () => {
   });
 
   test('theme toggle changes data-theme attribute', async ({ page }) => {
+    // Clear any stored theme preference so we start in dark mode
+    await page.evaluate(() => localStorage.removeItem('theme'));
+    await page.reload();
+
     const html = page.locator('html');
     await expect(html).not.toHaveAttribute('data-theme', 'light');
 
