@@ -31,7 +31,7 @@ function filterCards(tag: string, filterBar: HTMLElement): void {
   cards.forEach((card) => {
     const techs = card.querySelectorAll('.tech span');
     const techNames = [...techs].map((t) => t.textContent?.trim() ?? '');
-    const matches = tag === 'All' || techNames.some((t) => t === tag);
+    const matches = tag === 'All' || techNames.includes(tag);
 
     if (matches) {
       card.classList.remove('filter-hidden');

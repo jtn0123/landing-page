@@ -4,14 +4,14 @@ const SHELL_ASSETS = [
   '/index.html',
 ];
 
-self.addEventListener('install', (event) => {
+globalThis.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(SHELL_ASSETS))
   );
-  self.skipWaiting();
+  globalThis.skipWaiting();
 });
 
-self.addEventListener('activate', (event) => {
+globalThis.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
       Promise.all(
@@ -19,10 +19,10 @@ self.addEventListener('activate', (event) => {
       )
     )
   );
-  self.clients.claim();
+  globalThis.clients.claim();
 });
 
-self.addEventListener('fetch', (event) => {
+globalThis.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 

@@ -114,7 +114,7 @@ async function loadHeatmaps(): Promise<void> {
           } else {
             cell.style.background = `rgba(${rgb},${0.2 + intensity * 0.8})`;
           }
-          const label = count + ' commit' + (count !== 1 ? 's' : '');
+          const label = count + ' commit' + (count === 1 ? '' : 's');
           cell.title = label;
           cell.setAttribute('aria-label', label);
           row.appendChild(cell);
@@ -153,7 +153,7 @@ async function loadLangBar(el: HTMLElement): Promise<void> {
     .map(([name, bytes]) => ({ name, pct: (bytes / total) * 100, lines: Math.round(bytes / 40) }))
     .filter((l) => l.pct > 2);
 
-  const fill = el.querySelector('.lang-bar-fill') as HTMLElement | null;
+  const fill = el.querySelector<HTMLElement>('.lang-bar-fill');
   if (!fill) return;
   fill.innerHTML = '';
   fill.style.display = 'flex';

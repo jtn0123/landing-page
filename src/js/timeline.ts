@@ -39,11 +39,11 @@ function buildTimeline(commits: Commit[], timelineEl: HTMLElement): void {
       <li class="timeline-item ${i % 2 === 0 ? 'left' : 'right'} content-fade-in">
         <div class="timeline-dot"></div>
         <a href="${c.url || '#'}" target="_blank" rel="noopener noreferrer" class="timeline-content timeline-link">
-          <p class="commit-msg${isExpandable ? ' expandable' : ''}" ${isExpandable ? `data-full="${firstLine.replace(/"/g, '&quot;')}" data-short="${truncated.replace(/"/g, '&quot;')}"` : ''}>${truncated}</p>
+          <p class="commit-msg${isExpandable ? ' expandable' : ''}" ${isExpandable ? `data-full="${firstLine.replaceAll('"', '&quot;')}" data-short="${truncated.replaceAll('"', '&quot;')}"` : ''}>${truncated}</p>
           <div class="commit-meta">
             <span class="repo-badge repo-${c.repo.toLowerCase()}">${c.repo}</span>
-            ${c.additions !== null ? `<span class="stat-add">+${abbreviateNum(c.additions)}</span>` : ''}
-            ${c.deletions !== null ? `<span class="stat-del">-${abbreviateNum(c.deletions)}</span>` : ''}
+            ${c.additions === null ? '' : `<span class="stat-add">+${abbreviateNum(c.additions)}</span>`}
+            ${c.deletions === null ? '' : `<span class="stat-del">-${abbreviateNum(c.deletions)}</span>`}
             <span class="commit-time">${relativeTime(c.date)}</span>
           </div>
         </a>

@@ -221,7 +221,7 @@
   gap: 4px;
   font-size: 0.72rem;
   font-weight: 500;
-  color: #66bb6a;
+  color: #a5d6a7;
   background: rgba(76, 175, 80, 0.1);
   border: 1px solid rgba(76, 175, 80, 0.25);
   padding: 3px 10px;
@@ -426,7 +426,7 @@
 }
 .filter-pill {
   background: var(--badge-bg);
-  color: var(--text-muted);
+  color: var(--text);
   font-size: 0.75rem;
   padding: 5px 14px;
   border-radius: 20px;

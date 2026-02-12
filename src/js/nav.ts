@@ -88,7 +88,7 @@ export function init(): void {
   document.querySelectorAll('.card[data-link]').forEach((card) => {
     card.addEventListener('keydown', (e: Event) => {
       if ((e as KeyboardEvent).key === 'Enter') {
-        const link = card.querySelector('.btn-primary') as HTMLElement | null;
+        const link = card.querySelector<HTMLElement>('.btn-primary');
         if (link) link.click();
       }
     });
@@ -98,12 +98,12 @@ export function init(): void {
   document.querySelectorAll('.btn-primary').forEach((btn) => {
     const url = btn.getAttribute('href');
     if (!url || btn.classList.contains('btn-disabled')) return;
-    const isSameOrigin = url.startsWith('/') || url.startsWith(window.location.origin);
+    const isSameOrigin = url.startsWith('/') || url.startsWith(globalThis.location.origin);
     if (isSameOrigin) {
       btn.addEventListener('click', (e: Event) => {
         e.preventDefault();
         const navigate = (): void => {
-          window.location.href = url;
+          globalThis.location.href = url;
         };
         const vt = (document as unknown as Record<string, unknown>).startViewTransition as
           | ((cb: () => void) => void)
