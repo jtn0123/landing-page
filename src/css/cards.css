@@ -16,13 +16,9 @@
   }
 }
 
-/* Staggered shimmer — inherit delay from card fade-delay */
-.card {
-  --shimmer-delay: var(--fade-delay, 0ms);
-}
-
 /* Card */
 .card {
+  --shimmer-delay: var(--fade-delay, 0ms);
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -177,7 +173,7 @@
 }
 .tech span {
   background: var(--badge-bg);
-  color: var(--text-muted);
+  color: var(--text);
   font-size: 0.72rem;
   padding: 3px 10px;
   border-radius: 20px;

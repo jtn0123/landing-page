@@ -13,7 +13,7 @@ export function init(): void {
     const pill = document.createElement('button');
     pill.className = 'filter-pill';
     pill.textContent = tag;
-    pill.setAttribute('data-filter', tag);
+    pill.dataset.filter = tag;
     if (tag === 'All') pill.classList.add('active');
     pill.addEventListener('click', () => filterCards(tag, filterBar));
     filterBar.appendChild(pill);
@@ -24,7 +24,7 @@ export function init(): void {
 
 function filterCards(tag: string, filterBar: HTMLElement): void {
   filterBar.querySelectorAll('.filter-pill').forEach((p) => {
-    p.classList.toggle('active', p.getAttribute('data-filter') === tag);
+    p.classList.toggle('active', (p as HTMLElement).dataset.filter === tag);
   });
 
   const cards = document.querySelectorAll<HTMLElement>('.card');

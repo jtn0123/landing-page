@@ -2,7 +2,7 @@ import { isMobile, reducedMotion } from '../main.ts';
 
 export function init(): void {
   // Card parallax tilt (desktop only)
-  if (!isMobile && !reducedMotion) {
+  if (!isMobile.value && !reducedMotion) {
     document.querySelectorAll('.card').forEach((card) => {
       card.addEventListener('mousemove', (e: Event) => {
         const me = e as MouseEvent;
@@ -31,7 +31,7 @@ export function init(): void {
 
 /** Called from the unified scroll listener in scroll.ts */
 export function updateParallaxMesh(): void {
-  if (isMobile) return;
+  if (isMobile.value) return;
   const mesh = document.getElementById('parallax-mesh');
   if (mesh) {
     mesh.style.transform = `translateY(${window.scrollY * 0.1}px)`;

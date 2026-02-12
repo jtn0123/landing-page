@@ -22,6 +22,51 @@ const LANG_COLORS: Record<string, string> = {
   Makefile: '#427819',
 };
 
+function renderCardMeta(card: Element, data: RepoData): void {
+  const updatedEl = card.querySelector('.card-updated');
+  if (updatedEl && data.pushed_at) {
+    updatedEl.textContent = 'Updated ' + relativeTime(data.pushed_at);
+  }
+  if (!updatedEl) return;
+  const stars = data.stargazers_count ?? 0;
+  const forks = data.forks_count ?? 0;
+  if (stars <= 0 && forks <= 0) return;
+  const badgesContainer = document.createElement('div');
+  badgesContainer.className = 'card-meta-badges';
+  if (stars > 0) {
+    const starsEl = document.createElement('span');
+    starsEl.className = 'card-meta-badge';
+    starsEl.textContent = `⭐ ${stars}`;
+    starsEl.setAttribute('aria-label', `${stars} stars`);
+    badgesContainer.appendChild(starsEl);
+  }
+  if (forks > 0) {
+    const forksEl = document.createElement('span');
+    forksEl.className = 'card-meta-badge';
+    forksEl.textContent = `🔀 ${forks}`;
+    forksEl.setAttribute('aria-label', `${forks} forks`);
+    badgesContainer.appendChild(forksEl);
+  }
+  updatedEl.after(badgesContainer);
+}
+
+function renderCiBadge(card: Element, data: WorkflowResponse): void {
+  if (!data.workflow_runs || data.workflow_runs.length === 0) return;
+  const run = data.workflow_runs[0];
+  const h2 = card.querySelector('h2');
+  if (!h2) return;
+  const badge = document.createElement('span');
+  badge.className = 'ci-badge';
+  if (run.conclusion === 'success') {
+    badge.classList.add('ci-success');
+    badge.textContent = '✓';
+  } else if (run.conclusion === 'failure') {
+    badge.classList.add('ci-failure');
+    badge.textContent = '✗';
+  }
+  if (badge.textContent) h2.insertBefore(badge, h2.querySelector('.subtitle'));
+}
+
 async function loadCardMeta(): Promise<void> {
   const cards = document.querySelectorAll('.card[data-repo]');
   await Promise.all(
@@ -30,34 +75,7 @@ async function loadCardMeta(): Promise<void> {
       if (!repo) return;
       try {
         const { data } = await cachedFetchJSON<RepoData>(`${API_BASE}/repos/${OWNER}/${repo}`);
-        const updatedEl = card.querySelector('.card-updated');
-        if (updatedEl && data.pushed_at) {
-          updatedEl.textContent = 'Updated ' + relativeTime(data.pushed_at);
-        }
-        // Star/fork badges — only show when count > 0
-        if (updatedEl) {
-          const stars = data.stargazers_count ?? 0;
-          const forks = data.forks_count ?? 0;
-          if (stars > 0 || forks > 0) {
-            const badgesContainer = document.createElement('div');
-            badgesContainer.className = 'card-meta-badges';
-            if (stars > 0) {
-              const starsEl = document.createElement('span');
-              starsEl.className = 'card-meta-badge';
-              starsEl.textContent = `⭐ ${stars}`;
-              starsEl.setAttribute('aria-label', `${stars} stars`);
-              badgesContainer.appendChild(starsEl);
-            }
-            if (forks > 0) {
-              const forksEl = document.createElement('span');
-              forksEl.className = 'card-meta-badge';
-              forksEl.textContent = `🔀 ${forks}`;
-              forksEl.setAttribute('aria-label', `${forks} forks`);
-              badgesContainer.appendChild(forksEl);
-            }
-            updatedEl.after(badgesContainer);
-          }
-        }
+        renderCardMeta(card, data);
       } catch {
         /* ignore */
       }
@@ -65,21 +83,7 @@ async function loadCardMeta(): Promise<void> {
         const { data } = await cachedFetchJSON<WorkflowResponse>(
           `${API_BASE}/repos/${OWNER}/${repo}/actions/runs?per_page=1`,
         );
-        if (data.workflow_runs && data.workflow_runs.length > 0) {
-          const run = data.workflow_runs[0];
-          const h2 = card.querySelector('h2');
-          if (!h2) return;
-          const badge = document.createElement('span');
-          badge.className = 'ci-badge';
-          if (run.conclusion === 'success') {
-            badge.classList.add('ci-success');
-            badge.textContent = '✓';
-          } else if (run.conclusion === 'failure') {
-            badge.classList.add('ci-failure');
-            badge.textContent = '✗';
-          }
-          if (badge.textContent) h2.insertBefore(badge, h2.querySelector('.subtitle'));
-        }
+        renderCiBadge(card, data);
       } catch {
         /* ignore */
       }

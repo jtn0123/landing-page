@@ -205,7 +205,7 @@
       (function () {
         var t = localStorage.getItem('theme');
         if (!t) t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-        if (t === 'light') document.documentElement.setAttribute('data-theme', 'light');
+        if (t === 'light') document.documentElement.dataset.theme = 'light';
       })();
     </script>
 
@@ -274,7 +274,6 @@
     <main id="main-content" class="projects">
       <article
         class="card fade-in fade-in-left"
-        tabindex="0"
         data-link="https://neuhard.dev/megabonk/"
         data-repo="MegaBonk"
       >
@@ -333,7 +332,6 @@
 
       <article
         class="card fade-in fade-in-right"
-        tabindex="0"
         data-link="https://neuhard.dev/volttracker/"
         data-repo="VoltTracker"
         style="--fade-delay: 300ms"
@@ -404,7 +402,6 @@
       </article>
       <article
         class="card fade-in fade-in-left"
-        tabindex="0"
         data-repo="landing-page"
         style="--fade-delay: 400ms"
       >
@@ -444,7 +441,6 @@
 
       <article
         class="card fade-in fade-in-right"
-        tabindex="0"
         data-link="https://sat.neuhard.dev/"
         data-repo="satellite_processor"
         style="--fade-delay: 500ms"
@@ -487,7 +483,6 @@
 
       <article
         class="card fade-in fade-in-left"
-        tabindex="0"
         data-repo="AudioWhisper"
         style="--fade-delay: 600ms"
       >
@@ -524,7 +519,7 @@
       </article>
     </main>
     <!-- Stats Bar -->
-    <section class="stats-bar fade-in" aria-live="polite" style="--fade-delay: 700ms">
+    <section class="stats-bar fade-in" aria-label="Project statistics" aria-live="polite" style="--fade-delay: 700ms">
       <div class="stat">
         <span class="stat-value shimmer-placeholder" id="total-loc">&nbsp;</span>
         <span class="stat-label">Lines of Code</span>
@@ -542,7 +537,7 @@
     <!-- Tech Stack -->
     <section id="tech-section" class="tech-grid-section fade-in" style="--fade-delay: 800ms">
       <h2>Tech Stack</h2>
-      <div class="tech-grid">
+      <div class="tech-grid" aria-label="Technologies used">
         <div class="tech-item" style="--tc: #3178c6">
           <svg viewBox="0 0 128 128" width="28" height="28">
             <path
@@ -693,27 +688,27 @@
     <!-- Recent Activity Timeline -->
     <section id="activity" class="timeline-section fade-in" style="--fade-delay: 900ms">
       <h2>Recent Activity</h2>
-      <div id="timeline" class="timeline" role="list">
-        <div class="timeline-loading">
+      <ul id="timeline" class="timeline">
+        <li class="timeline-loading">
           <div class="skeleton-item"></div>
           <div class="skeleton-item"></div>
           <div class="skeleton-item"></div>
-        </div>
-      </div>
+        </li>
+      </ul>
       <a
         href="https://github.com/jtn0123"
         class="view-all-link"
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="View all commits on GitHub"
+        aria-label="View all commits"
         >View all commits →</a
       >
     </section>
 
     <!-- Lightbox -->
-    <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Image preview">
+    <dialog id="lightbox" class="lightbox" aria-label="Image preview">
       <img id="lightbox-img" src="" alt="" />
-    </div>
+    </dialog>
 
     <div class="wave-divider" aria-hidden="true">
       <svg viewBox="0 0 1200 36" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
