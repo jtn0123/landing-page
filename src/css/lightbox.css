@@ -1,4 +1,7 @@
 /* Lightbox */
+.lightbox:not([open]) {
+  display: none;
+}
 .lightbox {
   border: none;
   padding: 0;
