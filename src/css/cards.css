@@ -229,6 +229,11 @@
   margin-bottom: 1rem;
 }
 
+/* Light theme: darken test badge text for WCAG AA contrast */
+[data-theme='light'] .test-badge {
+  color: #2e7d32;
+}
+
 /* Landing-page card gradient image */
 /* Skip dark overlay on gradient placeholder cards */
 .card-img-gradient::before,

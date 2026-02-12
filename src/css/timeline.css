@@ -90,6 +90,23 @@
   color: #f8bbd0;
 }
 
+/* Light theme: darken repo badge text for WCAG AA contrast */
+[data-theme='light'] .repo-megabonk {
+  color: #0277bd;
+}
+[data-theme='light'] .repo-volttracker {
+  color: #2e7d32;
+}
+[data-theme='light'] .repo-landing-page {
+  color: #7b1fa2;
+}
+[data-theme='light'] .repo-satellite_processor {
+  color: #e65100;
+}
+[data-theme='light'] .repo-audiowhisper {
+  color: #c2185b;
+}
+
 /* Repo badge hover glow */
 .repo-megabonk:hover {
   box-shadow: 0 0 8px rgba(79, 195, 247, 0.5);
