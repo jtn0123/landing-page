@@ -1,5 +1,13 @@
 import { isMobile, reducedMotion } from '../main.ts';
 
+/**
+ * Initialize card parallax tilt effects on desktop when motion is allowed.
+ *
+ * When not on mobile and reduced motion is disabled, attaches mouse event handlers
+ * to elements with the `card` class to apply a 3D tilt transform on hover and
+ * reset it on mouse leave. Does nothing when on mobile (`isMobile.value`) or
+ * when reduced motion is enabled.
+ */
 export function init(): void {
   // Card parallax tilt (desktop only)
   if (!isMobile.value && !reducedMotion) {
@@ -29,7 +37,13 @@ export function init(): void {
 
 }
 
-/** Called from the unified scroll listener in scroll.ts */
+/**
+ * Adjusts the vertical position of the parallax mesh element based on page scroll.
+ *
+ * If the app is in a mobile state (`isMobile.value` is true) the function returns immediately.
+ * When an element with id `parallax-mesh` exists, its `style.transform` is set to `translateY(window.scrollY * 0.1px)`.
+ * If the element is not present the function does nothing.
+ */
 export function updateParallaxMesh(): void {
   if (isMobile.value) return;
   const mesh = document.getElementById('parallax-mesh');

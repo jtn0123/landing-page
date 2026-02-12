@@ -22,6 +22,14 @@ const LANG_COLORS: Record<string, string> = {
   Makefile: '#427819',
 };
 
+/**
+ * Update a repository card's metadata UI: refresh the "Updated" timestamp and add star/fork badges when present.
+ *
+ * Updates the element with class `card-updated` to show the repository's last push time (if `pushed_at` is present). If the repository has one or more stargazers or forks, inserts a `.card-meta-badges` container immediately after the updated element containing `.card-meta-badge` spans for stars (`⭐`) and forks (`🔀`). Each badge includes an `aria-label` with the count.
+ *
+ * @param card - The card element to update (should contain a `.card-updated` element).
+ * @param data - Repository metadata (uses `pushed_at`, `stargazers_count`, and `forks_count`).
+ */
 function renderCardMeta(card: Element, data: RepoData): void {
   const updatedEl = card.querySelector('.card-updated');
   if (updatedEl && data.pushed_at) {
@@ -50,6 +58,14 @@ function renderCardMeta(card: Element, data: RepoData): void {
   updatedEl.after(badgesContainer);
 }
 
+/**
+ * Add a CI status badge to a repository card header when a recent workflow run exists.
+ *
+ * Inserts a small badge (check for success, cross for failure) before the card's subtitle based on the first workflow run's `conclusion`.
+ *
+ * @param card - The repository card element whose header will receive the badge
+ * @param data - The workflow runs response used to determine the latest run's conclusion
+ */
 function renderCiBadge(card: Element, data: WorkflowResponse): void {
   if (!data.workflow_runs || data.workflow_runs.length === 0) return;
   const run = data.workflow_runs[0];
@@ -67,6 +83,11 @@ function renderCiBadge(card: Element, data: WorkflowResponse): void {
   if (badge.textContent) h2.insertBefore(badge, h2.querySelector('.subtitle'));
 }
 
+/**
+ * Load repository metadata and latest CI status for every element with class `card` and a `data-repo` attribute, and update each card's UI accordingly.
+ *
+ * For each matching card this function fetches the repository information and the most recent workflow run; network or parsing errors for an individual card are ignored so other cards continue to update.
+ */
 async function loadCardMeta(): Promise<void> {
   const cards = document.querySelectorAll('.card[data-repo]');
   await Promise.all(

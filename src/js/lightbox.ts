@@ -1,9 +1,23 @@
+/**
+ * Compute the Euclidean distance between the first two touch points.
+ *
+ * @param touches - A TouchList with at least two touches
+ * @returns The distance in pixels between `touches[0]` and `touches[1]`
+ */
 function getDist(touches: TouchList): number {
   const dx = touches[0].clientX - touches[1].clientX;
   const dy = touches[0].clientY - touches[1].clientY;
   return Math.hypot(dx, dy);
 }
 
+/**
+ * Initialize the image lightbox UI, its open/close controls, keyboard handling, and pinch-to-zoom behavior.
+ *
+ * Sets up click handlers on elements with the `.lightbox-trigger` class to open a modal dialog showing the clicked image,
+ * a click handler on the dialog to close it, and a global Escape key handler to close the lightbox when open.
+ * Also enables pinch-to-zoom on the displayed image with scale clamped between 1 and 4 and resets transform/scale when closing
+ * or opening a new image. If required DOM elements are missing, the function exits without registering handlers.
+ */
 export function init(): void {
   const lightbox = document.getElementById('lightbox') as HTMLDialogElement | null;
   const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement | null;

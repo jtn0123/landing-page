@@ -25,6 +25,16 @@ function renderTimeline(commits: Commit[]): void {
   }
 }
 
+/**
+ * Render a chronological commit activity timeline into the given container element.
+ *
+ * Builds the timeline markup from `commits`, injects it into `timelineEl`, sets
+ * `aria-live="polite"` after rendering, and attaches click handlers to toggle
+ * commit messages that are longer than 60 characters between short and full text.
+ *
+ * @param commits - Array of commit objects to display (message, date, repo, url, additions, deletions, etc.)
+ * @param timelineEl - The container HTMLElement where the timeline list will be rendered
+ */
 function buildTimeline(commits: Commit[], timelineEl: HTMLElement): void {
   // Add aria-live after content is built so screen readers don't announce all items on load
   requestAnimationFrame(() => timelineEl.setAttribute('aria-live', 'polite'));
