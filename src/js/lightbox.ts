@@ -1,8 +1,20 @@
+function getDist(touches: TouchList): number {
+  const dx = touches[0].clientX - touches[1].clientX;
+  const dy = touches[0].clientY - touches[1].clientY;
+  return Math.hypot(dx, dy);
+}
+
 export function init(): void {
-  const lightbox = document.getElementById('lightbox');
+  const lightbox = document.getElementById('lightbox') as HTMLDialogElement | null;
   const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement | null;
   if (!lightbox || !lightboxImg) return;
   let currentScale = 1;
+
+  function closeLightbox(): void {
+    lightbox!.close();
+    lightboxImg!.style.transform = '';
+    currentScale = 1;
+  }
 
   document.querySelectorAll('.lightbox-trigger').forEach((img) => {
     (img as HTMLElement).style.cursor = 'zoom-in';
@@ -13,31 +25,22 @@ export function init(): void {
       currentScale = 1;
       lightboxImg.src = (img as HTMLImageElement).src;
       lightboxImg.alt = (img as HTMLImageElement).alt;
-      lightbox.classList.add('active');
+      lightbox.showModal();
     });
   });
 
   lightbox.addEventListener('click', () => {
-    lightbox.classList.remove('active');
-    lightboxImg.style.transform = '';
-    currentScale = 1;
+    closeLightbox();
   });
 
   document.addEventListener('keydown', (e: KeyboardEvent) => {
-    if (e.key === 'Escape') {
-      lightbox.classList.remove('active');
-      lightboxImg.style.transform = '';
-      currentScale = 1;
+    if (e.key === 'Escape' && lightbox.open) {
+      closeLightbox();
     }
   });
 
   // Pinch-to-zoom
   let initialDist = 0;
-  function getDist(touches: TouchList): number {
-    const dx = touches[0].clientX - touches[1].clientX;
-    const dy = touches[0].clientY - touches[1].clientY;
-    return Math.hypot(dx, dy);
-  }
   lightboxImg.addEventListener(
     'touchstart',
     (e: TouchEvent) => {

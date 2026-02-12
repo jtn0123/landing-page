@@ -36,7 +36,7 @@ function buildTimeline(commits: Commit[], timelineEl: HTMLElement): void {
         const truncated = truncate(firstLine, 60);
         const isExpandable = truncated !== firstLine;
         return `
-      <div class="timeline-item ${i % 2 === 0 ? 'left' : 'right'} content-fade-in" role="listitem">
+      <li class="timeline-item ${i % 2 === 0 ? 'left' : 'right'} content-fade-in">
         <div class="timeline-dot"></div>
         <a href="${c.url || '#'}" target="_blank" rel="noopener noreferrer" class="timeline-content timeline-link">
           <p class="commit-msg${isExpandable ? ' expandable' : ''}" ${isExpandable ? `data-full="${firstLine.replace(/"/g, '&quot;')}" data-short="${truncated.replace(/"/g, '&quot;')}"` : ''}>${truncated}</p>
@@ -47,7 +47,7 @@ function buildTimeline(commits: Commit[], timelineEl: HTMLElement): void {
             <span class="commit-time">${relativeTime(c.date)}</span>
           </div>
         </a>
-      </div>
+      </li>
     `;
       })
       .join('');

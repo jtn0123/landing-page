@@ -17,9 +17,10 @@ export const CARD_REPOS: string[] = [
 ];
 export const OWNER: string = 'jtn0123';
 export const reducedMotion: boolean = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-export let isMobile: boolean = window.matchMedia('(max-width: 720px)').matches;
-window.matchMedia('(max-width: 720px)').addEventListener('change', (e) => {
-  isMobile = e.matches;
+const mobileQuery = window.matchMedia('(max-width: 720px)');
+export const isMobile: { value: boolean } = { value: mobileQuery.matches };
+mobileQuery.addEventListener('change', (e) => {
+  isMobile.value = e.matches;
 });
 
 // --- Module imports ---
