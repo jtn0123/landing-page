@@ -21,6 +21,14 @@ function mockJson(data: any) {
   });
 }
 
+function triggerObservers(): void {
+  MockIntersectionObserver.instances.forEach((obs) => {
+    obs.observe.mock.calls.forEach((call: any[]) => {
+      obs.trigger([{ isIntersecting: true, target: call[0] }]);
+    });
+  });
+}
+
 describe('stats', () => {
   beforeEach(() => {
     vi.resetModules();
@@ -33,18 +41,10 @@ describe('stats', () => {
         <div class="stat"><span class="stat-value shimmer-placeholder" id="total-loc">&nbsp;</span></div>
         <div class="stat"><span class="stat-value shimmer-placeholder" id="total-commits">&nbsp;</span></div>
       </div>`;
-    vi.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => { cb(performance.now() + 1300); return 0; });
+    vi.spyOn(globalThis, 'requestAnimationFrame').mockImplementation((cb) => { cb(performance.now() + 1300); return 0; });
   });
 
   afterEach(() => { vi.useRealTimers(); });
-
-  function triggerObservers() {
-    MockIntersectionObserver.instances.forEach((obs) => {
-      obs.observe.mock.calls.forEach((call: any[]) => {
-        obs.trigger([{ isIntersecting: true, target: call[0] }]);
-      });
-    });
-  }
 
   it('loads stats from API', async () => {
     mockFetch.mockImplementation((url: string) => {

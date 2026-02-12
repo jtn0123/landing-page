@@ -71,23 +71,23 @@
 }
 .repo-megabonk {
   background: rgba(79, 195, 247, 0.15);
-  color: #B3E5FC;
+  color: #e1f5fe;
 }
 .repo-volttracker {
   background: rgba(76, 175, 80, 0.15);
-  color: #A5D6A7;
+  color: #c8e6c9;
 }
 .repo-landing-page {
   background: rgba(171, 71, 188, 0.15);
-  color: #CE93D8;
+  color: #e1bee7;
 }
 .repo-satellite_processor {
   background: rgba(255, 152, 0, 0.15);
-  color: #FFB74D;
+  color: #ffe0b2;
 }
 .repo-audiowhisper {
   background: rgba(233, 30, 99, 0.15);
-  color: #F48FB1;
+  color: #f8bbd0;
 }
 
 /* Repo badge hover glow */
@@ -127,7 +127,7 @@
 }
 .commit-time {
   font-size: 0.72rem;
-  color: var(--text-muted);
+  color: var(--timeline-muted, #aaa);
   margin-left: auto;
 }
 

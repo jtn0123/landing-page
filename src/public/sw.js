@@ -45,7 +45,7 @@ globalThis.addEventListener('fetch', (event) => {
     caches.match(request).then((cached) => {
       if (cached) return cached;
       return fetch(request).then((response) => {
-        if (response.ok && url.origin === self.location.origin) {
+        if (response.ok && url.origin === globalThis.location.origin) {
           const clone = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
         }

@@ -26,6 +26,14 @@ const fakeCommits = [{
   author: { avatar_url: '' }, html_url: 'https://github.com/test', sha: 'abc123',
 }];
 
+function triggerObservers(): void {
+  MockIntersectionObserver.instances.forEach((obs) => {
+    obs.observe.mock.calls.forEach((call: any[]) => {
+      obs.trigger([{ isIntersecting: true, target: call[0] }]);
+    });
+  });
+}
+
 describe('timeline', () => {
   beforeEach(() => {
     vi.resetModules();
@@ -37,14 +45,6 @@ describe('timeline', () => {
   });
 
   afterEach(() => { vi.useRealTimers(); });
-
-  function triggerObservers() {
-    MockIntersectionObserver.instances.forEach((obs) => {
-      obs.observe.mock.calls.forEach((call: any[]) => {
-        obs.trigger([{ isIntersecting: true, target: call[0] }]);
-      });
-    });
-  }
 
   it('renders timeline items from API', async () => {
     mockFetch.mockImplementation((url: string) => {

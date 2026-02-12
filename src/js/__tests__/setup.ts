@@ -43,4 +43,28 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
+// Mock Touch constructor for jsdom
+if (typeof globalThis.Touch === 'undefined') {
+  (globalThis as any).Touch = class Touch {
+    identifier: number;
+    target: EventTarget;
+    clientX: number;
+    clientY: number;
+    pageX: number;
+    pageY: number;
+    screenX: number;
+    screenY: number;
+    constructor(init: { identifier: number; target: EventTarget; clientX?: number; clientY?: number }) {
+      this.identifier = init.identifier;
+      this.target = init.target;
+      this.clientX = init.clientX ?? 0;
+      this.clientY = init.clientY ?? 0;
+      this.pageX = this.clientX;
+      this.pageY = this.clientY;
+      this.screenX = this.clientX;
+      this.screenY = this.clientY;
+    }
+  };
+}
+
 export { MockIntersectionObserver };

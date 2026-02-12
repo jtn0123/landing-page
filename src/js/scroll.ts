@@ -52,10 +52,10 @@ export function init(): void {
   const backToTop = document.getElementById('back-to-top');
   const header = document.getElementById('site-header');
 
-  window.addEventListener('scroll', () => {
-    const scrollTop = window.scrollY;
+  globalThis.addEventListener('scroll', () => {
+    const scrollTop = globalThis.scrollY;
     if (scrollProgress) {
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight - globalThis.innerHeight;
       const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
       scrollProgress.style.width = pct + '%';
     }
@@ -70,7 +70,7 @@ export function init(): void {
 
   if (backToTop) {
     backToTop.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      globalThis.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
 

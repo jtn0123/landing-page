@@ -22,6 +22,14 @@ const LANG_COLORS: Record<string, string> = {
   Makefile: '#427819',
 };
 
+function createMetaBadge(text: string, label: string): HTMLSpanElement {
+  const el = document.createElement('span');
+  el.className = 'card-meta-badge';
+  el.textContent = text;
+  el.setAttribute('aria-label', label);
+  return el;
+}
+
 function renderCardMeta(card: Element, data: RepoData): void {
   const updatedEl = card.querySelector('.card-updated');
   if (updatedEl && data.pushed_at) {
@@ -34,18 +42,10 @@ function renderCardMeta(card: Element, data: RepoData): void {
   const badgesContainer = document.createElement('div');
   badgesContainer.className = 'card-meta-badges';
   if (stars > 0) {
-    const starsEl = document.createElement('span');
-    starsEl.className = 'card-meta-badge';
-    starsEl.textContent = `⭐ ${stars}`;
-    starsEl.setAttribute('aria-label', `${stars} stars`);
-    badgesContainer.appendChild(starsEl);
+    badgesContainer.appendChild(createMetaBadge(`⭐ ${stars}`, `${stars} stars`));
   }
   if (forks > 0) {
-    const forksEl = document.createElement('span');
-    forksEl.className = 'card-meta-badge';
-    forksEl.textContent = `🔀 ${forks}`;
-    forksEl.setAttribute('aria-label', `${forks} forks`);
-    badgesContainer.appendChild(forksEl);
+    badgesContainer.appendChild(createMetaBadge(`🔀 ${forks}`, `${forks} forks`));
   }
   updatedEl.after(badgesContainer);
 }
@@ -68,10 +68,10 @@ function renderCiBadge(card: Element, data: WorkflowResponse): void {
 }
 
 async function loadCardMeta(): Promise<void> {
-  const cards = document.querySelectorAll('.card[data-repo]');
+  const cards = document.querySelectorAll<HTMLElement>('.card[data-repo]');
   await Promise.all(
     [...cards].map(async (card) => {
-      const repo = (card as HTMLElement).dataset.repo;
+      const repo = card.dataset.repo;
       if (!repo) return;
       try {
         const { data } = await cachedFetchJSON<RepoData>(`${API_BASE}/repos/${OWNER}/${repo}`);
@@ -91,11 +91,31 @@ async function loadCardMeta(): Promise<void> {
   );
 }
 
+function renderHeatmapCells(row: Element, weeks: number[], rgb: string): void {
+  const max = Math.max(...weeks, 1);
+  row.innerHTML = '';
+  weeks.forEach((count, idx) => {
+    const cell = document.createElement('span');
+    cell.className = 'heatmap-cell';
+    const intensity = count / max;
+    if (count === 0) {
+      cell.style.background = 'var(--border)';
+    } else {
+      cell.style.background = `rgba(${rgb},${0.2 + intensity * 0.8})`;
+    }
+    const label = count + ' commit' + (count === 1 ? '' : 's');
+    cell.title = label;
+    cell.setAttribute('aria-label', label);
+    row.appendChild(cell);
+    setTimeout(() => cell.classList.add('active'), 30 * idx);
+  });
+}
+
 async function loadHeatmaps(): Promise<void> {
-  const rows = document.querySelectorAll('.heatmap-row[data-repo]');
+  const rows = document.querySelectorAll<HTMLElement>('.heatmap-row[data-repo]');
   await Promise.all(
     [...rows].map(async (row) => {
-      const repo = (row as HTMLElement).dataset.repo;
+      const repo = row.dataset.repo;
       if (!repo) return;
       const rgb = HEATMAP_COLORS[repo] || '79,195,247';
       try {
@@ -103,28 +123,74 @@ async function loadHeatmaps(): Promise<void> {
           `${API_BASE}/repos/${OWNER}/${repo}/stats/participation`,
         );
         const weeks = (data.owner || data.all || []).slice(-12);
-        const max = Math.max(...weeks, 1);
-        row.innerHTML = '';
-        weeks.forEach((count, idx) => {
-          const cell = document.createElement('span');
-          cell.className = 'heatmap-cell';
-          const intensity = count / max;
-          if (count === 0) {
-            cell.style.background = 'var(--border)';
-          } else {
-            cell.style.background = `rgba(${rgb},${0.2 + intensity * 0.8})`;
-          }
-          const label = count + ' commit' + (count === 1 ? '' : 's');
-          cell.title = label;
-          cell.setAttribute('aria-label', label);
-          row.appendChild(cell);
-          setTimeout(() => cell.classList.add('active'), 30 * idx);
-        });
+        renderHeatmapCells(row, weeks, rgb);
       } catch {
         /* ignore */
       }
     }),
   );
+}
+
+function buildLangBarSegments(
+  fill: HTMLElement,
+  langs: { name: string; pct: number; lines: number }[],
+): void {
+  fill.innerHTML = '';
+  fill.style.display = 'flex';
+  const segElements: { seg: HTMLElement; pct: number }[] = [];
+  for (const l of langs) {
+    const seg = document.createElement('span');
+    seg.style.width = '0%';
+    seg.style.background = LANG_COLORS[l.name] || '#888';
+    seg.style.position = 'relative';
+    seg.addEventListener('mouseenter', () => {
+      const tip = document.createElement('div');
+      tip.className = 'lang-tooltip';
+      tip.textContent = `${l.name}: ${l.pct.toFixed(1)}% · ${l.lines.toLocaleString()} lines`;
+      seg.appendChild(tip);
+      const rect = tip.getBoundingClientRect();
+      if (rect.left < 0) tip.style.transform = `translateX(${-rect.left + 4}px)`;
+      if (rect.right > globalThis.innerWidth)
+        tip.style.transform = `translateX(${globalThis.innerWidth - rect.right - 4}px)`;
+    });
+    seg.addEventListener('mouseleave', () => {
+      const tip = seg.querySelector('.lang-tooltip');
+      if (tip) tip.remove();
+    });
+    fill.appendChild(seg);
+    segElements.push({ seg, pct: l.pct });
+  }
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      for (const { seg, pct } of segElements) {
+        seg.style.width = pct + '%';
+      }
+    }, 50);
+  });
+}
+
+function buildLangLegend(
+  legend: Element,
+  langs: { name: string; pct: number }[],
+  totalLoc: number,
+): void {
+  legend.innerHTML =
+    '<span class="lang-total">' +
+    totalLoc.toLocaleString() +
+    ' lines</span>' +
+    langs
+      .slice(0, 4)
+      .map(
+        (l) =>
+          '<span class="lang-legend-item"><span class="lang-dot" style="background:' +
+          (LANG_COLORS[l.name] || '#888') +
+          '"></span>' +
+          l.name +
+          ' ' +
+          l.pct.toFixed(1) +
+          '%</span>',
+      )
+      .join('');
 }
 
 async function loadLangBar(el: HTMLElement): Promise<void> {
@@ -155,58 +221,11 @@ async function loadLangBar(el: HTMLElement): Promise<void> {
 
   const fill = el.querySelector<HTMLElement>('.lang-bar-fill');
   if (!fill) return;
-  fill.innerHTML = '';
-  fill.style.display = 'flex';
-  const segElements: { seg: HTMLElement; pct: number }[] = [];
-  langs.forEach((l) => {
-    const seg = document.createElement('span');
-    seg.style.width = '0%';
-    seg.style.background = LANG_COLORS[l.name] || '#888';
-    seg.style.position = 'relative';
-    seg.addEventListener('mouseenter', () => {
-      const tip = document.createElement('div');
-      tip.className = 'lang-tooltip';
-      tip.textContent = `${l.name}: ${l.pct.toFixed(1)}% · ${l.lines.toLocaleString()} lines`;
-      seg.appendChild(tip);
-      const rect = tip.getBoundingClientRect();
-      if (rect.left < 0) tip.style.transform = `translateX(${-rect.left + 4}px)`;
-      if (rect.right > window.innerWidth)
-        tip.style.transform = `translateX(${window.innerWidth - rect.right - 4}px)`;
-    });
-    seg.addEventListener('mouseleave', () => {
-      const tip = seg.querySelector('.lang-tooltip');
-      if (tip) tip.remove();
-    });
-    fill.appendChild(seg);
-    segElements.push({ seg, pct: l.pct });
-  });
-  requestAnimationFrame(() => {
-    setTimeout(() => {
-      segElements.forEach(({ seg, pct }) => {
-        seg.style.width = pct + '%';
-      });
-    }, 50);
-  });
+  buildLangBarSegments(fill, langs);
 
   const legend = el.querySelector('.lang-legend');
   if (!legend) return;
-  legend.innerHTML =
-    '<span class="lang-total">' +
-    totalLoc.toLocaleString() +
-    ' lines</span>' +
-    langs
-      .slice(0, 4)
-      .map(
-        (l) =>
-          '<span class="lang-legend-item"><span class="lang-dot" style="background:' +
-          (LANG_COLORS[l.name] || '#888') +
-          '"></span>' +
-          l.name +
-          ' ' +
-          l.pct.toFixed(1) +
-          '%</span>',
-      )
-      .join('');
+  buildLangLegend(legend, langs, totalLoc);
 }
 
 export function init(): void {
@@ -216,12 +235,12 @@ export function init(): void {
   // Lazy lang bars
   const langObserver = new IntersectionObserver(
     (entries) => {
-      entries.forEach((e) => {
+      for (const e of entries) {
         if (e.isIntersecting) {
           langObserver.unobserve(e.target);
           loadLangBar(e.target as HTMLElement);
         }
-      });
+      }
     },
     { rootMargin: '200px' },
   );
