@@ -232,6 +232,7 @@
 /* Light theme: darken test badge text for WCAG AA contrast */
 [data-theme='light'] .test-badge {
   color: #2e7d32;
+  background: #e8f5e9;
 }
 
 /* Landing-page card gradient image */
