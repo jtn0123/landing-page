@@ -4,3 +4,4 @@ dist/
 .scannerwork/
 test-results/
 coverage/
+playwright-report/
