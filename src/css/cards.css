@@ -435,6 +435,10 @@
   font-family: inherit;
   transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
+[data-theme='light'] .filter-pill {
+  color: #1a1a1a;
+  background: #e0e0e0;
+}
 .filter-pill:hover {
   border-color: var(--accent);
   color: var(--text);
