@@ -34,6 +34,6 @@ export function updateParallaxMesh(): void {
   if (isMobile.value) return;
   const mesh = document.getElementById('parallax-mesh');
   if (mesh) {
-    mesh.style.transform = `translateY(${window.scrollY * 0.1}px)`;
+    mesh.style.transform = `translateY(${globalThis.scrollY * 0.1}px)`;
   }
 }

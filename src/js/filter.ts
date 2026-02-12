@@ -6,8 +6,8 @@ export function init(): void {
 
   const filterBar = document.createElement('div');
   filterBar.className = 'filter-bar';
-  filterBar.setAttribute('role', 'toolbar');
-  filterBar.setAttribute('aria-label', 'Filter projects by technology');
+  filterBar.role = 'toolbar';
+  filterBar.ariaLabel = 'Filter projects by technology';
 
   FILTER_TAGS.forEach((tag) => {
     const pill = document.createElement('button');

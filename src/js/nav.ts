@@ -76,11 +76,11 @@ export function init(): void {
   }
 
   // Logo click scrolls to top
-  const logo = document.querySelector('header h1');
+  const logo = document.querySelector<HTMLElement>('header h1');
   if (logo) {
-    (logo as HTMLElement).style.cursor = 'pointer';
+    logo.style.cursor = 'pointer';
     logo.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      globalThis.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
 
