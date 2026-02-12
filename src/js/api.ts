@@ -42,8 +42,8 @@ export function animateCounter(el: HTMLElement, target: number): void {
 export function parseRateLimit(response: Response): string | null {
   const remaining = response.headers.get('X-RateLimit-Remaining');
   const reset = response.headers.get('X-RateLimit-Reset');
-  if (remaining !== null && parseInt(remaining) === 0 && reset) {
-    const resetTime = parseInt(reset) * 1000;
+  if (remaining !== null && Number.parseInt(remaining) === 0 && reset) {
+    const resetTime = Number.parseInt(reset) * 1000;
     const minutes = Math.max(1, Math.ceil((resetTime - Date.now()) / 60000));
     return `Rate limited — try again in ${minutes}m`;
   }
@@ -63,7 +63,7 @@ export async function fetchJSON<T = unknown>(url: string): Promise<FetchResult<T
 }
 
 function escapeHTML(str: string): string {
-  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  return str.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
 }
 
 export function renderError(container: Element, message: string, retryFn: () => void): void {

@@ -1,7 +1,7 @@
 function getTheme(): string {
   return (
     localStorage.getItem('theme') ||
-    (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')
+    (globalThis.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')
   );
 }
 

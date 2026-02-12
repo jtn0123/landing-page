@@ -16,8 +16,8 @@ export const CARD_REPOS: string[] = [
   'AudioWhisper',
 ];
 export const OWNER: string = 'jtn0123';
-export const reducedMotion: boolean = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const mobileQuery = window.matchMedia('(max-width: 720px)');
+export const reducedMotion: boolean = globalThis.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const mobileQuery = globalThis.matchMedia('(max-width: 720px)');
 export const isMobile: { value: boolean } = { value: mobileQuery.matches };
 mobileQuery.addEventListener('change', (e) => {
   isMobile.value = e.matches;

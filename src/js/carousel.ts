@@ -8,7 +8,7 @@ export function init(): void {
 
     let current = 0;
     let paused = false;
-    const interval = parseInt((carousel as HTMLElement).dataset.interval || '4000') || 4000;
+    const interval = Number.parseInt((carousel as HTMLElement).dataset.interval || '4000') || 4000;
 
     function applyKenBurns(idx: number): void {
       if (reducedMotion) return;

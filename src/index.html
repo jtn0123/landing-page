@@ -204,7 +204,7 @@
     <script>
       (function () {
         var t = localStorage.getItem('theme');
-        if (!t) t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        if (!t) t = globalThis.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
         if (t === 'light') document.documentElement.dataset.theme = 'light';
       })();
     </script>
@@ -253,7 +253,7 @@
       <h1>neuhard.dev</h1>
       <p>Engineering &amp; Software Projects</p>
       <button class="hamburger" id="hamburger" aria-label="Open menu">☰</button>
-      <div class="header-controls">
+      <div class="header-controls" aria-label="Site controls">
         <nav class="header-nav">
           <a href="#main-content" data-scroll>Projects</a>
           <a href="#tech-section" data-scroll>Tech</a>
@@ -261,7 +261,7 @@
         </nav>
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">🌙</button>
       </div>
-      <div class="mobile-nav-overlay" id="mobile-nav-overlay">
+      <div class="mobile-nav-overlay" id="mobile-nav-overlay" aria-label="Mobile navigation">
         <button class="mobile-nav-close" id="mobile-nav-close" aria-label="Close menu">✕</button>
         <nav class="mobile-nav-links">
           <a href="#main-content" data-scroll>Projects</a>
@@ -700,7 +700,7 @@
         class="view-all-link"
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="View all commits"
+        aria-label="View all commits →"
         >View all commits →</a
       >
     </section>
