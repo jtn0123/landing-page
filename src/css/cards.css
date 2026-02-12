@@ -221,7 +221,7 @@
   gap: 4px;
   font-size: 0.72rem;
   font-weight: 500;
-  color: #c8e6c9;
+  color: #A5D6A7;
   background: rgba(76, 175, 80, 0.1);
   border: 1px solid rgba(76, 175, 80, 0.25);
   padding: 3px 10px;
@@ -434,6 +434,10 @@
   cursor: pointer;
   font-family: inherit;
   transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+[data-theme='light'] .filter-pill {
+  color: #1a1a1a;
+  background: #e0e0e0;
 }
 .filter-pill:hover {
   border-color: var(--accent);
