@@ -1,7 +1,0 @@
-projectKey=landing-page
-serverUrl=http://10.27.27.99:9100
-serverVersion=26.2.0.119303
-branch=master
-dashboardUrl=http://10.27.27.99:9100/dashboard?id=landing-page&branch=master
-ceTaskId=93d8f9da-518a-4c94-8e8f-5f52dfb5e91f
-ceTaskUrl=http://10.27.27.99:9100/api/ce/task?id=93d8f9da-518a-4c94-8e8f-5f52dfb5e91f
