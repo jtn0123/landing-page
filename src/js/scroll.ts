@@ -9,12 +9,12 @@ function initProgressDots(): void {
 
   const container = document.createElement('nav');
   container.className = 'progress-dots';
-  container.setAttribute('aria-label', 'Section progress');
+  container.ariaLabel = 'Section progress';
 
   const dots: HTMLButtonElement[] = sections.map((s) => {
     const dot = document.createElement('button');
     dot.className = 'progress-dot';
-    dot.setAttribute('aria-label', s.label);
+    dot.ariaLabel = s.label;
     dot.addEventListener('click', () => {
       const el = document.getElementById(s.id);
       if (el) el.scrollIntoView({ behavior: 'smooth' });

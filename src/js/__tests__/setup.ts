@@ -28,7 +28,7 @@ class MockIntersectionObserver {
 (globalThis as any).IntersectionObserver = MockIntersectionObserver;
 
 // Ensure matchMedia exists
-Object.defineProperty(window, 'matchMedia', {
+Object.defineProperty(globalThis, 'matchMedia', {
   writable: true,
   configurable: true,
   value: vi.fn().mockImplementation((query: string) => ({

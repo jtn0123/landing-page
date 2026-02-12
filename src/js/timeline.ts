@@ -27,7 +27,7 @@ function renderTimeline(commits: Commit[]): void {
 
 function buildTimeline(commits: Commit[], timelineEl: HTMLElement): void {
   // Add aria-live after content is built so screen readers don't announce all items on load
-  requestAnimationFrame(() => timelineEl.setAttribute('aria-live', 'polite'));
+  requestAnimationFrame(() => { timelineEl.ariaLive = 'polite'; });
   timelineEl.innerHTML =
     '<div class="timeline-line"></div>' +
     commits
@@ -131,7 +131,8 @@ async function loadTimeline(): Promise<void> {
     sessionStorage.setItem(cacheKey, JSON.stringify({ ts: Date.now(), data: commits }));
     renderTimeline(commits);
   } catch (err) {
-    renderError(timelineEl, (err as Error).message || 'Unable to load recent activity', () => {
+    const message = err instanceof Error ? err.message : 'Unable to load recent activity';
+    renderError(timelineEl, message, () => {
       timelineEl.innerHTML =
         '<div class="timeline-loading"><div class="skeleton-item"></div><div class="skeleton-item"></div><div class="skeleton-item"></div></div>';
       loadTimeline();

@@ -85,9 +85,9 @@ export function init(): void {
   }
 
   // Keyboard nav for cards
-  document.querySelectorAll('.card[data-link]').forEach((card) => {
-    card.addEventListener('keydown', (e: Event) => {
-      if ((e as KeyboardEvent).key === 'Enter') {
+  document.querySelectorAll<HTMLElement>('.card[data-link]').forEach((card) => {
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
         const link = card.querySelector<HTMLElement>('.btn-primary');
         if (link) link.click();
       }
@@ -105,9 +105,9 @@ export function init(): void {
         const navigate = (): void => {
           globalThis.location.href = url;
         };
-        const vt = (document as unknown as Record<string, unknown>).startViewTransition as
-          | ((cb: () => void) => void)
-          | undefined;
+        const vt = 'startViewTransition' in document
+          ? (document.startViewTransition as (cb: () => void) => void)
+          : undefined;
         if (vt) {
           vt(() => {
             navigate();

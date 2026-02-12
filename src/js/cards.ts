@@ -26,7 +26,7 @@ function createMetaBadge(text: string, label: string): HTMLSpanElement {
   const el = document.createElement('span');
   el.className = 'card-meta-badge';
   el.textContent = text;
-  el.setAttribute('aria-label', label);
+  el.ariaLabel = label;
   return el;
 }
 
@@ -105,7 +105,7 @@ function renderHeatmapCells(row: Element, weeks: number[], rgb: string): void {
     }
     const label = count + ' commit' + (count === 1 ? '' : 's');
     cell.title = label;
-    cell.setAttribute('aria-label', label);
+    cell.ariaLabel = label;
     row.appendChild(cell);
     setTimeout(() => cell.classList.add('active'), 30 * idx);
   });
@@ -204,7 +204,8 @@ async function loadLangBar(el: HTMLElement): Promise<void> {
     data = result.data;
   } catch (err) {
     track.classList.remove('shimmer-track');
-    renderError(el, (err as Error).message || 'Failed to load languages', () => {
+    const message = err instanceof Error ? err.message : 'Failed to load languages';
+    renderError(el, message, () => {
       el.innerHTML =
         '<div class="lang-bar-track shimmer-track"><div class="lang-bar-fill"></div></div><div class="lang-legend"></div>';
       loadLangBar(el);
@@ -238,7 +239,7 @@ export function init(): void {
       for (const e of entries) {
         if (e.isIntersecting) {
           langObserver.unobserve(e.target);
-          loadLangBar(e.target as HTMLElement);
+          if (e.target instanceof HTMLElement) loadLangBar(e.target);
         }
       }
     },
