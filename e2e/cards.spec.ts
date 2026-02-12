@@ -41,9 +41,9 @@ test.describe('Cards', () => {
     await trigger.click({ force: true });
 
     const lightbox = page.locator('#lightbox');
-    await expect(lightbox).toHaveClass(/active/, { timeout: 3000 });
+    await expect(lightbox).toHaveAttribute('open', '', { timeout: 5000 });
 
     await page.keyboard.press('Escape');
-    await expect(lightbox).not.toHaveClass(/active/, { timeout: 3000 });
+    await expect(lightbox).not.toHaveAttribute('open', '', { timeout: 3000 });
   });
 });
