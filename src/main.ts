@@ -1,21 +1,7 @@
 import './style.css';
 
-// --- Shared constants ---
-export const API_BASE: string = '/api/github';
-export const REPOS: string[] = [
-  'MegaBonk',
-  'VoltTracker',
-  'landing-page',
-  'satellite_processor',
-  'AudioWhisper',
-];
-export const CARD_REPOS: string[] = [
-  'MegaBonk',
-  'VoltTracker',
-  'satellite_processor',
-  'AudioWhisper',
-];
-export const OWNER: string = 'jtn0123';
+// --- Shared constants (re-exported from constants.ts to avoid circular deps) ---
+export { API_BASE, REPOS, CARD_REPOS, OWNER } from './js/constants.ts';
 
 // Re-export from config for backward compat
 export { reducedMotion, isMobile } from './js/config.ts';

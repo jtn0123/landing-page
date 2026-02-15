@@ -2,7 +2,7 @@
  * Project cards — loads repo metadata, CI badges, heatmaps, and language bars.
  * @module cards
  */
-import { API_BASE, OWNER } from '../main.ts';
+import { API_BASE, OWNER } from './constants.ts';
 import { cachedFetchJSON, renderError, relativeTime } from './api.ts';
 import type { RepoData, WorkflowResponse, ParticipationData, LanguageData } from './types.ts';
 
