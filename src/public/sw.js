@@ -33,17 +33,18 @@ globalThis.addEventListener('fetch', (event) => {
     event.respondWith(
       fetch(request)
         .then((response) => {
-          if (!response.ok) return response;
-          const clone = response.clone();
-          const headers = new Headers(clone.headers);
-          headers.set('sw-cache-time', String(Date.now()));
-          const cachedResponse = new Response(clone.body, {
-            status: clone.status,
-            statusText: clone.statusText,
-            headers,
-          });
-          const cacheWrite = caches.open(CACHE_NAME).then((cache) => cache.put(request, cachedResponse));
-          event.waitUntil(cacheWrite);
+          if (response.ok) {
+            const clone = response.clone();
+            const headers = new Headers(clone.headers);
+            headers.set('sw-cache-time', String(Date.now()));
+            const cachedResponse = new Response(clone.body, {
+              status: clone.status,
+              statusText: clone.statusText,
+              headers,
+            });
+            const cacheWrite = caches.open(CACHE_NAME).then((cache) => cache.put(request, cachedResponse));
+            event.waitUntil(cacheWrite);
+          }
           return response;
         })
         .catch(() =>
