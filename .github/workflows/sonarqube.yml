@@ -24,7 +24,8 @@ jobs:
       - run: npm ci
       - run: npx playwright install chromium --with-deps
       - run: npm run test:coverage
-      - run: npm run test:e2e
+      # CI runners only have Chromium; Firefox/WebKit are for local testing
+      - run: npx playwright test --project=chromium
       - uses: sonarsource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

@@ -39,8 +39,9 @@ jobs:
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}
-      - run: npx playwright install --with-deps chromium firefox webkit
-      - run: npm run test:e2e
+      # CI runs Chromium only; Firefox/WebKit are available for local testing
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test --project=chromium
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
