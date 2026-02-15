@@ -4,7 +4,7 @@ import { MockIntersectionObserver } from './setup.ts';
 describe('nav', () => {
   beforeEach(() => {
     vi.resetModules();
-    MockIntersectionObserver.instances = [];
+    MockIntersectionObserver.instances.length = 0;
     document.body.innerHTML = `
       <header id="site-header">
         <h1>Logo</h1>

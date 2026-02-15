@@ -1,10 +1,6 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 
-vi.mock('../../main.ts', () => ({
-  API_BASE: '/api/github',
-  OWNER: 'jtn0123',
-  REPOS: ['MegaBonk'],
-  CARD_REPOS: ['MegaBonk'],
+vi.mock('../config.ts', () => ({
   reducedMotion: false,
   isMobile: { value: false },
 }));
@@ -157,11 +153,7 @@ describe('carousel with reducedMotion', () => {
   beforeEach(() => {
     vi.resetModules();
     vi.useFakeTimers();
-    vi.doMock('../../main.ts', () => ({
-      API_BASE: '/api/github',
-      OWNER: 'jtn0123',
-      REPOS: ['MegaBonk'],
-      CARD_REPOS: ['MegaBonk'],
+    vi.doMock('../config.ts', () => ({
       reducedMotion: true,
       isMobile: { value: false },
     }));

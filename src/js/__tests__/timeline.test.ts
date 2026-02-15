@@ -40,7 +40,7 @@ describe('timeline', () => {
     vi.useFakeTimers();
     mockFetch.mockReset();
     sessionStorage.clear();
-    MockIntersectionObserver.instances = [];
+    MockIntersectionObserver.instances.length = 0;
     document.body.innerHTML = `<section id="activity"><div id="timeline"></div></section>`;
   });
 

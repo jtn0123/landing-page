@@ -35,7 +35,7 @@ describe('stats', () => {
     vi.useFakeTimers();
     mockFetch.mockReset();
     sessionStorage.clear();
-    MockIntersectionObserver.instances = [];
+    MockIntersectionObserver.instances.length = 0;
     document.body.innerHTML = `
       <div class="stats-bar">
         <div class="stat"><span class="stat-value shimmer-placeholder" id="total-loc">&nbsp;</span></div>

@@ -28,7 +28,7 @@ describe('cards', () => {
     vi.resetModules();
     mockFetch.mockReset();
     sessionStorage.clear();
-    MockIntersectionObserver.instances = [];
+    MockIntersectionObserver.instances.length = 0;
     document.body.innerHTML = `
       <div class="card" data-repo="MegaBonk">
         <h2>MegaBonk<span class="subtitle"></span></h2>

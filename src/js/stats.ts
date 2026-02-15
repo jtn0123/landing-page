@@ -1,3 +1,7 @@
+/**
+ * Aggregate statistics — total lines of code and commits across all projects.
+ * @module stats
+ */
 import { API_BASE, CARD_REPOS, OWNER } from '../main.ts';
 import { cachedFetchJSON, renderError, animateCounter } from './api.ts';
 import type { LanguageData, ContributorData, StatsData, CacheEntry } from './types.ts';
@@ -74,6 +78,7 @@ async function loadStats(): Promise<void> {
   }
 }
 
+/** Initialize stats section with lazy-loading via IntersectionObserver. */
 export function init(): void {
   const statsBar = document.querySelector('.stats-bar');
   if (!statsBar) return;

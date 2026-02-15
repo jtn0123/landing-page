@@ -1,3 +1,9 @@
+/**
+ * Navigation module — smooth scroll, hamburger menu, active nav links, keyboard nav.
+ * @module nav
+ */
+
+/** Initialize navigation: smooth scroll links, hamburger menu, active section tracking. */
 export function init(): void {
   // Smooth scroll nav
   document.querySelectorAll('[data-scroll]').forEach((a) => {

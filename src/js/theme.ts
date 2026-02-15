@@ -1,3 +1,8 @@
+/**
+ * Theme switching — dark/light mode toggle with localStorage persistence.
+ * @module theme
+ */
+
 function getTheme(): string {
   return (
     localStorage.getItem('theme') ||
@@ -17,6 +22,7 @@ function applyTheme(t: string, themeBtn: HTMLElement): void {
   if (metaTheme) metaTheme.content = t === 'light' ? '#f5f5f5' : '#0a0a0a';
 }
 
+/** Initialize theme toggle button and apply saved/system theme. */
 export function init(): void {
   const themeBtn = document.getElementById('theme-toggle');
   if (!themeBtn) return;

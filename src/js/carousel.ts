@@ -1,5 +1,10 @@
-import { reducedMotion } from '../main.ts';
+/**
+ * Image carousel with auto-advance, dot navigation, swipe, and Ken Burns effect.
+ * @module carousel
+ */
+import { reducedMotion } from './config.ts';
 
+/** Initialize all carousels on the page. */
 export function init(): void {
   document.querySelectorAll('.carousel').forEach((carousel) => {
     const slides = carousel.querySelectorAll('.carousel-slide');
@@ -37,10 +42,11 @@ export function init(): void {
       });
     });
 
-    const timer = setInterval(() => {
-      if (!paused) goTo(current + 1);
-    }, interval);
-    if (reducedMotion) clearInterval(timer);
+    if (!reducedMotion) {
+      setInterval(() => {
+        if (!paused) goTo(current + 1);
+      }, interval);
+    }
 
     // Swipe support
     let touchStartX = 0,

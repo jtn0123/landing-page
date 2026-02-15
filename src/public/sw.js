@@ -3,12 +3,14 @@ const SHELL_ASSETS = [
   '/',
   '/index.html',
 ];
+const API_CACHE_TTL = 30 * 60 * 1000; // 30 minutes
 
 globalThis.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(SHELL_ASSETS))
+    caches.open(CACHE_NAME)
+      .then((cache) => cache.addAll(SHELL_ASSETS))
+      .then(() => globalThis.skipWaiting())
   );
-  globalThis.skipWaiting();
 });
 
 globalThis.addEventListener('activate', (event) => {
@@ -26,16 +28,34 @@ globalThis.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Network-first for API calls
+  // Network-first for API calls with TTL expiry on cached responses
   if (url.pathname.startsWith('/api/')) {
     event.respondWith(
       fetch(request)
         .then((response) => {
           const clone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
+          const headers = new Headers(clone.headers);
+          headers.set('sw-cache-time', String(Date.now()));
+          const cachedResponse = new Response(clone.body, {
+            status: clone.status,
+            statusText: clone.statusText,
+            headers,
+          });
+          const cacheWrite = caches.open(CACHE_NAME).then((cache) => cache.put(request, cachedResponse));
+          event.waitUntil(cacheWrite);
           return response;
         })
-        .catch(() => caches.match(request))
+        .catch(() =>
+          caches.match(request).then((cached) => {
+            if (!cached) return cached;
+            const cacheTime = Number(cached.headers.get('sw-cache-time') || '0');
+            if (cacheTime && Date.now() - cacheTime > API_CACHE_TTL) {
+              // Cached response is stale — delete it but still return it as fallback
+              caches.open(CACHE_NAME).then((cache) => cache.delete(request));
+            }
+            return cached;
+          })
+        )
     );
     return;
   }
