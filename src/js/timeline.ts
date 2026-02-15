@@ -1,9 +1,55 @@
+/**
+ * Recent activity timeline — fetches and renders GitHub commit history.
+ * @module timeline
+ */
 import { API_BASE, REPOS, OWNER } from '../main.ts';
 import { cachedFetchJSON, renderError, abbreviateNum, relativeTime } from './api.ts';
 import type { Commit, GitHubCommitResponse, CommitDetailResponse, CacheEntry } from './types.ts';
 
 function truncate(str: string, len: number): string {
   return str.length > len ? str.slice(0, len) + '…' : str;
+}
+
+/**
+ * Build the HTML for a single timeline commit item.
+ * @param commit - The commit data to render.
+ * @param index - The item index (used for left/right alternation).
+ * @returns An HTML string for the timeline item.
+ */
+function buildTimelineItem(commit: Commit, index: number): string {
+  const firstLine = commit.message.split('\n')[0];
+  const truncated = truncate(firstLine, 60);
+  const isExpandable = truncated !== firstLine;
+
+  const expandAttrs = isExpandable
+    ? ` data-full="${firstLine.replaceAll('"', '&quot;')}" data-short="${truncated.replaceAll('"', '&quot;')}"`
+    : '';
+
+  return `
+    <li class="timeline-item ${index % 2 === 0 ? 'left' : 'right'} content-fade-in">
+      <div class="timeline-dot"></div>
+      <a href="${commit.url || '#'}" target="_blank" rel="noopener noreferrer" class="timeline-content timeline-link">
+        <p class="commit-msg${isExpandable ? ' expandable' : ''}"${expandAttrs}>${truncated}</p>
+        ${buildCommitMeta(commit)}
+      </a>
+    </li>`;
+}
+
+/**
+ * Build the metadata line (repo badge, additions/deletions, time) for a commit.
+ * @param commit - The commit data.
+ * @returns An HTML string for the commit metadata.
+ */
+function buildCommitMeta(commit: Commit): string {
+  const addSpan = commit.additions === null ? '' : `<span class="stat-add">+${abbreviateNum(commit.additions)}</span>`;
+  const delSpan = commit.deletions === null ? '' : `<span class="stat-del">-${abbreviateNum(commit.deletions)}</span>`;
+
+  return `<div class="commit-meta">
+    <span class="repo-badge repo-${commit.repo.toLowerCase()}">${commit.repo}</span>
+    ${addSpan}
+    ${delSpan}
+    <span class="commit-time">${relativeTime(commit.date)}</span>
+  </div>`;
 }
 
 function renderTimeline(commits: Commit[]): void {
@@ -30,27 +76,7 @@ function buildTimeline(commits: Commit[], timelineEl: HTMLElement): void {
   requestAnimationFrame(() => { timelineEl.ariaLive = 'polite'; });
   timelineEl.innerHTML =
     '<div class="timeline-line"></div>' +
-    commits
-      .map((c, i) => {
-        const firstLine = c.message.split('\n')[0];
-        const truncated = truncate(firstLine, 60);
-        const isExpandable = truncated !== firstLine;
-        return `
-      <li class="timeline-item ${i % 2 === 0 ? 'left' : 'right'} content-fade-in">
-        <div class="timeline-dot"></div>
-        <a href="${c.url || '#'}" target="_blank" rel="noopener noreferrer" class="timeline-content timeline-link">
-          <p class="commit-msg${isExpandable ? ' expandable' : ''}" ${isExpandable ? `data-full="${firstLine.replaceAll('"', '&quot;')}" data-short="${truncated.replaceAll('"', '&quot;')}"` : ''}>${truncated}</p>
-          <div class="commit-meta">
-            <span class="repo-badge repo-${c.repo.toLowerCase()}">${c.repo}</span>
-            ${c.additions === null ? '' : `<span class="stat-add">+${abbreviateNum(c.additions)}</span>`}
-            ${c.deletions === null ? '' : `<span class="stat-del">-${abbreviateNum(c.deletions)}</span>`}
-            <span class="commit-time">${relativeTime(c.date)}</span>
-          </div>
-        </a>
-      </li>
-    `;
-      })
-      .join('');
+    commits.map((c, i) => buildTimelineItem(c, i)).join('');
 
   timelineEl.querySelectorAll('.commit-msg.expandable').forEach((msg) => {
     msg.addEventListener('click', (e: Event) => {
@@ -140,6 +166,7 @@ async function loadTimeline(): Promise<void> {
   }
 }
 
+/** Initialize the timeline section with lazy-loading via IntersectionObserver. */
 export function init(): void {
   const timelineSection = document.getElementById('activity');
   if (!timelineSection) return;

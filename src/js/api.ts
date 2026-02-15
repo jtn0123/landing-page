@@ -1,12 +1,25 @@
-// --- API helpers ---
+/**
+ * API helpers — fetch utilities, caching, formatting, and error rendering.
+ * @module api
+ */
 import type { FetchResult, CacheEntry } from './types.ts';
 
+/**
+ * Abbreviate a number for display (e.g., 12345 → "12.3k").
+ * @param n - The number to abbreviate.
+ * @returns A human-readable abbreviated string.
+ */
 export function abbreviateNum(n: number): string {
   if (n >= 100000) return Math.round(n / 1000) + 'k';
   if (n >= 10000) return (n / 1000).toFixed(1) + 'k';
   return n.toLocaleString();
 }
 
+/**
+ * Format a date string as a relative time (e.g., "3h ago", "2d ago").
+ * @param dateStr - ISO 8601 date string.
+ * @returns A relative time string.
+ */
 export function relativeTime(dateStr: string): string {
   const diff = Date.now() - new Date(dateStr).getTime();
   const mins = Math.floor(diff / 60000);
@@ -19,6 +32,11 @@ export function relativeTime(dateStr: string): string {
   return Math.floor(days / 30) + 'mo ago';
 }
 
+/**
+ * Animate a counter element from 0 to a target value with easing.
+ * @param el - The DOM element whose textContent will be updated.
+ * @param target - The target number to count up to.
+ */
 export function animateCounter(el: HTMLElement, target: number): void {
   el.classList.remove('shimmer-placeholder');
   const duration = 1200;
@@ -39,6 +57,11 @@ export function animateCounter(el: HTMLElement, target: number): void {
   requestAnimationFrame(tick);
 }
 
+/**
+ * Parse rate-limit headers from a GitHub API response.
+ * @param response - The fetch Response object.
+ * @returns A user-friendly rate-limit message, or null if not rate-limited.
+ */
 export function parseRateLimit(response: Response): string | null {
   const remaining = response.headers.get('X-RateLimit-Remaining');
   const reset = response.headers.get('X-RateLimit-Reset');
@@ -50,6 +73,13 @@ export function parseRateLimit(response: Response): string | null {
   return null;
 }
 
+/**
+ * Fetch JSON from a URL with error handling for rate limits and non-JSON responses.
+ * @typeParam T - The expected shape of the JSON response.
+ * @param url - The URL to fetch.
+ * @returns The parsed JSON data and the raw Response.
+ * @throws {Error} On HTTP errors, rate limits, or non-JSON responses.
+ */
 export async function fetchJSON<T = unknown>(url: string): Promise<FetchResult<T>> {
   const res = await fetch(url);
   if (res.status === 403 || res.status === 429) {
@@ -62,10 +92,21 @@ export async function fetchJSON<T = unknown>(url: string): Promise<FetchResult<T
   return { data: (await res.json()) as T, response: res };
 }
 
-function escapeHTML(str: string): string {
+/**
+ * Escape HTML special characters to prevent XSS in rendered strings.
+ * @param str - The raw string to escape.
+ * @returns The escaped string safe for innerHTML use.
+ */
+export function escapeHTML(str: string): string {
   return str.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
 }
 
+/**
+ * Render an error state with a retry button inside a container element.
+ * @param container - The DOM element to render the error into.
+ * @param message - The error message to display.
+ * @param retryFn - Callback invoked when the retry button is clicked.
+ */
 export function renderError(container: Element, message: string, retryFn: () => void): void {
   container.innerHTML = `
     <div class="error-state">
@@ -81,6 +122,13 @@ export function renderError(container: Element, message: string, retryFn: () => 
   });
 }
 
+/**
+ * Fetch JSON with sessionStorage caching. Returns cached data if within TTL.
+ * @typeParam T - The expected shape of the JSON response.
+ * @param url - The URL to fetch.
+ * @param ttl - Cache time-to-live in milliseconds (default: 30 minutes).
+ * @returns The parsed JSON data (from cache or network).
+ */
 export async function cachedFetchJSON<T = unknown>(
   url: string,
   ttl: number = 30 * 60 * 1000,

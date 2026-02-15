@@ -11,6 +11,12 @@
 
     <meta name="theme-color" content="#0a0a0a" id="meta-theme-color" />
 
+    <!-- Security: Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.githubusercontent.com https://avatars.githubusercontent.com; connect-src 'self' https://api.github.com;" />
+
+    <!-- SEO: Canonical URL -->
+    <link rel="canonical" href="https://neuhard.dev/" />
+
     <!-- Open Graph -->
     <meta property="og:title" content="neuhard.dev — Projects" />
     <meta
@@ -699,6 +705,7 @@
 
     <!-- Lightbox -->
     <dialog id="lightbox" class="lightbox" aria-label="Image preview">
+      <button class="lightbox-close" id="lightbox-close" aria-label="Close image preview">&times;</button>
       <img id="lightbox-img" src="" alt="" />
     </dialog>
 

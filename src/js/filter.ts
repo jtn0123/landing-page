@@ -1,5 +1,11 @@
+/**
+ * Technology filter pills — filter project cards by tech stack.
+ * @module filter
+ */
+
 const FILTER_TAGS = ['All', 'TypeScript', 'Python', 'Docker', 'React', 'Swift'] as const;
 
+/** Initialize the filter bar and attach click handlers. */
 export function init(): void {
   const main = document.getElementById('main-content');
   if (!main) return;
@@ -14,7 +20,12 @@ export function init(): void {
     pill.className = 'filter-pill';
     pill.textContent = tag;
     pill.dataset.filter = tag;
-    if (tag === 'All') pill.classList.add('active');
+    if (tag === 'All') {
+      pill.classList.add('active');
+      pill.setAttribute('aria-pressed', 'true');
+    } else {
+      pill.setAttribute('aria-pressed', 'false');
+    }
     pill.addEventListener('click', () => filterCards(tag, filterBar));
     filterBar.appendChild(pill);
   });
@@ -24,7 +35,9 @@ export function init(): void {
 
 function filterCards(tag: string, filterBar: HTMLElement): void {
   filterBar.querySelectorAll('.filter-pill').forEach((p) => {
-    p.classList.toggle('active', (p as HTMLElement).dataset.filter === tag);
+    const isActive = (p as HTMLElement).dataset.filter === tag;
+    p.classList.toggle('active', isActive);
+    p.setAttribute('aria-pressed', isActive ? 'true' : 'false');
   });
 
   const cards = document.querySelectorAll<HTMLElement>('.card');

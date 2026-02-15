@@ -1,5 +1,10 @@
-import { reducedMotion } from '../main.ts';
+/**
+ * Image carousel with auto-advance, dot navigation, swipe, and Ken Burns effect.
+ * @module carousel
+ */
+import { reducedMotion } from './config.ts';
 
+/** Initialize all carousels on the page. */
 export function init(): void {
   document.querySelectorAll('.carousel').forEach((carousel) => {
     const slides = carousel.querySelectorAll('.carousel-slide');

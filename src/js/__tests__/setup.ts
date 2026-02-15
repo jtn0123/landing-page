@@ -4,7 +4,7 @@ import { vi } from 'vitest';
 class MockIntersectionObserver {
   callback: IntersectionObserverCallback;
   options: IntersectionObserverInit | undefined;
-  static instances: MockIntersectionObserver[] = [];
+  static readonly instances: MockIntersectionObserver[] = [];
 
   constructor(callback: IntersectionObserverCallback, options?: IntersectionObserverInit) {
     this.callback = callback;
@@ -44,7 +44,7 @@ Object.defineProperty(globalThis, 'matchMedia', {
 });
 
 // Mock Touch constructor for jsdom
-if (typeof globalThis.Touch === 'undefined') {
+if (globalThis.Touch === undefined) {
   (globalThis as any).Touch = class Touch {
     identifier: number;
     target: EventTarget;

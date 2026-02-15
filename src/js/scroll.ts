@@ -1,3 +1,7 @@
+/**
+ * Scroll-driven UI — progress bar, back-to-top, section dots, fade-in observer.
+ * @module scroll
+ */
 import { updateParallaxMesh } from './parallax.ts';
 
 function initProgressDots(): void {
@@ -46,6 +50,7 @@ function initProgressDots(): void {
 }
 
 
+/** Initialize scroll-driven UI: progress bar, back-to-top, parallax, section dots, fade-in. */
 export function init(): void {
   // Unified scroll listener — progress bar, back-to-top, parallax mesh, sticky header
   const scrollProgress = document.getElementById('scroll-progress');

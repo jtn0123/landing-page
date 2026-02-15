@@ -10,10 +10,15 @@ vi.mock('../../main.ts', () => ({
   isMobile: { value: false },
 }));
 
+vi.mock('../config.ts', () => ({
+  reducedMotion: false,
+  isMobile: { value: false },
+}));
+
 describe('scroll', () => {
   beforeEach(() => {
     vi.resetModules();
-    MockIntersectionObserver.instances = [];
+    MockIntersectionObserver.instances.length = 0;
     document.body.innerHTML = `
       <div id="scroll-progress" style="width:0%"></div>
       <button id="back-to-top"></button>
@@ -97,7 +102,7 @@ describe('scroll', () => {
     init();
     const el = document.querySelector('.fade-in')!;
     // The fade observer is the last one created
-    const fadeObs = MockIntersectionObserver.instances[MockIntersectionObserver.instances.length - 1];
+    const fadeObs = MockIntersectionObserver.instances.at(-1)!;
     fadeObs.trigger([{ isIntersecting: true, target: el }]);
     expect(el.classList.contains('visible')).toBe(true);
   });

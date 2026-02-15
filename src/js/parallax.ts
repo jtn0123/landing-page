@@ -1,5 +1,10 @@
-import { isMobile, reducedMotion } from '../main.ts';
+/**
+ * Parallax effects — card tilt on hover and background mesh parallax.
+ * @module parallax
+ */
+import { isMobile, reducedMotion } from './config.ts';
 
+/** Initialize card parallax tilt effect (desktop only, respects reduced motion). */
 export function init(): void {
   // Card parallax tilt (desktop only)
   if (!isMobile.value && !reducedMotion) {

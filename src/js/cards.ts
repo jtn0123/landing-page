@@ -1,3 +1,7 @@
+/**
+ * Project cards — loads repo metadata, CI badges, heatmaps, and language bars.
+ * @module cards
+ */
 import { API_BASE, OWNER } from '../main.ts';
 import { cachedFetchJSON, renderError, relativeTime } from './api.ts';
 import type { RepoData, WorkflowResponse, ParticipationData, LanguageData } from './types.ts';
@@ -76,16 +80,16 @@ async function loadCardMeta(): Promise<void> {
       try {
         const { data } = await cachedFetchJSON<RepoData>(`${API_BASE}/repos/${OWNER}/${repo}`);
         renderCardMeta(card, data);
-      } catch {
-        /* ignore */
+      } catch (err) {
+        console.warn(`[cards] Failed to load meta for ${repo}:`, err);
       }
       try {
         const { data } = await cachedFetchJSON<WorkflowResponse>(
           `${API_BASE}/repos/${OWNER}/${repo}/actions/runs?per_page=1`,
         );
         renderCiBadge(card, data);
-      } catch {
-        /* ignore */
+      } catch (err) {
+        console.warn(`[cards] Failed to load CI status for ${repo}:`, err);
       }
     }),
   );
@@ -124,8 +128,8 @@ async function loadHeatmaps(): Promise<void> {
         );
         const weeks = (data.owner || data.all || []).slice(-12);
         renderHeatmapCells(row, weeks, rgb);
-      } catch {
-        /* ignore */
+      } catch (err) {
+        console.warn(`[cards] Failed to load heatmap for ${repo}:`, err);
       }
     }),
   );
@@ -229,6 +233,7 @@ async function loadLangBar(el: HTMLElement): Promise<void> {
   buildLangLegend(legend, langs, totalLoc);
 }
 
+/** Initialize card data loading: metadata, heatmaps, and lazy language bars. */
 export function init(): void {
   loadCardMeta();
   loadHeatmaps();
