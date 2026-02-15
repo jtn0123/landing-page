@@ -33,7 +33,7 @@ globalThis.addEventListener('fetch', (event) => {
     event.respondWith(
       fetch(request)
         .then((response) => {
-          if (response.ok) {
+          if (request.method === 'GET' && response.ok) {
             const clone = response.clone();
             const headers = new Headers(clone.headers);
             headers.set('sw-cache-time', String(Date.now()));
