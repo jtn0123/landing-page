@@ -41,8 +41,8 @@ initScroll();
 initFilter();
 
 // --- Lazy-load below-fold modules ---
-import('./js/stats.ts').then((m) => m.init());
-import('./js/timeline.ts').then((m) => m.init());
+import('./js/stats.ts').then((m) => m.init()).catch((e) => console.warn('Failed to load stats module', e));
+import('./js/timeline.ts').then((m) => m.init()).catch((e) => console.warn('Failed to load timeline module', e));
 
 // --- Register service worker ---
 if ('serviceWorker' in navigator) {

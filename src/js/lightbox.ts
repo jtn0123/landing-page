@@ -16,11 +16,13 @@ export function init(): void {
   const closeBtn = document.getElementById('lightbox-close') as HTMLButtonElement | null;
   if (!lightbox || !lightboxImg) return;
   let currentScale = 1;
+  let lastFocused: HTMLElement | null = null;
 
   function closeLightbox(): void {
     lightbox!.close();
     lightboxImg!.style.transform = '';
     currentScale = 1;
+    if (lastFocused && lastFocused.isConnected) lastFocused.focus();
   }
 
   document.querySelectorAll('.lightbox-trigger').forEach((img) => {
@@ -28,6 +30,7 @@ export function init(): void {
     img.addEventListener('click', (e: Event) => {
       e.preventDefault();
       e.stopPropagation();
+      lastFocused = document.activeElement as HTMLElement | null;
       lightboxImg.style.transform = '';
       currentScale = 1;
       lightboxImg.src = (img as HTMLImageElement).src;

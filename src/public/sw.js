@@ -41,7 +41,8 @@ globalThis.addEventListener('fetch', (event) => {
             statusText: clone.statusText,
             headers,
           });
-          caches.open(CACHE_NAME).then((cache) => cache.put(request, cachedResponse));
+          const cacheWrite = caches.open(CACHE_NAME).then((cache) => cache.put(request, cachedResponse));
+          event.waitUntil(cacheWrite);
           return response;
         })
         .catch(() =>

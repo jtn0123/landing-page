@@ -42,10 +42,11 @@ export function init(): void {
       });
     });
 
-    const timer = setInterval(() => {
-      if (!paused) goTo(current + 1);
-    }, interval);
-    if (reducedMotion) clearInterval(timer);
+    if (!reducedMotion) {
+      setInterval(() => {
+        if (!paused) goTo(current + 1);
+      }, interval);
+    }
 
     // Swipe support
     let touchStartX = 0,

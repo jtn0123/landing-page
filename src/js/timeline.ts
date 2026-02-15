@@ -3,7 +3,7 @@
  * @module timeline
  */
 import { API_BASE, REPOS, OWNER } from '../main.ts';
-import { cachedFetchJSON, renderError, abbreviateNum, relativeTime } from './api.ts';
+import { cachedFetchJSON, renderError, abbreviateNum, relativeTime, escapeHTML } from './api.ts';
 import type { Commit, GitHubCommitResponse, CommitDetailResponse, CacheEntry } from './types.ts';
 
 function truncate(str: string, len: number): string {
@@ -22,14 +22,14 @@ function buildTimelineItem(commit: Commit, index: number): string {
   const isExpandable = truncated !== firstLine;
 
   const expandAttrs = isExpandable
-    ? ` data-full="${firstLine.replaceAll('"', '&quot;')}" data-short="${truncated.replaceAll('"', '&quot;')}"`
+    ? ` data-full="${escapeHTML(firstLine)}" data-short="${escapeHTML(truncated)}"`
     : '';
 
   return `
     <li class="timeline-item ${index % 2 === 0 ? 'left' : 'right'} content-fade-in">
       <div class="timeline-dot"></div>
       <a href="${commit.url || '#'}" target="_blank" rel="noopener noreferrer" class="timeline-content timeline-link">
-        <p class="commit-msg${isExpandable ? ' expandable' : ''}"${expandAttrs}>${truncated}</p>
+        <p class="commit-msg${isExpandable ? ' expandable' : ''}"${expandAttrs}>${escapeHTML(truncated)}</p>
         ${buildCommitMeta(commit)}
       </a>
     </li>`;

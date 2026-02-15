@@ -98,7 +98,13 @@ export async function fetchJSON<T = unknown>(url: string): Promise<FetchResult<T
  * @returns The escaped string safe for innerHTML use.
  */
 export function escapeHTML(str: string): string {
-  return str.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
+  return str
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;')
+    .replaceAll('`', '&#96;');
 }
 
 /**

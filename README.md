@@ -25,7 +25,7 @@ A responsive, accessible portfolio site showcasing full-stack engineering projec
 
 ## Architecture
 
-```
+```text
 src/
 ├── main.ts              # Entry point — module init orchestration
 ├── index.html           # Single-page HTML with inline critical CSS
