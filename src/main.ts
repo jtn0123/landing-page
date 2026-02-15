@@ -41,8 +41,19 @@ initScroll();
 initFilter();
 
 // --- Lazy-load below-fold modules ---
-import('./js/stats.ts').then((m) => m.init()).catch((e) => console.warn('Failed to load stats module', e));
-import('./js/timeline.ts').then((m) => m.init()).catch((e) => console.warn('Failed to load timeline module', e));
+// Wrapped in async IIFE — top-level await unsupported by build target (es2020)
+(async () => {
+  try {
+    const [stats, timeline] = await Promise.all([
+      import('./js/stats.ts'),
+      import('./js/timeline.ts'),
+    ]);
+    stats.init();
+    timeline.init();
+  } catch (e) {
+    console.warn('Failed to load below-fold modules', e);
+  }
+})();
 
 // --- Register service worker ---
 if ('serviceWorker' in navigator) {

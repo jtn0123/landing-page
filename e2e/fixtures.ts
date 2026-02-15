@@ -14,8 +14,12 @@ const test = base.extend({
   page: async ({ page }, use) => {
     await page.coverage.startJSCoverage({ resetOnNavigation: false });
     await use(page);
-    const coverage = await page.coverage.stopJSCoverage();
-    await mcr.add(coverage);
+    try {
+      const coverage = await page.coverage.stopJSCoverage();
+      await mcr.add(coverage);
+    } catch {
+      // Page may have closed before coverage could be collected
+    }
   },
 });
 

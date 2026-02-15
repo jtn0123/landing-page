@@ -22,7 +22,7 @@ export function init(): void {
     lightbox!.close();
     lightboxImg!.style.transform = '';
     currentScale = 1;
-    if (lastFocused && lastFocused.isConnected) lastFocused.focus();
+    if (lastFocused?.isConnected) lastFocused.focus();
   }
 
   document.querySelectorAll('.lightbox-trigger').forEach((img) => {
@@ -76,11 +76,9 @@ export function init(): void {
         e.preventDefault();
         last.focus();
       }
-    } else {
-      if (document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-      }
+    } else if (document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
     }
   });
 

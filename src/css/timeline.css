@@ -70,23 +70,23 @@
   transition: box-shadow 0.2s ease;
 }
 .repo-megabonk {
-  background: rgba(79, 195, 247, 0.15);
+  background: #1a2a33;
   color: #e1f5fe;
 }
 .repo-volttracker {
-  background: rgba(76, 175, 80, 0.15);
+  background: #1a2b1a;
   color: #c8e6c9;
 }
 .repo-landing-page {
-  background: rgba(171, 71, 188, 0.15);
+  background: #2a1a2e;
   color: #e1bee7;
 }
 .repo-satellite_processor {
-  background: rgba(255, 152, 0, 0.15);
+  background: #2e2415;
   color: #ffe0b2;
 }
 .repo-audiowhisper {
-  background: rgba(233, 30, 99, 0.15);
+  background: #2e1520;
   color: #f8bbd0;
 }
 

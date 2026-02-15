@@ -33,6 +33,7 @@ globalThis.addEventListener('fetch', (event) => {
     event.respondWith(
       fetch(request)
         .then((response) => {
+          if (!response.ok) return response;
           const clone = response.clone();
           const headers = new Headers(clone.headers);
           headers.set('sw-cache-time', String(Date.now()));
@@ -47,11 +48,11 @@ globalThis.addEventListener('fetch', (event) => {
         })
         .catch(() =>
           caches.match(request).then((cached) => {
-            if (!cached) return cached;
+            if (!cached) return new Response('Service Unavailable', { status: 503 });
             const cacheTime = Number(cached.headers.get('sw-cache-time') || '0');
             if (cacheTime && Date.now() - cacheTime > API_CACHE_TTL) {
               // Cached response is stale — delete it but still return it as fallback
-              caches.open(CACHE_NAME).then((cache) => cache.delete(request));
+              event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.delete(request)));
             }
             return cached;
           })
