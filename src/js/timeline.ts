@@ -2,7 +2,7 @@
  * Recent activity timeline — fetches and renders GitHub commit history.
  * @module timeline
  */
-import { API_BASE, REPOS, OWNER } from '../main.ts';
+import { API_BASE, REPOS, OWNER } from './constants.ts';
 import { cachedFetchJSON, renderError, abbreviateNum, relativeTime, escapeHTML } from './api.ts';
 import type { Commit, GitHubCommitResponse, CommitDetailResponse, CacheEntry } from './types.ts';
 
