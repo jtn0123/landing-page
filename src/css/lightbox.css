@@ -23,7 +23,7 @@
   position: absolute;
   top: 1rem;
   right: 1rem;
-  background: rgba(255, 255, 255, 0.15);
+  background: #333;
   border: none;
   color: #fff;
   font-size: 2rem;
@@ -40,7 +40,7 @@
 }
 .lightbox-close:hover,
 .lightbox-close:focus-visible {
-  background: rgba(255, 255, 255, 0.3);
+  background: #555;
   outline: 2px solid #fff;
 }
 .lightbox img {

@@ -12,7 +12,7 @@
     <meta name="theme-color" content="#0a0a0a" id="meta-theme-color" />
 
     <!-- Security: Content Security Policy -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.githubusercontent.com https://avatars.githubusercontent.com; connect-src 'self' https://api.github.com;" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-pLul+KGGy9NBXOBG5MrclKwsChSNY4qhBlaL10EUv+Y=' 'sha256-7Yr2sKvAVk8mv4HBm3EU+MAgADJU9nRENh8a/koDcp4=' 'sha256-QNiEQ11awzziOSwW/ivttiHD4zxqOokDRN77cLL63TU='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.githubusercontent.com https://avatars.githubusercontent.com; connect-src 'self' https://api.github.com;" />
 
     <!-- SEO: Canonical URL -->
     <link rel="canonical" href="https://neuhard.dev/" />
@@ -198,14 +198,8 @@
     <!-- CSS imported via main.ts, Vite bundles it -->
     <link rel="modulepreload" href="main.ts" />
 
-    <!-- Theme: apply early to prevent flash -->
-    <script>
-      (function () {
-        var t = localStorage.getItem('theme');
-        if (!t) t = globalThis.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-        if (t === 'light') document.documentElement.dataset.theme = 'light';
-      })();
-    </script>
+    <!-- Theme: apply early to prevent flash (external to comply with CSP script-src 'self') -->
+    <script src="/theme-init.js"></script>
 
     <!-- Structured Data -->
     <script type="application/ld+json">

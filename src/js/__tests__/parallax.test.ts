@@ -1,18 +1,18 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
+async function loadWithMocks(overrides: { isMobile?: boolean; reducedMotion?: boolean } = {}) {
+  vi.doMock('../config.ts', () => ({
+    reducedMotion: overrides.reducedMotion ?? false,
+    isMobile: { value: overrides.isMobile ?? false },
+  }));
+  return import('../parallax.ts');
+}
+
 describe('parallax', () => {
   beforeEach(() => {
     vi.resetModules();
     document.body.innerHTML = '<div class="card" style="width:200px;height:200px"></div><div id="parallax-mesh"></div>';
   });
-
-  async function loadWithMocks(overrides: { isMobile?: boolean; reducedMotion?: boolean } = {}) {
-    vi.doMock('../config.ts', () => ({
-      reducedMotion: overrides.reducedMotion ?? false,
-      isMobile: { value: overrides.isMobile ?? false },
-    }));
-    return import('../parallax.ts');
-  }
 
   it('updateParallaxMesh sets transform based on scrollY', async () => {
     const mod = await loadWithMocks();
