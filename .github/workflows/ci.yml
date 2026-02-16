@@ -78,3 +78,4 @@ jobs:
         uses: treosh/lighthouse-ci-action@v12
         with:
           configPath: ./lighthouserc.json
+# benchmark run 2 - 4 cores / 3GB
