@@ -4,8 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>7v7 Flag Football Playbook</title>
+<meta property="og:title" content="7v7 Flag Football Playbook">
+<meta property="og:description" content="13 plays with diagrams, read progressions, and Playmaker X recreation guides">
+<meta name="theme-color" content="#111">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏈</text></svg>">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
   body {
     background: #111; color: #e5e5e5;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -13,14 +18,27 @@
   }
   h1 { text-align: center; font-size: 1.6rem; padding: 16px 0 4px; color: #fff; }
   .subtitle { text-align: center; color: #888; font-size: 0.9rem; margin-bottom: 20px; }
-  .toc { background: #1a1a1a; border-radius: 10px; padding: 14px 18px; margin-bottom: 24px; }
-  .toc h2 { font-size: 1rem; color: #93c5fd; margin-bottom: 8px; }
+  .toc { background: #1a1a1a; border-radius: 10px; padding: 14px 18px; margin-bottom: 24px; position: sticky; top: 0; z-index: 50; }
+  .toc h2 { font-size: 1rem; color: #93c5fd; margin-bottom: 8px; cursor: pointer; }
+  .toc h2::after { content: ' ▾'; font-size: 0.7rem; }
+  .toc.collapsed h2::after { content: ' ▸'; }
+  .toc.collapsed .toc-links { display: none; }
   .toc a { color: #60a5fa; text-decoration: none; display: block; padding: 3px 0; font-size: 0.9rem; }
   .toc a:hover { text-decoration: underline; }
   .toc .cat { color: #888; font-size: 0.8rem; margin-top: 8px; text-transform: uppercase; letter-spacing: 1px; }
   .play {
-    background: #1a1a1a; border-radius: 12px; margin-bottom: 20px;
+    background: #1a1a1a; border-radius: 12px; margin-bottom: 28px;
     overflow: hidden; border: 1px solid #333;
+  }
+  .category-divider {
+    border: none; border-top: 1px solid #333; margin: 32px 0 24px;
+    position: relative;
+  }
+  .category-divider::after {
+    content: attr(data-label);
+    position: absolute; top: -10px; left: 16px;
+    background: #111; color: #666; font-size: 0.75rem; padding: 0 8px;
+    text-transform: uppercase; letter-spacing: 1px;
   }
   .play svg { width: 100%; height: auto; display: block; }
   .play-info { padding: 14px 16px; }
@@ -35,11 +53,18 @@
   .badge-run { background: #14532d; color: #4ade80; }
   .badge-trick { background: #3b0764; color: #c084fc; }
   .legend { background: #1a1a1a; border-radius: 10px; padding: 14px 18px; margin-bottom: 24px; border: 1px solid #333; }
-  .legend h2 { font-size: 1rem; color: #fff; margin-bottom: 6px; }
-  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; padding: 2px 0; }
-  .legend-line { width: 30px; height: 3px; border-radius: 2px; }
-  .back-top { text-align: center; padding: 8px; }
-  .back-top a { color: #60a5fa; text-decoration: none; font-size: 0.85rem; }
+  .legend h2 { font-size: 1rem; color: #fff; margin-bottom: 8px; }
+  .legend-items { display: flex; flex-wrap: wrap; gap: 6px 16px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.82rem; padding: 2px 0; white-space: nowrap; }
+  .legend-line { width: 24px; height: 3px; border-radius: 2px; flex-shrink: 0; }
+  .back-top-float {
+    position: fixed; bottom: 24px; right: 24px; z-index: 100;
+    background: #2563eb; color: #fff; border: none; border-radius: 50%;
+    width: 44px; height: 44px; font-size: 1.2rem; cursor: pointer;
+    opacity: 0; transition: opacity 0.3s; pointer-events: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  }
+  .back-top-float.visible { opacity: 1; pointer-events: auto; }
   .pmx-box { background: #1a1a1a; border-radius: 10px; padding: 14px 18px; margin-bottom: 24px; border: 1px solid #333; }
   .pmx-box h2 { font-size: 1rem; color: #c084fc; margin-bottom: 8px; }
   .pmx-box code { background: #2a2a2a; color: #f0abfc; padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; }
@@ -53,6 +78,17 @@
   details.pmx .pmx-content h4:first-child { margin-top: 0; }
   details.pmx .pmx-content ul { margin: 2px 0 6px 16px; }
   details.pmx .pmx-content li { margin-bottom: 2px; }
+  .footer { text-align: center; padding: 32px 12px 24px; color: #555; font-size: 0.8rem; border-top: 1px solid #222; margin-top: 24px; }
+  .footer a { color: #60a5fa; text-decoration: none; }
+  @media print {
+    body { background: #fff; color: #111; max-width: 100%; }
+    .toc, .back-top-float, .pmx-box, .footer { display: none; }
+    .play { break-inside: avoid; page-break-inside: avoid; border-color: #ccc; background: #fff; margin-bottom: 16px; }
+    .play-name, .play-formation { color: #111; }
+    .play-desc, .play-meta dd { color: #333; }
+    .play-meta dt { color: #1a56db; }
+    .legend { background: #f5f5f5; border-color: #ccc; }
+  }
 </style>
 </head>
 <body>
@@ -72,16 +108,19 @@
 
 <div class="legend">
   <h2>Route Color Legend</h2>
-  <div class="legend-item"><div class="legend-line" style="background:red"></div> 1st Read (primary)</div>
-  <div class="legend-item"><div class="legend-line" style="background:orange"></div> 2nd Read</div>
-  <div class="legend-item"><div class="legend-line" style="background:#e6c619"></div> 3rd Read</div>
-  <div class="legend-item"><div class="legend-line" style="background:#22c55e"></div> Run path</div>
-  <div class="legend-item"><div class="legend-line" style="background:#c084fc"></div> Trick play action</div>
-  <div class="legend-item"><div class="legend-line" style="background:white;border:1px dashed #666"></div> Clearing / checkdown routes</div>
+  <div class="legend-items">
+    <div class="legend-item"><div class="legend-line" style="background:red"></div> 1st Read</div>
+    <div class="legend-item"><div class="legend-line" style="background:orange"></div> 2nd Read</div>
+    <div class="legend-item"><div class="legend-line" style="background:#e6c619"></div> 3rd Read</div>
+    <div class="legend-item"><div class="legend-line" style="background:#22c55e"></div> Run</div>
+    <div class="legend-item"><div class="legend-line" style="background:#c084fc"></div> Trick</div>
+    <div class="legend-item"><div class="legend-line" style="background:white;border:1px dashed #666"></div> Clearing</div>
+  </div>
 </div>
 
 <div class="toc" id="top">
-  <h2>📋 Table of Contents</h2>
+  <h2 onclick="this.parentElement.classList.toggle('collapsed')">📋 Table of Contents</h2>
+  <div class="toc-links">
   <div class="cat">Core Passing Concepts</div>
   <a href="#p1">1. Spread Flood Right</a>
   <a href="#p2">2. Trips Right — Levels</a>
@@ -98,6 +137,7 @@
   <a href="#p11">11. Trips Left — Double Pass</a>
   <a href="#p12">12. Spread — Fake Screen & Go</a>
   <a href="#p13">13. Spread — Hook & Lateral</a>
+  </div>
 </div>
 
 <!-- PLAY 1 -->
@@ -429,6 +469,7 @@
   </div>
 </div>
 
+<hr class="category-divider" data-label="Run / Scramble Designs">
 <!-- PLAY 8 -->
 <div class="play" id="p8">
   <object data="plays/08-qb-draw.svg" type="image/svg+xml" style="width:100%"></object>
@@ -570,6 +611,7 @@
   </div>
 </div>
 
+<hr class="category-divider" data-label="Trick Plays">
 <!-- PLAY 11 -->
 <div class="play" id="p11">
   <object data="plays/11-double-pass.svg" type="image/svg+xml" style="width:100%"></object>
@@ -709,12 +751,15 @@
   </div>
 </div>
 
-<div class="back-top"><a href="#top">↑ Back to top</a></div>
+<div class="footer">Built for rec league 🏈 • <a href="https://neuhard.dev/playbook">neuhard.dev/playbook</a></div>
 
-<div style="text-align:center; padding: 20px; color: #555; font-size: 0.8rem;">
-  7v7 Flag Football Playbook • 13 Plays<br>
-  Good luck out there 🏈
-</div>
+<button class="back-top-float" id="backTop" onclick="window.scrollTo({top:0})" aria-label="Back to top">↑</button>
 
+<script>
+const btn = document.getElementById('backTop');
+window.addEventListener('scroll', () => {
+  btn.classList.toggle('visible', window.scrollY > 400);
+}, {passive: true});
+</script>
 </body>
 </html>
