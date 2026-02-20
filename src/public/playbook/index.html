@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>7v7 Flag Football Playbook</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #111; color: #e5e5e5;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    line-height: 1.5; padding: 12px; max-width: 700px; margin: 0 auto;
+  }
+  h1 { text-align: center; font-size: 1.6rem; padding: 16px 0 4px; color: #fff; }
+  .subtitle { text-align: center; color: #888; font-size: 0.9rem; margin-bottom: 20px; }
+  .toc { background: #1a1a1a; border-radius: 10px; padding: 14px 18px; margin-bottom: 24px; }
+  .toc h2 { font-size: 1rem; color: #93c5fd; margin-bottom: 8px; }
+  .toc a { color: #60a5fa; text-decoration: none; display: block; padding: 3px 0; font-size: 0.9rem; }
+  .toc a:hover { text-decoration: underline; }
+  .toc .cat { color: #888; font-size: 0.8rem; margin-top: 8px; text-transform: uppercase; letter-spacing: 1px; }
+  .play {
+    background: #1a1a1a; border-radius: 12px; margin-bottom: 20px;
+    overflow: hidden; border: 1px solid #333;
+  }
+  .play svg { width: 100%; height: auto; display: block; }
+  .play-info { padding: 14px 16px; }
+  .play-name { font-size: 1.2rem; font-weight: 700; color: #fff; }
+  .play-formation { color: #93c5fd; font-size: 0.85rem; margin-bottom: 8px; }
+  .play-desc { font-size: 0.9rem; color: #ccc; margin-bottom: 10px; }
+  .play-meta { font-size: 0.8rem; }
+  .play-meta dt { color: #93c5fd; font-weight: 600; margin-top: 6px; }
+  .play-meta dd { color: #aaa; margin-left: 0; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; margin-right: 4px; }
+  .badge-pass { background: #1e3a5f; color: #60a5fa; }
+  .badge-run { background: #14532d; color: #4ade80; }
+  .badge-trick { background: #3b0764; color: #c084fc; }
+  .legend { background: #1a1a1a; border-radius: 10px; padding: 14px 18px; margin-bottom: 24px; border: 1px solid #333; }
+  .legend h2 { font-size: 1rem; color: #fff; margin-bottom: 6px; }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; padding: 2px 0; }
+  .legend-line { width: 30px; height: 3px; border-radius: 2px; }
+  .back-top { text-align: center; padding: 8px; }
+  .back-top a { color: #60a5fa; text-decoration: none; font-size: 0.85rem; }
+  .pmx-box { background: #1a1a1a; border-radius: 10px; padding: 14px 18px; margin-bottom: 24px; border: 1px solid #333; }
+  .pmx-box h2 { font-size: 1rem; color: #c084fc; margin-bottom: 8px; }
+  .pmx-box code { background: #2a2a2a; color: #f0abfc; padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; }
+  .pmx-box p, .pmx-box li { font-size: 0.88rem; color: #ccc; }
+  .pmx-box ul { margin: 6px 0 8px 18px; }
+  details.pmx { margin-top: 10px; border-top: 1px solid #333; padding-top: 10px; }
+  details.pmx summary { cursor: pointer; color: #c084fc; font-weight: 600; font-size: 0.92rem; padding: 4px 0; }
+  details.pmx summary:hover { color: #e0b0ff; }
+  details.pmx .pmx-content { margin-top: 8px; font-size: 0.85rem; color: #bbb; }
+  details.pmx .pmx-content h4 { color: #93c5fd; font-size: 0.85rem; margin: 8px 0 4px; }
+  details.pmx .pmx-content h4:first-child { margin-top: 0; }
+  details.pmx .pmx-content ul { margin: 2px 0 6px 16px; }
+  details.pmx .pmx-content li { margin-bottom: 2px; }
+</style>
+</head>
+<body>
+<h1>🏈 7v7 Flag Football Playbook</h1>
+<p class="subtitle">12 plays • Rec league • Pull up on the field</p>
+
+<div class="pmx-box">
+  <h2>📱 Playmaker X — Free Import Codes</h2>
+  <p>Download <strong>Playmaker X</strong> (iOS / Android / Desktop), tap <strong>Playbooks → Import</strong>, and enter these codes for free starter playbooks:</p>
+  <ul>
+    <li><code>FOUNDATIONS7v7</code> — 16 core plays</li>
+    <li><code>SCRIPT7v7</code> — 10 scripted plays</li>
+    <li><code>SITUATIONAL7v7</code> — 7 situational plays</li>
+  </ul>
+  <p style="color:#888; font-size:0.82rem;">Each play below also includes a "📱 Playmaker X Guide" with step-by-step instructions to recreate it in the app.</p>
+</div>
+
+<div class="legend">
+  <h2>Route Color Legend</h2>
+  <div class="legend-item"><div class="legend-line" style="background:red"></div> 1st Read (primary)</div>
+  <div class="legend-item"><div class="legend-line" style="background:orange"></div> 2nd Read</div>
+  <div class="legend-item"><div class="legend-line" style="background:#e6c619"></div> 3rd Read</div>
+  <div class="legend-item"><div class="legend-line" style="background:#22c55e"></div> Run path</div>
+  <div class="legend-item"><div class="legend-line" style="background:#c084fc"></div> Trick play action</div>
+  <div class="legend-item"><div class="legend-line" style="background:white;border:1px dashed #666"></div> Clearing / checkdown routes</div>
+</div>
+
+<div class="toc" id="top">
+  <h2>📋 Table of Contents</h2>
+  <div class="cat">Core Passing Concepts</div>
+  <a href="#p1">1. Spread Flood Right</a>
+  <a href="#p2">2. Trips Right — Levels</a>
+  <a href="#p3">3. Bunch Right — Mesh</a>
+  <a href="#p4">4. Spread — Four Verticals</a>
+  <a href="#p5">5. Trips Left — Smash</a>
+  <a href="#p6">6. Stack Left — Quick Slants</a>
+  <a href="#p7">7. Spread — Post/Dig Combo</a>
+  <div class="cat">Run / Scramble Designs</div>
+  <a href="#p8">8. Spread — QB Draw</a>
+  <a href="#p9">9. Trips Right — Jet Sweep</a>
+  <a href="#p10">10. Spread — Run/Pass Option</a>
+  <div class="cat">Trick Plays</div>
+  <a href="#p11">11. Trips Left — Double Pass</a>
+  <a href="#p12">12. Spread — Fake Screen & Go</a>
+  <a href="#p13">13. Spread — Hook & Lateral</a>
+</div>
+
+<!-- PLAY 1 -->
+<div class="play" id="p1">
+  <object data="plays/01-spread-flood.svg" type="image/svg+xml" style="width:100%"></object>
+  <div class="play-info">
+    <div class="play-name"><span class="badge badge-pass">PASS</span> 1. Spread Flood Right</div>
+    <div class="play-formation">Formation: Spread (2x2 + RB)</div>
+    <div class="play-desc">Classic flood concept — three receivers attack three levels on the right side (flat, intermediate, deep). Forces the defense to cover high-low and puts a single defender in a bind.</div>
+    <dl class="play-meta">
+      <dt>Read Progression</dt>
+      <dd>① WR4 flat route — quick check if defender bails deep<br>② WR3 corner route — main money throw vs zone<br>③ RB wheel — the home run if defense bites short</dd>
+      <dt>Best Against</dt>
+      <dd>Cover 2 and Cover 3 zone. The flat/corner combo is nearly impossible to cover with one defender.</dd>
+      <dt>When to Call</dt>
+      <dd>2nd & medium, or anytime you see zone coverage. Great near the red zone.</dd>
+    </dl>
+    <details class="pmx">
+      <summary>📱 Playmaker X Guide</summary>
+      <div class="pmx-content">
+        <h4>Formation Setup</h4>
+        <ul>
+          <li>WR1: far left, on the line of scrimmage</li>
+          <li>WR2: left slot, 1 yard off the line</li>
+          <li>WR3: right slot, 1 yard off the line</li>
+          <li>WR4: far right, on the line</li>
+          <li>RB: 3 yards behind QB, offset right</li>
+        </ul>
+        <h4>Route Drawing</h4>
+        <ul>
+          <li>WR1: draw a go route straight up the left sideline (~20 yds) — clearing route</li>
+          <li>WR2: draw a short in route at 6 yards — clearing route</li>
+          <li>WR3: draw up 10 yards, then angle right toward the sideline at 45° for 8 yards (corner route)</li>
+          <li>WR4: draw straight out to the right sideline at 3 yards (flat route)</li>
+          <li>RB: draw a wheel route — release right, curve upfield along the right sideline for 15+ yards</li>
+        </ul>
+        <h4>Read Progression</h4>
+        <ul>
+          <li>1st read: WR4 flat</li>
+          <li>2nd read: WR3 corner</li>
+          <li>3rd read: RB wheel</li>
+        </ul>
+        <h4>Category</h4>
+        <ul><li>File under: <strong>Base</strong></li></ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<!-- PLAY 2 -->
+<div class="play" id="p2">
+  <object data="plays/02-trips-levels.svg" type="image/svg+xml" style="width:100%"></object>
+  <div class="play-info">
+    <div class="play-name"><span class="badge badge-pass">PASS</span> 2. Trips Right — Levels</div>
+    <div class="play-formation">Formation: Trips Right (3x1 + RB)</div>
+    <div class="play-desc">Three receivers at three different depths on the same side — short out, medium dig, deep out. The QB reads the underneath defenders and throws to the open level.</div>
+    <dl class="play-meta">
+      <dt>Read Progression</dt>
+      <dd>① WR2 short out — quick and easy if flat is open<br>② WR3 dig/in at ~10 yards — vs soft middle zone<br>③ WR4 deep out at ~15 yards — if defense sits on short stuff</dd>
+      <dt>Best Against</dt>
+      <dd>Any zone coverage. The stacked levels make it nearly impossible to cover all three with two defenders.</dd>
+      <dt>When to Call</dt>
+      <dd>3rd & medium (5-8 yards). Safe, high-percentage concept.</dd>
+    </dl>
+    <details class="pmx">
+      <summary>📱 Playmaker X Guide</summary>
+      <div class="pmx-content">
+        <h4>Formation Setup</h4>
+        <ul>
+          <li>WR1: far left, on the line</li>
+          <li>WR2: right slot (inside), on the line</li>
+          <li>WR3: right slot (middle), 1 yard off the line</li>
+          <li>WR4: far right, on the line</li>
+          <li>RB: 3 yards behind QB</li>
+        </ul>
+        <h4>Route Drawing</h4>
+        <ul>
+          <li>WR1: draw a go route up the left sideline — clearing</li>
+          <li>WR2: draw out 5 yards to the right sideline (short out)</li>
+          <li>WR3: draw up 10 yards, then cut inside at 90° for 5 yards (dig/in)</li>
+          <li>WR4: draw up 15 yards, then cut out toward the sideline at 90° (deep out)</li>
+          <li>RB: draw a checkdown — release right, sit at 4 yards</li>
+        </ul>
+        <h4>Read Progression</h4>
+        <ul>
+          <li>1st read: WR2 short out</li>
+          <li>2nd read: WR3 dig</li>
+          <li>3rd read: WR4 deep out</li>
+        </ul>
+        <h4>Category</h4>
+        <ul><li>File under: <strong>Base</strong></li></ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<!-- PLAY 3 -->
+<div class="play" id="p3">
+  <object data="plays/03-bunch-mesh.svg" type="image/svg+xml" style="width:100%"></object>
+  <div class="play-info">
+    <div class="play-name"><span class="badge badge-pass">PASS</span> 3. Bunch Right — Mesh</div>
+    <div class="play-formation">Formation: Bunch Right (3 close + WR1 isolated left)</div>
+    <div class="play-desc">Two receivers cross underneath each other (mesh/pick concept). The bunch formation creates natural rubs that free up receivers against man coverage. In flag football, picks are legal through bunching.</div>
+    <dl class="play-meta">
+      <dt>Read Progression</dt>
+      <dd>① WR2 shallow cross right-to-left — usually open first<br>② WR1 shallow cross left-to-right — the crosser going opposite<br>③ WR3 wheel up — if defense collapses on the mesh</dd>
+      <dt>Best Against</dt>
+      <dd>Man coverage. The crossing routes create traffic that man defenders can't navigate cleanly.</dd>
+      <dt>When to Call</dt>
+      <dd>Any down. Your bread-and-butter man-beater. Great in short yardage and red zone.</dd>
+    </dl>
+    <details class="pmx">
+      <summary>📱 Playmaker X Guide</summary>
+      <div class="pmx-content">
+        <h4>Formation Setup</h4>
+        <ul>
+          <li>WR1: far left, on the line</li>
+          <li>WR2: bunch right — innermost, 1 yard off the line, tight to center</li>
+          <li>WR3: bunch right — middle, 1 yard off the line, 1 yard outside WR2</li>
+          <li>WR4: bunch right — outermost, on the line, 2 yards outside WR3</li>
+          <li>RB: 3 yards behind QB</li>
+        </ul>
+        <h4>Route Drawing</h4>
+        <ul>
+          <li>WR1: draw up 2 yards, then angle right across the field at ~15° (shallow cross left-to-right, ~12 yards total)</li>
+          <li>WR2: draw up 2 yards, then angle left across the field (shallow cross right-to-left) — crosses under WR1</li>
+          <li>WR3: draw a wheel route — release outside, curve upfield along the right sideline for 15 yards</li>
+          <li>WR4: draw a go route straight up the right sideline — clearing</li>
+          <li>RB: draw a flat route to the left at 3 yards — checkdown</li>
+        </ul>
+        <h4>Read Progression</h4>
+        <ul>
+          <li>1st read: WR2 shallow cross (right-to-left)</li>
+          <li>2nd read: WR1 shallow cross (left-to-right)</li>
+          <li>3rd read: WR3 wheel</li>
+        </ul>
+        <h4>Category</h4>
+        <ul><li>File under: <strong>Red Zone</strong></li></ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<!-- PLAY 4 -->
+<div class="play" id="p4">
+  <object data="plays/04-spread-verticals.svg" type="image/svg+xml" style="width:100%"></object>
+  <div class="play-info">
+    <div class="play-name"><span class="badge badge-pass">PASS</span> 4. Spread — Four Verticals</div>
+    <div class="play-formation">Formation: Spread (2x2 + RB deep)</div>
+    <div class="play-desc">All four WRs run vertical routes, stretching the defense deep. The two inside seam routes are the primary reads — QB reads the safeties and throws to whichever seam is uncovered.</div>
+    <dl class="play-meta">
+      <dt>Read Progression</dt>
+      <dd>① WR2 left seam — read the middle safety; throw opposite of where he leans<br>② WR3 right seam — the other seam option<br>③ WR1 outside go — if the corner plays soft</dd>
+      <dt>Best Against</dt>
+      <dd>Cover 3 (the seams split the two deep zones). Also good vs single-high looks.</dd>
+      <dt>When to Call</dt>
+      <dd>When you need a big play. 1st down, or when the defense is playing tight/short. Requires a QB who can throw deep.</dd>
+    </dl>
+    <details class="pmx">
+      <summary>📱 Playmaker X Guide</summary>
+      <div class="pmx-content">
+        <h4>Formation Setup</h4>
+        <ul>
+          <li>WR1: far left, on the line</li>
+          <li>WR2: left slot, 1 yard off the line</li>
+          <li>WR3: right slot, 1 yard off the line</li>
+          <li>WR4: far right, on the line</li>
+          <li>RB: 5 yards behind QB, offset deep</li>
+        </ul>
+        <h4>Route Drawing</h4>
+        <ul>
+          <li>WR1: draw straight up the left sideline 20+ yards (go route)</li>
+          <li>WR2: draw straight up the left seam 20+ yards (seam route)</li>
+          <li>WR3: draw straight up the right seam 20+ yards (seam route)</li>
+          <li>WR4: draw straight up the right sideline 20+ yards (go route)</li>
+          <li>RB: draw straight up the middle 20 yards (delayed vertical) — dashed/clearing</li>
+        </ul>
+        <h4>Read Progression</h4>
+        <ul>
+          <li>1st read: WR2 left seam</li>
+          <li>2nd read: WR3 right seam</li>
+          <li>3rd read: WR1 outside go</li>
+        </ul>
+        <h4>Category</h4>
+        <ul><li>File under: <strong>Base</strong></li></ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<!-- PLAY 5 -->
+<div class="play" id="p5">
+  <object data="plays/05-trips-smash.svg" type="image/svg+xml" style="width:100%"></object>
+  <div class="play-info">
+    <div class="play-name"><span class="badge badge-pass">PASS</span> 5. Trips Left — Smash</div>
+    <div class="play-formation">Formation: Trips Left (3x1 + RB)</div>
+    <div class="play-desc">Classic smash concept: a hitch/corner combination. WR1 runs a short hitch to hold the corner, and WR2 runs a corner route behind him. If the corner sits on the hitch, throw the corner. If he bails, take the hitch.</div>
+    <dl class="play-meta">
+      <dt>Read Progression</dt>
+      <dd>① WR1 hitch at 5 yards — quick throw if corner plays deep<br>② WR2 corner route — the money throw if corner bites on the hitch<br>③ WR3 slant inside — safety valve middle</dd>
+      <dt>Best Against</dt>
+      <dd>Cover 2 (the corner route splits the corner and safety). Also effective vs Cover 4.</dd>
+      <dt>When to Call</dt>
+      <dd>3rd & short to medium. Nearly uncoverable if the QB makes the right read.</dd>
+    </dl>
+    <details class="pmx">
+      <summary>📱 Playmaker X Guide</summary>
+      <div class="pmx-content">
+        <h4>Formation Setup</h4>
+        <ul>
+          <li>WR1: far left, on the line (trips left — outside)</li>
+          <li>WR2: left slot (trips left — middle), 1 yard off the line</li>
+          <li>WR3: left slot (trips left — inside), 1 yard off the line</li>
+          <li>WR4: far right, on the line (isolated)</li>
+          <li>RB: 3 yards behind QB</li>
+        </ul>
+        <h4>Route Drawing</h4>
+        <ul>
+          <li>WR1: draw up 5 yards, stop (hitch route)</li>
+          <li>WR2: draw up 10 yards, then angle left toward the sideline at 45° for 8 yards (corner route)</li>
+          <li>WR3: draw up 5 yards, then cut inside at 45° (slant/in route)</li>
+          <li>WR4: draw a go route up the right sideline — clearing</li>
+          <li>RB: draw a flat release left, sit at 4 yards — checkdown</li>
+        </ul>
+        <h4>Read Progression</h4>
+        <ul>
+          <li>1st read: WR1 hitch</li>
+          <li>2nd read: WR2 corner</li>
+          <li>3rd read: WR3 slant</li>
+        </ul>
+        <h4>Category</h4>
+        <ul><li>File under: <strong>Base</strong></li></ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<!-- PLAY 6 -->
+<div class="play" id="p6">
+  <object data="plays/06-stack-slants.svg" type="image/svg+xml" style="width:100%"></object>
+  <div class="play-info">
+    <div class="play-name"><span class="badge badge-pass">PASS</span> 6. Stack Left — Quick Slants</div>
+    <div class="play-formation">Formation: Stack Left (WR1 over WR2) + 2 right</div>
+    <div class="play-desc">Quick-hitting slants from both sides. The stack formation on the left creates a natural pick — WR1 runs the slant while WR2 peels out underneath. Fast throw, low risk, gains 5-8 yards consistently.</div>
+    <dl class="play-meta">
+      <dt>Read Progression</dt>
+      <dd>① WR1 quick slant — throw on the break, very fast<br>② WR3 slant from right — the other option if left is covered<br>③ WR2 out from stack — sneaks out underneath for the dump-off</dd>
+      <dt>Best Against</dt>
+      <dd>Man coverage and soft zones. Quick timing beats the rush.</dd>
+      <dt>When to Call</dt>
+      <dd>3rd & short. Also great as an opening play to establish quick rhythm. One of the safest plays in the book.</dd>
+    </dl>
+    <details class="pmx">
+      <summary>📱 Playmaker X Guide</summary>
+      <div class="pmx-content">
+        <h4>Formation Setup</h4>
+        <ul>
+          <li>WR1: far left, on the line (stacked — front)</li>
+          <li>WR2: directly behind WR1, 2 yards off the line (stacked — back)</li>
+          <li>WR3: right slot, 1 yard off the line</li>
+          <li>WR4: far right, on the line</li>
+          <li>RB: 3 yards behind QB</li>
+        </ul>
+        <h4>Route Drawing</h4>
+        <ul>
+          <li>WR1: draw up 3 yards, then cut inside at 45° for 8 yards (quick slant)</li>
+          <li>WR2: draw out toward left sideline at 3 yards (out route from stack)</li>
+          <li>WR3: draw up 3 yards, then cut inside at 45° for 8 yards (slant from right)</li>
+          <li>WR4: draw a go route up the right sideline — clearing</li>
+          <li>RB: draw a checkdown release, sit at 4 yards in the middle</li>
+        </ul>
+        <h4>Read Progression</h4>
+        <ul>
+          <li>1st read: WR1 quick slant</li>
+          <li>2nd read: WR3 slant</li>
+          <li>3rd read: WR2 out</li>
+        </ul>
+        <h4>Category</h4>
+        <ul><li>File under: <strong>Base</strong></li></ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<!-- PLAY 7 -->
+<div class="play" id="p7">
+  <object data="plays/07-spread-post-dig.svg" type="image/svg+xml" style="width:100%"></object>
+  <div class="play-info">
+    <div class="play-name"><span class="badge badge-pass">PASS</span> 7. Spread — Post/Dig Combo</div>
+    <div class="play-formation">Formation: Spread (2x2 + RB deep)</div>
+    <div class="play-desc">The post/dig combination attacks the middle of the field at two depths. WR3 runs a deep post to pull the safety, and WR2 runs a dig underneath into the vacated space. Classic high-low on the middle defender.</div>
+    <dl class="play-meta">
+      <dt>Read Progression</dt>
+      <dd>① WR3 post route — the big play if the safety doesn't get over<br>② WR2 dig at ~12 yards — reliable throw into the void left by the safety<br>③ WR1 out — boundary safety valve</dd>
+      <dt>Best Against</dt>
+      <dd>Cover 1 / Cover 3. The post takes the deep middle, the dig sits underneath.</dd>
+      <dt>When to Call</dt>
+      <dd>Any down, especially when you want to attack the middle of the field. Great on 2nd & long.</dd>
+    </dl>
+    <details class="pmx">
+      <summary>📱 Playmaker X Guide</summary>
+      <div class="pmx-content">
+        <h4>Formation Setup</h4>
+        <ul>
+          <li>WR1: far left, on the line</li>
+          <li>WR2: left slot, 1 yard off the line</li>
+          <li>WR3: right slot, 1 yard off the line</li>
+          <li>WR4: far right, on the line</li>
+          <li>RB: 4 yards behind QB, offset deep</li>
+        </ul>
+        <h4>Route Drawing</h4>
+        <ul>
+          <li>WR1: draw up 8 yards, then cut out to the left sideline (out route) — safety valve</li>
+          <li>WR2: draw up 12 yards, then cut inside at 90° for 5 yards (dig route)</li>
+          <li>WR3: draw up 15 yards, then angle inside at 45° toward the middle (post route)</li>
+          <li>WR4: draw a go route up the right sideline — clearing</li>
+          <li>RB: draw a flat release left, sit at 4 yards — checkdown</li>
+        </ul>
+        <h4>Read Progression</h4>
+        <ul>
+          <li>1st read: WR3 post</li>
+          <li>2nd read: WR2 dig</li>
+          <li>3rd read: WR1 out</li>
+        </ul>
+        <h4>Category</h4>
+        <ul><li>File under: <strong>Base</strong></li></ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<!-- PLAY 8 -->
+<div class="play" id="p8">
+  <object data="plays/08-qb-draw.svg" type="image/svg+xml" style="width:100%"></object>
+  <div class="play-info">
+    <div class="play-name"><span class="badge badge-run">RUN</span> 8. Spread — QB Draw</div>
+    <div class="play-formation">Formation: Spread (2x2 + RB)</div>
+    <div class="play-desc">All receivers sell go routes to clear defenders deep. QB takes the snap, pauses a beat like it's a pass play, then tucks and runs straight up the middle. Works best when the defense is expecting pass.</div>
+    <dl class="play-meta">
+      <dt>Key Points</dt>
+      <dd>• WRs MUST sell the go route — sprint hard to pull DBs deep<br>• QB: 1-2 count after snap, then go<br>• RB provides a lead block or takes a fake handoff</dd>
+      <dt>Best Against</dt>
+      <dd>Teams that rush aggressively or drop into deep coverage. The lanes open up when everyone clears out.</dd>
+      <dt>When to Call</dt>
+      <dd>2nd & medium, or after hitting several passes in a row. Change of pace. Works great with a mobile QB.</dd>
+    </dl>
+    <details class="pmx">
+      <summary>📱 Playmaker X Guide</summary>
+      <div class="pmx-content">
+        <h4>Formation Setup</h4>
+        <ul>
+          <li>WR1: far left, on the line</li>
+          <li>WR2: left slot, 1 yard off the line</li>
+          <li>WR3: right slot, 1 yard off the line</li>
+          <li>WR4: far right, on the line</li>
+          <li>RB: 3 yards behind QB, offset right</li>
+        </ul>
+        <h4>Route Drawing</h4>
+        <ul>
+          <li>WR1: draw a go route straight up the left sideline (clearing — sell it deep)</li>
+          <li>WR2: draw a go route straight up the left seam (clearing)</li>
+          <li>WR3: draw a go route straight up the right seam (clearing)</li>
+          <li>WR4: draw a go route straight up the right sideline (clearing)</li>
+          <li>RB: draw a lead block forward, then angle slightly right</li>
+          <li>QB: draw a run path — straight up the middle for 10+ yards (use run/green color)</li>
+        </ul>
+        <h4>Read Progression</h4>
+        <ul>
+          <li>No pass reads — this is a designed QB run</li>
+          <li>Mark QB run path as primary</li>
+        </ul>
+        <h4>Category</h4>
+        <ul><li>File under: <strong>Base</strong></li></ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<!-- PLAY 9 -->
+<div class="play" id="p9">
+  <object data="plays/09-jet-sweep.svg" type="image/svg+xml" style="width:100%"></object>
+  <div class="play-info">
+    <div class="play-name"><span class="badge badge-run">RUN</span> 9. Trips Right — Jet Sweep</div>
+    <div class="play-formation">Formation: Trips Right + WR1 motions from left</div>
+    <div class="play-desc">WR1 motions across the formation pre-snap. On the snap, QB hands off (or pitches) to WR1 who sweeps to the right behind blockers. Put your fastest player at WR1.</div>
+    <dl class="play-meta">
+      <dt>Key Points</dt>
+      <dd>• WR1 must time the motion — at full speed at the snap<br>• WR3 and WR4 block the edge<br>• RB fakes a run the opposite direction<br>• WR2 clears out a go route to take a defender deep</dd>
+      <dt>Best Against</dt>
+      <dd>Slow defenses or teams that over-commit to the pass. Gets the ball to your athlete in space.</dd>
+      <dt>When to Call</dt>
+      <dd>1st down. Change of pace. Especially effective after establishing a passing attack. Get your speedster the ball.</dd>
+    </dl>
+    <details class="pmx">
+      <summary>📱 Playmaker X Guide</summary>
+      <div class="pmx-content">
+        <h4>Formation Setup</h4>
+        <ul>
+          <li>WR1: far left, on the line (will motion across)</li>
+          <li>WR2: right slot (inside), on the line</li>
+          <li>WR3: right slot (middle), 1 yard off the line</li>
+          <li>WR4: far right, on the line</li>
+          <li>RB: 3 yards behind QB</li>
+        </ul>
+        <h4>Route Drawing</h4>
+        <ul>
+          <li>WR1: draw a motion arrow from far left to behind QB, then a sweep path curving right along the line and upfield (use run/green color)</li>
+          <li>WR2: draw a go route up the right seam — clearing</li>
+          <li>WR3: draw a block symbol at the right edge</li>
+          <li>WR4: draw a block symbol at the far right edge</li>
+          <li>RB: draw a fake run path to the left (use dashed line)</li>
+        </ul>
+        <h4>Read Progression</h4>
+        <ul>
+          <li>No pass reads — designed handoff/pitch to WR1</li>
+          <li>Mark WR1 sweep path as primary</li>
+        </ul>
+        <h4>Category</h4>
+        <ul><li>File under: <strong>Base</strong></li></ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<!-- PLAY 10 -->
+<div class="play" id="p10">
+  <object data="plays/10-option-scramble.svg" type="image/svg+xml" style="width:100%"></object>
+  <div class="play-info">
+    <div class="play-name"><span class="badge badge-run">RUN</span> 10. Spread — Run/Pass Option</div>
+    <div class="play-formation">Formation: Spread (2x2 + RB)</div>
+    <div class="play-desc">QB reads the edge defender. If the defender crashes inside or sits, QB scrambles right for easy yards. If the defender comes up to stop the run, QB throws the quick out to WR4 or the slant to WR3.</div>
+    <dl class="play-meta">
+      <dt>Key Points</dt>
+      <dd>• Read the right-side defender at the snap<br>• ① WR4 quick out — throw if defender crashes on QB<br>• ② WR3 slant — alternative pass option<br>• If both defenders bail → just run it</dd>
+      <dt>Best Against</dt>
+      <dd>Aggressive defenses. Puts one defender in an unwinnable position.</dd>
+      <dt>When to Call</dt>
+      <dd>Short yardage, 3rd & 3-5. Also great near the goal line. Requires an athletic QB.</dd>
+    </dl>
+    <details class="pmx">
+      <summary>📱 Playmaker X Guide</summary>
+      <div class="pmx-content">
+        <h4>Formation Setup</h4>
+        <ul>
+          <li>WR1: far left, on the line</li>
+          <li>WR2: left slot, 1 yard off the line</li>
+          <li>WR3: right slot, 1 yard off the line</li>
+          <li>WR4: far right, on the line</li>
+          <li>RB: 3 yards behind QB, offset right</li>
+        </ul>
+        <h4>Route Drawing</h4>
+        <ul>
+          <li>WR1: draw a go route up the left sideline — clearing</li>
+          <li>WR2: draw a go route up the left seam — clearing</li>
+          <li>WR3: draw up 4 yards, then cut inside at 45° (slant) — pass option</li>
+          <li>WR4: draw out 3 yards to the right sideline (quick out) — pass option</li>
+          <li>QB: draw a scramble/run path to the right for 8 yards (use run/green color)</li>
+          <li>RB: draw a lead block path ahead of QB</li>
+        </ul>
+        <h4>Read Progression</h4>
+        <ul>
+          <li>1st read: WR4 quick out (throw if edge defender crashes)</li>
+          <li>2nd read: WR3 slant</li>
+          <li>3rd option: QB keeps and runs</li>
+        </ul>
+        <h4>Category</h4>
+        <ul><li>File under: <strong>Red Zone</strong></li></ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<!-- PLAY 11 -->
+<div class="play" id="p11">
+  <object data="plays/11-double-pass.svg" type="image/svg+xml" style="width:100%"></object>
+  <div class="play-info">
+    <div class="play-name"><span class="badge badge-trick">TRICK</span> 11. Trips Left — Double Pass</div>
+    <div class="play-formation">Formation: Trips Left + WR4 isolated right</div>
+    <div class="play-desc">QB throws a quick screen left to WR1. WR2 and WR3 sell the screen by blocking. WR1 catches it, stops, and throws deep downfield to WR4 who has beaten his man on a go route. The defense bites on the screen and WR4 is wide open.</div>
+    <dl class="play-meta">
+      <dt>Key Points</dt>
+      <dd>• WR1 MUST be able to throw — practice this!<br>• WR4 sells a lazy start then explodes deep<br>• Timing: WR1 needs 2 seconds to catch, set, and throw<br>• Only works once per game — save it for a big moment</dd>
+      <dt>Best Against</dt>
+      <dd>Aggressive defenses that rally to the screen. Man coverage where the corner on WR4 cheats toward the screen.</dd>
+      <dt>When to Call</dt>
+      <dd>Need a big play. Down 7 in the 4th quarter. Once per game MAX. ⚠️ Check league rules — some don't allow forward passes after a lateral.</dd>
+    </dl>
+    <details class="pmx">
+      <summary>📱 Playmaker X Guide</summary>
+      <div class="pmx-content">
+        <h4>Formation Setup</h4>
+        <ul>
+          <li>WR1: far left (trips left — outside), on the line</li>
+          <li>WR2: left slot (trips left — middle), 1 yard off the line</li>
+          <li>WR3: left slot (trips left — inside), 1 yard off the line</li>
+          <li>WR4: far right, on the line (isolated)</li>
+          <li>RB: 3 yards behind QB</li>
+        </ul>
+        <h4>Route Drawing</h4>
+        <ul>
+          <li>WR1: draw a short screen route — 2 yards behind the line toward the left sideline, then add a second throw arrow from WR1 deep downfield to WR4 (use trick/purple color)</li>
+          <li>WR2: draw a block symbol near WR1 (screen blocking)</li>
+          <li>WR3: draw a block symbol near WR1 (screen blocking)</li>
+          <li>WR4: draw a go route straight up the right sideline 25+ yards</li>
+          <li>RB: draw a flat release right — checkdown/decoy</li>
+        </ul>
+        <h4>Read Progression</h4>
+        <ul>
+          <li>QB throws screen to WR1 (1st action)</li>
+          <li>WR1's read: WR4 deep go (only throw)</li>
+        </ul>
+        <h4>Category</h4>
+        <ul><li>File under: <strong>Trick</strong></li></ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<!-- PLAY 12 -->
+<div class="play" id="p12">
+  <object data="plays/12-fake-screen-go.svg" type="image/svg+xml" style="width:100%"></object>
+  <div class="play-info">
+    <div class="play-name"><span class="badge badge-trick">TRICK</span> 12. Spread — Fake Screen & Go</div>
+    <div class="play-formation">Formation: Spread (2x2 + RB)</div>
+    <div class="play-desc">Set up the screen look to the right — WR3 and WR4 fake a screen (WR3 moves to "block"). QB pump fakes the screen. WR4 plants and takes off deep. Defense bites on the screen and WR4 is gone.</div>
+    <dl class="play-meta">
+      <dt>Key Points</dt>
+      <dd>• QB pump fake must be convincing<br>• WR4 takes 2 steps toward sideline (sell the screen), then go<br>• WR3 fakes the block then slips upfield as a secondary option<br>• Set this up by running actual screens earlier in the game</dd>
+      <dt>Best Against</dt>
+      <dd>Teams that aggressively jump screens. If they bit on a real screen earlier, this will burn them.</dd>
+      <dt>When to Call</dt>
+      <dd>After running 2-3 actual screens to the right side. The more they've seen the screen, the harder they'll bite.</dd>
+    </dl>
+    <details class="pmx">
+      <summary>📱 Playmaker X Guide</summary>
+      <div class="pmx-content">
+        <h4>Formation Setup</h4>
+        <ul>
+          <li>WR1: far left, on the line</li>
+          <li>WR2: left slot, 1 yard off the line</li>
+          <li>WR3: right slot, 1 yard off the line</li>
+          <li>WR4: far right, on the line</li>
+          <li>RB: 3 yards behind QB</li>
+        </ul>
+        <h4>Route Drawing</h4>
+        <ul>
+          <li>WR1: draw a go route up the left sideline — clearing</li>
+          <li>WR2: draw a go route up the left seam — clearing</li>
+          <li>WR3: draw a fake block symbol (2 steps toward WR4), then release upfield on a seam for 15 yards (use trick/purple for the release)</li>
+          <li>WR4: draw 2 steps toward the right sideline (screen fake), then plant and go straight up the right sideline 20+ yards</li>
+          <li>RB: draw a checkdown sit at 5 yards</li>
+        </ul>
+        <h4>Read Progression</h4>
+        <ul>
+          <li>1st read: WR4 go route (after pump fake)</li>
+          <li>2nd read: WR3 delayed seam</li>
+          <li>3rd read: RB checkdown</li>
+        </ul>
+        <h4>Category</h4>
+        <ul><li>File under: <strong>Trick</strong></li></ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<!-- PLAY 13 -->
+<div class="play" id="p13">
+  <object data="plays/13-hook-lateral.svg" type="image/svg+xml" style="width:100%"></object>
+  <div class="play-info">
+    <div class="play-name"><span class="badge badge-trick">TRICK</span> 13. Spread — Hook & Lateral</div>
+    <div class="play-formation">Formation: Spread (2x2 + RB)</div>
+    <div class="play-desc">WR3 runs a hook route at ~10 yards and catches the ball. As defenders converge, WR4 is trailing behind on a designed route. WR3 laterals to WR4 who has a clear lane upfield. Looks like a normal hook play until the lateral.</div>
+    <dl class="play-meta">
+      <dt>Key Points</dt>
+      <dd>• WR4 must trail at the right depth — not too close, not too far<br>• WR3 catches, makes one fake upfield, then pitches<br>• The lateral must go backward — practice the toss!<br>• WR4 should be your fastest player</dd>
+      <dt>Best Against</dt>
+      <dd>Man coverage where defenders turn their back to the ball after the catch. Zone teams that relax after the completion.</dd>
+      <dt>When to Call</dt>
+      <dd>Desperation or fun moment. Late in the game when you need a spark. Risky — the lateral can go wrong. Practice it.</dd>
+    </dl>
+    <details class="pmx">
+      <summary>📱 Playmaker X Guide</summary>
+      <div class="pmx-content">
+        <h4>Formation Setup</h4>
+        <ul>
+          <li>WR1: far left, on the line</li>
+          <li>WR2: left slot, 1 yard off the line</li>
+          <li>WR3: right slot, 1 yard off the line</li>
+          <li>WR4: far right, on the line</li>
+          <li>RB: 3 yards behind QB</li>
+        </ul>
+        <h4>Route Drawing</h4>
+        <ul>
+          <li>WR1: draw a go route up the left sideline — clearing</li>
+          <li>WR2: draw a go route up the left seam — clearing</li>
+          <li>WR3: draw up 10 yards, stop (hook route), then add a lateral arrow to WR4's position (use trick/purple)</li>
+          <li>WR4: draw a delayed trail route — up 8 yards, angled slightly inside, trailing 2 yards behind WR3, then a run path upfield after receiving lateral</li>
+          <li>RB: draw a flat release right — decoy</li>
+        </ul>
+        <h4>Read Progression</h4>
+        <ul>
+          <li>1st read: WR3 hook (QB throws here)</li>
+          <li>2nd action: WR3 laterals to WR4 (mark with trick arrow)</li>
+        </ul>
+        <h4>Category</h4>
+        <ul><li>File under: <strong>Trick</strong></li></ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<div class="back-top"><a href="#top">↑ Back to top</a></div>
+
+<div style="text-align:center; padding: 20px; color: #555; font-size: 0.8rem;">
+  7v7 Flag Football Playbook • 13 Plays<br>
+  Good luck out there 🏈
+</div>
+
+</body>
+</html>

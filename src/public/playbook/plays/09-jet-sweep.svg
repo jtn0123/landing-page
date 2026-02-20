@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400">
+  <defs>
+    <marker id="ag" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#22c55e"/></marker>
+    <marker id="aw" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="white"/></marker>
+  </defs>
+  <rect width="500" height="400" fill="#2d5a1e"/>
+  <line x1="0" y1="100" x2="500" y2="100" stroke="white" stroke-width="1.5" stroke-dasharray="8,6" opacity="0.5"/>
+  <line x1="0" y1="200" x2="500" y2="200" stroke="white" stroke-width="1.5" stroke-dasharray="8,6" opacity="0.5"/>
+  <line x1="0" y1="300" x2="500" y2="300" stroke="white" stroke-width="2" opacity="0.7"/>
+  <text x="250" y="30" text-anchor="middle" fill="white" font-family="Arial" font-size="18" font-weight="bold">Trips Right — Jet Sweep</text>
+  <!-- Players -->
+  <circle cx="250" cy="340" r="14" fill="#2563eb" stroke="white" stroke-width="2"/>
+  <text x="250" y="345" text-anchor="middle" fill="white" font-size="11" font-weight="bold">QB</text>
+  <circle cx="250" cy="300" r="14" fill="#2563eb" stroke="white" stroke-width="2"/>
+  <text x="250" y="305" text-anchor="middle" fill="white" font-size="11" font-weight="bold">C</text>
+  <circle cx="60" cy="300" r="14" fill="#2563eb" stroke="white" stroke-width="2"/>
+  <text x="60" y="305" text-anchor="middle" fill="white" font-size="10" font-weight="bold">WR1</text>
+  <circle cx="340" cy="300" r="14" fill="#2563eb" stroke="white" stroke-width="2"/>
+  <text x="340" y="305" text-anchor="middle" fill="white" font-size="10" font-weight="bold">WR2</text>
+  <circle cx="390" cy="300" r="14" fill="#2563eb" stroke="white" stroke-width="2"/>
+  <text x="390" y="305" text-anchor="middle" fill="white" font-size="10" font-weight="bold">WR3</text>
+  <circle cx="440" cy="300" r="14" fill="#2563eb" stroke="white" stroke-width="2"/>
+  <text x="440" y="305" text-anchor="middle" fill="white" font-size="10" font-weight="bold">WR4</text>
+  <circle cx="200" cy="340" r="14" fill="#2563eb" stroke="white" stroke-width="2"/>
+  <text x="200" y="345" text-anchor="middle" fill="white" font-size="10" font-weight="bold">RB</text>
+  <!-- Jet motion: WR1 sweeps across -->
+  <path d="M60,290 C150,280 200,310 240,320" fill="none" stroke="#22c55e" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="100" y="278" fill="#22c55e" font-size="10" font-weight="bold">MOTION →</text>
+  <!-- After snap: WR1 takes handoff, runs right -->
+  <polyline points="260,320 320,290 400,260 460,230" fill="none" stroke="#22c55e" stroke-width="4" marker-end="url(#ag)"/>
+  <text x="420" y="222" fill="#22c55e" font-size="13" font-weight="bold">RUN</text>
+  <!-- WR4: Block -->
+  <polyline points="440,286 440,270" fill="none" stroke="white" stroke-width="2"/>
+  <text x="448" y="268" fill="white" font-size="9">BLOCK</text>
+  <!-- WR3: Block -->
+  <polyline points="390,286 390,270" fill="none" stroke="white" stroke-width="2"/>
+  <text x="398" y="268" fill="white" font-size="9">BLOCK</text>
+  <!-- WR2: Go clear -->
+  <polyline points="340,286 340,180" fill="none" stroke="white" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#aw)"/>
+  <!-- RB: Fake opposite -->
+  <polyline points="200,326 160,310 120,310" fill="none" stroke="white" stroke-width="2" stroke-dasharray="6,4"/>
+  <text x="100" y="324" fill="white" font-size="9">FAKE</text>
+</svg>

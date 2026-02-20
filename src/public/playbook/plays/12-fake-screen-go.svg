@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400">
+  <defs>
+    <marker id="ar" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="red"/></marker>
+    <marker id="ao" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="orange"/></marker>
+    <marker id="ap" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#c084fc"/></marker>
+  </defs>
+  <rect width="500" height="400" fill="#2d5a1e"/>
+  <line x1="0" y1="100" x2="500" y2="100" stroke="white" stroke-width="1.5" stroke-dasharray="8,6" opacity="0.5"/>
+  <line x1="0" y1="200" x2="500" y2="200" stroke="white" stroke-width="1.5" stroke-dasharray="8,6" opacity="0.5"/>
+  <line x1="0" y1="300" x2="500" y2="300" stroke="white" stroke-width="2" opacity="0.7"/>
+  <text x="250" y="30" text-anchor="middle" fill="white" font-family="Arial" font-size="18" font-weight="bold">Spread — Fake Screen &amp; Go</text>
+  <text x="250" y="50" text-anchor="middle" fill="#c084fc" font-family="Arial" font-size="13">⚠ TRICK PLAY</text>
+  <!-- Players -->
+  <circle cx="250" cy="340" r="14" fill="#2563eb" stroke="white" stroke-width="2"/>
+  <text x="250" y="345" text-anchor="middle" fill="white" font-size="11" font-weight="bold">QB</text>
+  <circle cx="250" cy="300" r="14" fill="#2563eb" stroke="white" stroke-width="2"/>
+  <text x="250" y="305" text-anchor="middle" fill="white" font-size="11" font-weight="bold">C</text>
+  <circle cx="60" cy="300" r="14" fill="#2563eb" stroke="white" stroke-width="2"/>
+  <text x="60" y="305" text-anchor="middle" fill="white" font-size="10" font-weight="bold">WR1</text>
+  <circle cx="160" cy="300" r="14" fill="#2563eb" stroke="white" stroke-width="2"/>
+  <text x="160" y="305" text-anchor="middle" fill="white" font-size="10" font-weight="bold">WR2</text>
+  <circle cx="340" cy="300" r="14" fill="#2563eb" stroke="white" stroke-width="2"/>
+  <text x="340" y="305" text-anchor="middle" fill="white" font-size="10" font-weight="bold">WR3</text>
+  <circle cx="440" cy="300" r="14" fill="#2563eb" stroke="white" stroke-width="2"/>
+  <text x="440" y="305" text-anchor="middle" fill="white" font-size="10" font-weight="bold">WR4</text>
+  <circle cx="300" cy="340" r="14" fill="#2563eb" stroke="white" stroke-width="2"/>
+  <text x="300" y="345" text-anchor="middle" fill="white" font-size="10" font-weight="bold">RB</text>
+  <!-- WR4: Fake screen, then go deep (1st) -->
+  <polyline points="440,286 440,275 460,275" fill="none" stroke="white" stroke-width="2" stroke-dasharray="4,3"/>
+  <text x="460" y="268" fill="white" font-size="9">FAKE SCREEN</text>
+  <polyline points="440,275 440,110" fill="none" stroke="red" stroke-width="3" marker-end="url(#ar)"/>
+  <text x="448" y="108" fill="red" font-size="12" font-weight="bold">①</text>
+  <!-- WR3: Run to "block" for screen then slip out (2nd) -->
+  <polyline points="340,286 380,275 400,275" fill="none" stroke="white" stroke-width="2" stroke-dasharray="4,3"/>
+  <polyline points="400,275 400,180" fill="none" stroke="orange" stroke-width="3" marker-end="url(#ao)"/>
+  <text x="408" y="178" fill="orange" font-size="12" font-weight="bold">②</text>
+  <!-- WR1, WR2: Cross/clear -->
+  <polyline points="60,286 60,200" fill="none" stroke="white" stroke-width="2" stroke-dasharray="6,4"/>
+  <polyline points="160,286 160,220 200,220" fill="none" stroke="white" stroke-width="2" stroke-dasharray="6,4"/>
+  <!-- QB pump fakes to screen side -->
+  <text x="280" y="322" fill="#c084fc" font-size="10" font-weight="bold">PUMP FAKE →</text>
+</svg>

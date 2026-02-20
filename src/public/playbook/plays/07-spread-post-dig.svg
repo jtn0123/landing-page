@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400">
+  <defs>
+    <marker id="ar" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="red"/></marker>
+    <marker id="ao" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="orange"/></marker>
+    <marker id="ay" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#e6c619"/></marker>
+  </defs>
+  <rect width="500" height="400" fill="#2d5a1e"/>
+  <line x1="0" y1="100" x2="500" y2="100" stroke="white" stroke-width="1.5" stroke-dasharray="8,6" opacity="0.5"/>
+  <line x1="0" y1="200" x2="500" y2="200" stroke="white" stroke-width="1.5" stroke-dasharray="8,6" opacity="0.5"/>
+  <line x1="0" y1="300" x2="500" y2="300" stroke="white" stroke-width="2" opacity="0.7"/>
+  <text x="250" y="30" text-anchor="middle" fill="white" font-family="Arial" font-size="18" font-weight="bold">Spread — Post/Dig Combo</text>
+  <!-- Players -->
+  <circle cx="250" cy="340" r="14" fill="#2563eb" stroke="white" stroke-width="2"/>
+  <text x="250" y="345" text-anchor="middle" fill="white" font-size="11" font-weight="bold">QB</text>
+  <circle cx="250" cy="300" r="14" fill="#2563eb" stroke="white" stroke-width="2"/>
+  <text x="250" y="305" text-anchor="middle" fill="white" font-size="11" font-weight="bold">C</text>
+  <circle cx="60" cy="300" r="14" fill="#2563eb" stroke="white" stroke-width="2"/>
+  <text x="60" y="305" text-anchor="middle" fill="white" font-size="10" font-weight="bold">WR1</text>
+  <circle cx="160" cy="300" r="14" fill="#2563eb" stroke="white" stroke-width="2"/>
+  <text x="160" y="305" text-anchor="middle" fill="white" font-size="10" font-weight="bold">WR2</text>
+  <circle cx="340" cy="300" r="14" fill="#2563eb" stroke="white" stroke-width="2"/>
+  <text x="340" y="305" text-anchor="middle" fill="white" font-size="10" font-weight="bold">WR3</text>
+  <circle cx="440" cy="300" r="14" fill="#2563eb" stroke="white" stroke-width="2"/>
+  <text x="440" y="305" text-anchor="middle" fill="white" font-size="10" font-weight="bold">WR4</text>
+  <circle cx="250" cy="370" r="14" fill="#2563eb" stroke="white" stroke-width="2"/>
+  <text x="250" y="375" text-anchor="middle" fill="white" font-size="10" font-weight="bold">RB</text>
+  <!-- Routes -->
+  <!-- WR3: Post (1st) -->
+  <polyline points="340,286 340,200 280,130" fill="none" stroke="red" stroke-width="3" marker-end="url(#ar)"/>
+  <text x="268" y="128" fill="red" font-size="12" font-weight="bold">①</text>
+  <!-- WR2: Dig (2nd) -->
+  <polyline points="160,286 160,200 260,200" fill="none" stroke="orange" stroke-width="3" marker-end="url(#ao)"/>
+  <text x="268" y="198" fill="orange" font-size="12" font-weight="bold">②</text>
+  <!-- WR1: Out (3rd) -->
+  <polyline points="60,286 60,240 20,240" fill="none" stroke="#e6c619" stroke-width="3" marker-end="url(#ay)"/>
+  <text x="8" y="232" fill="#e6c619" font-size="12" font-weight="bold">③</text>
+  <!-- WR4: Go -->
+  <polyline points="440,286 440,120" fill="none" stroke="white" stroke-width="2" stroke-dasharray="6,4"/>
+  <!-- RB: Check down -->
+  <polyline points="250,356 300,330 340,330" fill="none" stroke="white" stroke-width="2" stroke-dasharray="6,4"/>
+</svg>

@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400">
+  <defs>
+    <marker id="ar" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="red"/></marker>
+    <marker id="ao" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="orange"/></marker>
+    <marker id="ay" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#e6c619"/></marker>
+  </defs>
+  <rect width="500" height="400" fill="#2d5a1e"/>
+  <line x1="0" y1="100" x2="500" y2="100" stroke="white" stroke-width="1.5" stroke-dasharray="8,6" opacity="0.5"/>
+  <line x1="0" y1="200" x2="500" y2="200" stroke="white" stroke-width="1.5" stroke-dasharray="8,6" opacity="0.5"/>
+  <line x1="0" y1="300" x2="500" y2="300" stroke="white" stroke-width="2" opacity="0.7"/>
+  <text x="250" y="30" text-anchor="middle" fill="white" font-family="Arial" font-size="18" font-weight="bold">Trips Right — Levels</text>
+  <!-- Players -->
+  <circle cx="250" cy="340" r="14" fill="#2563eb" stroke="white" stroke-width="2"/>
+  <text x="250" y="345" text-anchor="middle" fill="white" font-size="11" font-weight="bold">QB</text>
+  <circle cx="250" cy="300" r="14" fill="#2563eb" stroke="white" stroke-width="2"/>
+  <text x="250" y="305" text-anchor="middle" fill="white" font-size="11" font-weight="bold">C</text>
+  <circle cx="60" cy="300" r="14" fill="#2563eb" stroke="white" stroke-width="2"/>
+  <text x="60" y="305" text-anchor="middle" fill="white" font-size="10" font-weight="bold">WR1</text>
+  <circle cx="340" cy="300" r="14" fill="#2563eb" stroke="white" stroke-width="2"/>
+  <text x="340" y="305" text-anchor="middle" fill="white" font-size="10" font-weight="bold">WR2</text>
+  <circle cx="390" cy="300" r="14" fill="#2563eb" stroke="white" stroke-width="2"/>
+  <text x="390" y="305" text-anchor="middle" fill="white" font-size="10" font-weight="bold">WR3</text>
+  <circle cx="440" cy="300" r="14" fill="#2563eb" stroke="white" stroke-width="2"/>
+  <text x="440" y="305" text-anchor="middle" fill="white" font-size="10" font-weight="bold">WR4</text>
+  <circle cx="200" cy="330" r="14" fill="#2563eb" stroke="white" stroke-width="2"/>
+  <text x="200" y="335" text-anchor="middle" fill="white" font-size="10" font-weight="bold">RB</text>
+  <!-- Routes: Levels concept - 3 receivers at different depths -->
+  <!-- WR2: Short out/flat (1st) -->
+  <polyline points="340,286 340,260 400,260" fill="none" stroke="red" stroke-width="3" marker-end="url(#ar)"/>
+  <text x="408" y="258" fill="red" font-size="12" font-weight="bold">①</text>
+  <!-- WR3: Dig/in at medium depth (2nd) -->
+  <polyline points="390,286 390,210 330,210" fill="none" stroke="orange" stroke-width="3" marker-end="url(#ao)"/>
+  <text x="314" y="208" fill="orange" font-size="12" font-weight="bold">②</text>
+  <!-- WR4: Deep out (3rd) -->
+  <polyline points="440,286 440,150 480,150" fill="none" stroke="#e6c619" stroke-width="3" marker-end="url(#ay)"/>
+  <text x="484" y="148" fill="#e6c619" font-size="12" font-weight="bold">③</text>
+  <!-- WR1: Clear out -->
+  <polyline points="60,286 60,140" fill="none" stroke="white" stroke-width="2" stroke-dasharray="6,4"/>
+  <!-- RB: Check down flat left -->
+  <polyline points="200,316 160,290 120,290" fill="none" stroke="white" stroke-width="2" stroke-dasharray="6,4"/>
+</svg>
