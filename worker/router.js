@@ -16,6 +16,18 @@ const LANDING = 'https://landing-page-28t.pages.dev';
 
 const GITHUB_API = 'https://api.github.com';
 const GITHUB_CACHE_TTL = 300; // 5 minutes
+const ALLOWED_ORIGIN = 'https://neuhard.dev';
+
+// Allowlist of GitHub API path patterns the landing page actually uses
+const ALLOWED_PATH_PATTERNS = [
+  /^\/repos\/jtn0123\/[A-Za-z0-9_-]+\/languages$/,
+  /^\/repos\/jtn0123\/[A-Za-z0-9_-]+\/contributors$/,
+  /^\/repos\/jtn0123\/[A-Za-z0-9_-]+\/commits$/,
+  /^\/repos\/jtn0123\/[A-Za-z0-9_-]+\/commits\/[a-f0-9]+$/,
+  /^\/repos\/jtn0123\/[A-Za-z0-9_-]+\/actions\/runs$/,
+  /^\/repos\/jtn0123\/[A-Za-z0-9_-]+\/stats\/participation$/,
+  /^\/repos\/jtn0123\/[A-Za-z0-9_-]+$/,
+];
 
 export default {
   async fetch(request, env, ctx) {
@@ -42,12 +54,24 @@ export default {
 };
 
 async function handleGitHubProxy(request, url, ctx, env) {
+  // Validate origin
+  const origin = request.headers.get('Origin');
+  if (origin && origin !== ALLOWED_ORIGIN) {
+    return new Response('Forbidden', { status: 403 });
+  }
+
   const ghPath = url.pathname.replace('/api/github/', '/');
+
+  // Validate path against allowlist
+  if (!ALLOWED_PATH_PATTERNS.some((pattern) => pattern.test(ghPath))) {
+    return new Response('Forbidden', { status: 403 });
+  }
+
   const ghUrl = GITHUB_API + ghPath + url.search;
 
   // CORS headers
   const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
     'Access-Control-Allow-Methods': 'GET, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
   };
