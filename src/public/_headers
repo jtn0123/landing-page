@@ -1,0 +1,6 @@
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-pLul+KGGy9NBXOBG5MrclKwsChSNY4qhBlaL10EUv+Y=' 'sha256-7Yr2sKvAVk8mv4HBm3EU+MAgADJU9nRENh8a/koDcp4=' 'sha256-QNiEQ11awzziOSwW/ivttiHD4zxqOokDRN77cLL63TU='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.githubusercontent.com https://avatars.githubusercontent.com; connect-src 'self' https://api.github.com;
