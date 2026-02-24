@@ -442,7 +442,8 @@
 }
 [data-theme='light'] .filter-pill {
   color: #1a1a1a;
-  background: #e0e0e0;
+  background: #d4d4d4;
+  border-color: #bbb;
 }
 .filter-pill:hover {
   border-color: var(--accent);
