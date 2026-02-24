@@ -48,9 +48,8 @@ jobs:
           retention-days: 14
 
   lighthouse:
-    runs-on: [self-hosted, ci]
+    runs-on: ubuntu-latest
     needs: check
-    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -58,18 +57,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Install Chrome for Lighthouse
-        id: chrome
-        run: |
-          rm -rf /var/lib/apt/lists/*
-          rm -rf ~/.cache/ms-playwright || true
-          apt-get update
-          apt-get install -y libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 libxrandr2 libgbm1 libpango-1.0-0 libcairo2 libasound2 libxshmfence1
-          npx playwright install chromium
-          echo "chrome_path=$(find ~/.cache/ms-playwright -name 'chrome' -path '*/chrome-linux/*' | head -1)" >> "$GITHUB_OUTPUT"
       - name: Lighthouse CI
         uses: treosh/lighthouse-ci-action@v12
-        env:
-          CHROME_PATH: ${{ steps.chrome.outputs.chrome_path }}
         with:
           configPath: ./lighthouserc.json

@@ -1,4 +1,6 @@
 name = "neuhard-router"
 main = "router.js"
 compatibility_date = "2024-01-01"
+# NOTE: account_id is not a secret per Cloudflare docs, but avoid committing
+# truly sensitive values (API tokens, etc.) here. Use .dev.vars for secrets.
 account_id = "f6bd284f1c28f23b0db3daf7fe9469e5"
