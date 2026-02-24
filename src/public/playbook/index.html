@@ -7,6 +7,7 @@
 <meta property="og:title" content="7v7 Flag Football Playbook">
 <meta property="og:description" content="13 plays with diagrams, read progressions, and Playmaker X recreation guides">
 <meta name="theme-color" content="#111">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'unsafe-inline'; img-src 'self' data:;">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏈</text></svg>">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -755,11 +756,6 @@
 
 <button class="back-top-float" id="backTop" onclick="window.scrollTo({top:0})" aria-label="Back to top">↑</button>
 
-<script>
-const btn = document.getElementById('backTop');
-window.addEventListener('scroll', () => {
-  btn.classList.toggle('visible', window.scrollY > 400);
-}, {passive: true});
-</script>
+<script src="playbook.js"></script>
 </body>
 </html>
