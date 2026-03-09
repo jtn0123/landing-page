@@ -8,11 +8,13 @@ export const REPOS: string[] = [
   'landing-page',
   'satellite_processor',
   'AudioWhisper',
+  'InkyPi',
 ];
 export const CARD_REPOS: string[] = [
   'MegaBonk',
   'VoltTracker',
   'satellite_processor',
   'AudioWhisper',
+  'InkyPi',
 ];
 export const OWNER: string = 'jtn0123';

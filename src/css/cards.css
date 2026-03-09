@@ -238,7 +238,8 @@
 /* Skip dark overlay on gradient placeholder cards */
 .card-img-gradient::before,
 .card-img-gradient-sat::before,
-.card-img-gradient-audio::before {
+.card-img-gradient-audio::before,
+.card-img-gradient-inky::before {
   display: none;
 }
 
@@ -256,6 +257,12 @@
 }
 .card-img-gradient-audio {
   background: linear-gradient(135deg, #7b1fa2 0%, #ec407a 50%, #ff7043 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card-img-gradient-inky {
+  background: linear-gradient(135deg, #004d40 0%, #00796b 40%, #26a69a 70%, #1a237e 100%);
   display: flex;
   align-items: center;
   justify-content: center;
