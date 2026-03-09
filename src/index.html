@@ -235,6 +235,16 @@
         "operatingSystem": "Web"
       }
     </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "InkyPi",
+        "url": "https://github.com/jtn0123/InkyPi",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Raspberry Pi"
+      }
+    </script>
   </head>
   <body>
     <div class="parallax-mesh" id="parallax-mesh" aria-hidden="true"></div>
@@ -509,6 +519,43 @@
           </div>
         </div>
       </article>
+
+      <article
+        class="card fade-in fade-in-right"
+        data-repo="InkyPi"
+        style="--fade-delay: 700ms"
+      >
+        <div class="card-img card-img-gradient-inky">
+          <span class="card-img-text">🖥️ InkyPi</span>
+          <div class="card-img-badges">
+            <span class="card-img-badge blue">Open Source</span>
+            <span class="card-img-badge orange">IoT</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <h2>InkyPi <span class="subtitle">E-Ink Display Manager</span></h2>
+          <p class="desc">
+            Open-source e-ink display platform for Raspberry Pi — customizable plugins for weather,
+            calendars, news, AI-generated art, and more, all managed through a sleek web interface.
+          </p>
+          <p class="card-highlight">Web UI · Plugin System · Raspberry Pi</p>
+          <div class="card-updated" data-repo="InkyPi"></div>
+          <div class="lang-bar" aria-live="polite" data-repo="jtn0123/InkyPi">
+            <div class="lang-bar-track shimmer-track"><div class="lang-bar-fill"></div></div>
+            <div class="heatmap-row" data-repo="InkyPi"></div>
+            <div class="lang-legend"></div>
+          </div>
+          <div class="tech">
+            <span>Python</span>
+            <span>Raspberry Pi</span>
+            <span>Flask</span>
+            <span>E-Ink</span>
+          </div>
+          <div class="buttons">
+            <a href="https://github.com/jtn0123/InkyPi" class="btn">GitHub</a>
+          </div>
+        </div>
+      </article>
     </main>
     <!-- Stats Bar -->
     <section class="stats-bar fade-in" aria-label="Project statistics" aria-live="polite" style="--fade-delay: 700ms">
@@ -521,7 +568,7 @@
         <span class="stat-label">Commits</span>
       </div>
       <div class="stat">
-        <span class="stat-value" id="total-projects">5</span>
+        <span class="stat-value" id="total-projects">6</span>
         <span class="stat-label">Projects</span>
       </div>
     </section>
