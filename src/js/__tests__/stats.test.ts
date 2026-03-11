@@ -59,6 +59,21 @@ describe('stats', () => {
     expect(document.getElementById('total-loc')!.textContent).not.toBe('');
   });
 
+  it('includes landing-page in aggregate fetches', async () => {
+    mockFetch.mockImplementation((url: string) => {
+      if (url.includes('languages')) return mockJson({ TypeScript: 40000 });
+      if (url.includes('contributors')) return mockJson([{ contributions: 50 }]);
+      return mockJson({});
+    });
+    const { init } = await import('../stats.ts');
+    init();
+    triggerObservers();
+    await vi.advanceTimersByTimeAsync(200);
+    const calledUrls = mockFetch.mock.calls.map((call) => String(call[0]));
+    expect(calledUrls.some((url) => url.includes('/repos/jtn0123/landing-page/languages'))).toBe(true);
+    expect(calledUrls.some((url) => url.includes('/repos/jtn0123/landing-page/contributors'))).toBe(true);
+  });
+
   it('uses cached stats', async () => {
     sessionStorage.setItem('nd_stats', JSON.stringify({ ts: Date.now(), data: { loc: 5000, commits: 200 } }));
     const { init } = await import('../stats.ts');

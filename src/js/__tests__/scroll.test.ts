@@ -36,6 +36,13 @@ describe('scroll', () => {
     expect(document.querySelectorAll('.progress-dot').length).toBe(3);
   });
 
+  it('does not create duplicate progress dots on second init', async () => {
+    const { init } = await import('../scroll.ts');
+    init();
+    init();
+    expect(document.querySelectorAll('.progress-dot').length).toBe(3);
+  });
+
   it('back-to-top scrolls to top on click', async () => {
     const { init } = await import('../scroll.ts');
     init();

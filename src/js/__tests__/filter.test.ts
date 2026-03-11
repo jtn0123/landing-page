@@ -45,4 +45,11 @@ describe('filter', () => {
     const { init } = await import('../filter.ts');
     expect(() => init()).not.toThrow();
   });
+
+  it('does not create duplicate filter bars on second init', async () => {
+    const { init } = await import('../filter.ts');
+    init();
+    init();
+    expect(document.querySelectorAll('.filter-bar').length).toBe(1);
+  });
 });

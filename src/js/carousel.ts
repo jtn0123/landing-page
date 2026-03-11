@@ -4,9 +4,13 @@
  */
 import { reducedMotion } from './config.ts';
 
+const carouselTimers = new WeakMap<Element, ReturnType<typeof setInterval>>();
+
 /** Initialize all carousels on the page. */
 export function init(): void {
   document.querySelectorAll('.carousel').forEach((carousel) => {
+    if ((carousel as HTMLElement).dataset.carouselInit === 'true') return;
+    (carousel as HTMLElement).dataset.carouselInit = 'true';
     const slides = carousel.querySelectorAll('.carousel-slide');
     const dots = carousel.querySelectorAll('.dot');
     if (slides.length < 2) return;
@@ -43,9 +47,10 @@ export function init(): void {
     });
 
     if (!reducedMotion) {
-      setInterval(() => {
+      const timer = setInterval(() => {
         if (!paused) goTo(current + 1);
       }, interval);
+      carouselTimers.set(carousel, timer);
     }
 
     // Swipe support

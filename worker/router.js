@@ -26,7 +26,7 @@ const ALLOWED_ORIGINS = new Set([
 // --- Security: allowed GitHub API path patterns ---
 // Only permit the specific endpoints the landing page uses.
 const OWNER = 'jtn0123';
-const ALLOWED_REPOS = ['MegaBonk', 'VoltTracker', 'landing-page', 'satellite_processor', 'AudioWhisper'];
+const ALLOWED_REPOS = ['MegaBonk', 'VoltTracker', 'landing-page', 'satellite_processor', 'AudioWhisper', 'InkyPi'];
 
 const ALLOWED_PATH_PATTERNS = ALLOWED_REPOS.flatMap((repo) => [
   `/repos/${OWNER}/${repo}`,
@@ -62,6 +62,15 @@ function addSecurityHeaders(response) {
     newResponse.headers.set(key, value);
   }
   return newResponse;
+}
+
+function getOrigin(value) {
+  if (!value) return '';
+  try {
+    return new URL(value).origin;
+  } catch {
+    return '';
+  }
 }
 
 export default {
@@ -101,7 +110,7 @@ async function handleGitHubProxy(request, url, ctx, env) {
   }
 
   // Defense in depth: also check Referer if present
-  if (!origin && referer && !referer.startsWith('https://neuhard.dev')) {
+  if (!origin && referer && !ALLOWED_ORIGINS.has(getOrigin(referer))) {
     return new Response('Forbidden', { status: 403 });
   }
 

@@ -4,7 +4,10 @@
  */
 import { updateParallaxMesh } from './parallax.ts';
 
+let initialized = false;
+
 function initProgressDots(): void {
+  if (document.querySelector('.progress-dots')) return;
   const sections = [
     { id: 'main-content', label: 'Projects' },
     { id: 'tech-section', label: 'Tech' },
@@ -52,6 +55,9 @@ function initProgressDots(): void {
 
 /** Initialize scroll-driven UI: progress bar, back-to-top, parallax, section dots, fade-in. */
 export function init(): void {
+  if (initialized) return;
+  initialized = true;
+
   // Unified scroll listener — progress bar, back-to-top, parallax mesh, sticky header
   const scrollProgress = document.getElementById('scroll-progress');
   const backToTop = document.getElementById('back-to-top');

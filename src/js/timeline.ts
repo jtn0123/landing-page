@@ -21,15 +21,11 @@ function buildTimelineItem(commit: Commit, index: number): string {
   const truncated = truncate(firstLine, 60);
   const isExpandable = truncated !== firstLine;
 
-  const expandAttrs = isExpandable
-    ? ` data-full="${escapeHTML(firstLine)}" data-short="${escapeHTML(truncated)}"`
-    : '';
-
   return `
     <li class="timeline-item ${index % 2 === 0 ? 'left' : 'right'} content-fade-in">
       <div class="timeline-dot"></div>
       <a href="${commit.url || '#'}" target="_blank" rel="noopener noreferrer" class="timeline-content timeline-link">
-        <p class="commit-msg${isExpandable ? ' expandable' : ''}"${expandAttrs}>${escapeHTML(truncated)}</p>
+        <p class="commit-msg${isExpandable ? ' expandable' : ''}" data-commit-index="${index}">${escapeHTML(truncated)}</p>
         ${buildCommitMeta(commit)}
       </a>
     </li>`;
@@ -79,10 +75,17 @@ function buildTimeline(commits: Commit[], timelineEl: HTMLElement): void {
     commits.map((c, i) => buildTimelineItem(c, i)).join('');
 
   timelineEl.querySelectorAll('.commit-msg.expandable').forEach((msg) => {
+    const el = msg as HTMLElement;
+    const idx = Number.parseInt(el.dataset.commitIndex || '-1', 10);
+    const commit = commits[idx];
+    if (!commit) return;
+    const firstLine = commit.message.split('\n')[0];
+    const shortText = truncate(firstLine, 60);
+    el.dataset.full = firstLine;
+    el.dataset.short = shortText;
     msg.addEventListener('click', (e: Event) => {
       e.preventDefault();
       e.stopPropagation();
-      const el = msg as HTMLElement;
       const isExpanded = el.dataset.expanded === 'true';
       el.textContent = isExpanded ? el.dataset.short! : el.dataset.full!;
       el.dataset.expanded = isExpanded ? 'false' : 'true';

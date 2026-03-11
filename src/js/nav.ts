@@ -3,6 +3,34 @@
  * @module nav
  */
 
+function isInteractiveTarget(target: EventTarget | null): boolean {
+  return target instanceof Element && !!target.closest('a, button, input, select, textarea, dialog');
+}
+
+function navigateTo(url: string): void {
+  const isSameOrigin = url.startsWith('/') || url.startsWith(globalThis.location.origin);
+  const navigate = (): void => {
+    globalThis.location.href = url;
+  };
+
+  if (!isSameOrigin) {
+    navigate();
+    return;
+  }
+
+  const vt = 'startViewTransition' in document
+    ? (document.startViewTransition as (cb: () => void) => void)
+    : undefined;
+  if (vt) {
+    vt(() => {
+      navigate();
+    });
+  } else {
+    document.body.classList.add('page-exit');
+    setTimeout(navigate, 300);
+  }
+}
+
 /** Initialize navigation: smooth scroll links, hamburger menu, active section tracking. */
 export function init(): void {
   // Smooth scroll nav
@@ -92,10 +120,18 @@ export function init(): void {
 
   // Keyboard nav for cards
   document.querySelectorAll<HTMLElement>('.card[data-link]').forEach((card) => {
+    if (!card.hasAttribute('tabindex')) card.tabIndex = 0;
+    if (!card.hasAttribute('role')) card.setAttribute('role', 'link');
+    const url = card.dataset.link;
+    if (!url) return;
+    card.addEventListener('click', (e) => {
+      if (isInteractiveTarget(e.target)) return;
+      navigateTo(url);
+    });
     card.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        const link = card.querySelector<HTMLElement>('.btn-primary');
-        if (link) link.click();
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        navigateTo(url);
       }
     });
   });
@@ -105,24 +141,10 @@ export function init(): void {
     const url = btn.getAttribute('href');
     if (!url || btn.classList.contains('btn-disabled')) return;
     const isSameOrigin = url.startsWith('/') || url.startsWith(globalThis.location.origin);
-    if (isSameOrigin) {
-      btn.addEventListener('click', (e: Event) => {
-        e.preventDefault();
-        const navigate = (): void => {
-          globalThis.location.href = url;
-        };
-        const vt = 'startViewTransition' in document
-          ? (document.startViewTransition as (cb: () => void) => void)
-          : undefined;
-        if (vt) {
-          vt(() => {
-            navigate();
-          });
-        } else {
-          document.body.classList.add('page-exit');
-          setTimeout(navigate, 300);
-        }
-      });
-    }
+    if (!isSameOrigin) return;
+    btn.addEventListener('click', (e: Event) => {
+      e.preventDefault();
+      navigateTo(url);
+    });
   });
 }

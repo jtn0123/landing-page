@@ -21,10 +21,14 @@ describe('nav', () => {
       <section id="main-content"></section>
       <section id="tech-section"></section>
       <section id="activity"></section>
-      <div class="card" data-link tabindex="0"><a class="btn-primary" href="/page">Go</a></div>
+      <div class="card" data-link="/page"><a class="btn-primary" href="/page">Go</a></div>
       <a class="btn-primary" href="https://external.com">External</a>`;
     Element.prototype.scrollIntoView = vi.fn();
     globalThis.scrollTo = vi.fn() as any;
+    Object.defineProperty(globalThis, 'location', {
+      configurable: true,
+      value: { origin: 'https://neuhard.dev', href: 'https://neuhard.dev/' },
+    });
   });
 
   it('smooth scrolls on data-scroll click', async () => {
@@ -82,14 +86,37 @@ describe('nav', () => {
     expect(globalThis.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: 'smooth' });
   });
 
-  it('Enter on card triggers button click', async () => {
+  it('makes cards keyboard focusable', async () => {
     const { init } = await import('../nav.ts');
     init();
     const card = document.querySelector('.card[data-link]')!;
-    const btn = card.querySelector('.btn-primary') as HTMLElement;
-    const spy = vi.spyOn(btn, 'click');
+    expect(card.getAttribute('tabindex')).toBe('0');
+    expect(card.getAttribute('role')).toBe('link');
+  });
+
+  it('Enter on card starts card navigation', async () => {
+    const { init } = await import('../nav.ts');
+    init();
+    const card = document.querySelector('.card[data-link]')!;
     card.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
-    expect(spy).toHaveBeenCalled();
+    expect(document.body.classList.contains('page-exit')).toBe(true);
+  });
+
+  it('clicking card body starts card navigation', async () => {
+    const { init } = await import('../nav.ts');
+    init();
+    const card = document.querySelector('.card[data-link]') as HTMLElement;
+    card.click();
+    expect(document.body.classList.contains('page-exit')).toBe(true);
+  });
+
+  it('clicking card buttons does not double-trigger card navigation', async () => {
+    const { init } = await import('../nav.ts');
+    init();
+    const card = document.querySelector('.card[data-link]')!;
+    const button = card.querySelector('.btn-primary') as HTMLElement;
+    button.click();
+    expect(document.body.classList.contains('page-exit')).toBe(true);
   });
 
   it('mobile nav link clicks close overlay and scroll', async () => {

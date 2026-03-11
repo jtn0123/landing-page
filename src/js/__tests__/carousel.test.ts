@@ -147,6 +147,14 @@ describe('carousel', () => {
     vi.advanceTimersByTime(4000);
     expect(document.querySelectorAll('.carousel-slide')[1].classList.contains('active')).toBe(true);
   });
+
+  it('does not start duplicate timers on repeated init', async () => {
+    const { init } = await import('../carousel.ts');
+    init();
+    init();
+    vi.advanceTimersByTime(1000);
+    expect(document.querySelectorAll('.carousel-slide')[1].classList.contains('active')).toBe(true);
+  });
 });
 
 describe('carousel with reducedMotion', () => {

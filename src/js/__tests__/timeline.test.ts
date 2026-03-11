@@ -87,6 +87,25 @@ describe('timeline', () => {
     expect(document.querySelector('.commit-msg.expandable')).not.toBeNull();
   });
 
+  it('expands commit messages without showing escaped HTML entities', async () => {
+    const rawMessage = 'fix: A & B "quoted"';
+    const commits = [{
+      commit: { message: rawMessage, committer: { date: new Date().toISOString() }, author: { name: 'T' } },
+      author: { avatar_url: '' }, html_url: '#', sha: 'def789',
+    }];
+    mockFetch.mockImplementation((url: string) => {
+      if (url.includes('commits?')) return mockJson(commits);
+      return mockJson({ stats: { additions: 0, deletions: 0 } });
+    });
+    const { init } = await import('../timeline.ts');
+    init();
+    triggerObservers();
+    await vi.advanceTimersByTimeAsync(500);
+    const msg = document.querySelector('.commit-msg') as HTMLElement;
+    msg.click();
+    expect(msg.textContent).toBe(rawMessage);
+  });
+
   it('shows error with retry on API failure', async () => {
     mockFetch.mockRejectedValue(new Error('fail'));
     const { init } = await import('../timeline.ts');

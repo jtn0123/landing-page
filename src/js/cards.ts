@@ -40,6 +40,7 @@ function renderCardMeta(card: Element, data: RepoData): void {
     updatedEl.textContent = 'Updated ' + relativeTime(data.pushed_at);
   }
   if (!updatedEl) return;
+  card.querySelector('.card-meta-badges')?.remove();
   const stars = data.stargazers_count ?? 0;
   const forks = data.forks_count ?? 0;
   if (stars <= 0 && forks <= 0) return;
@@ -55,6 +56,7 @@ function renderCardMeta(card: Element, data: RepoData): void {
 }
 
 function renderCiBadge(card: Element, data: WorkflowResponse): void {
+  card.querySelector('.ci-badge')?.remove();
   if (!data.workflow_runs || data.workflow_runs.length === 0) return;
   const run = data.workflow_runs[0];
   const h2 = card.querySelector('h2');
@@ -144,10 +146,13 @@ function buildLangBarSegments(
   const segElements: { seg: HTMLElement; pct: number }[] = [];
   for (const l of langs) {
     const seg = document.createElement('span');
+    seg.tabIndex = 0;
+    seg.setAttribute('role', 'img');
     seg.style.width = '0%';
     seg.style.background = LANG_COLORS[l.name] || '#888';
     seg.style.position = 'relative';
-    seg.addEventListener('mouseenter', () => {
+    const showTip = () => {
+      if (seg.querySelector('.lang-tooltip')) return;
       const tip = document.createElement('div');
       tip.className = 'lang-tooltip';
       tip.textContent = `${l.name}: ${l.pct.toFixed(1)}% · ${l.lines.toLocaleString()} lines`;
@@ -156,11 +161,15 @@ function buildLangBarSegments(
       if (rect.left < 0) tip.style.transform = `translateX(${-rect.left + 4}px)`;
       if (rect.right > globalThis.innerWidth)
         tip.style.transform = `translateX(${globalThis.innerWidth - rect.right - 4}px)`;
-    });
-    seg.addEventListener('mouseleave', () => {
+    };
+    const hideTip = () => {
       const tip = seg.querySelector('.lang-tooltip');
       if (tip) tip.remove();
-    });
+    };
+    seg.addEventListener('mouseenter', showTip);
+    seg.addEventListener('mouseleave', hideTip);
+    seg.addEventListener('focus', showTip);
+    seg.addEventListener('blur', hideTip);
     fill.appendChild(seg);
     segElements.push({ seg, pct: l.pct });
   }
@@ -223,6 +232,13 @@ async function loadLangBar(el: HTMLElement): Promise<void> {
   const langs = Object.entries(data)
     .map(([name, bytes]) => ({ name, pct: (bytes / total) * 100, lines: Math.round(bytes / 40) }))
     .filter((l) => l.pct > 2);
+  if (!langs.length) {
+    const legend = el.querySelector('.lang-legend');
+    if (legend) {
+      legend.innerHTML = `<span class="lang-total">${totalLoc.toLocaleString()} lines</span>`;
+    }
+    return;
+  }
 
   const fill = el.querySelector<HTMLElement>('.lang-bar-fill');
   if (!fill) return;

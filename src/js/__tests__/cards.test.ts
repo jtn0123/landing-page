@@ -90,6 +90,30 @@ describe('cards', () => {
     expect(document.querySelector('.ci-badge.ci-failure')).not.toBeNull();
   });
 
+  it('does not duplicate metadata or CI badges on repeated init', async () => {
+    mockFetch.mockImplementation((url: string) => {
+      if (url.includes('/repos/jtn0123/MegaBonk') && !url.includes('actions') && !url.includes('stats') && !url.includes('languages')) {
+        return mockJson({ pushed_at: new Date().toISOString(), stargazers_count: 5, forks_count: 2 });
+      }
+      if (url.includes('actions/runs')) return mockJson({ workflow_runs: [{ conclusion: 'success' }] });
+      if (url.includes('participation')) return mockJson({ owner: [1, 2, 3] });
+      if (url.includes('languages')) return mockJson({ TypeScript: 10000 });
+      return mockJson({});
+    });
+
+    const { init } = await import('../cards.ts');
+    init();
+    init();
+    MockIntersectionObserver.instances.forEach((obs) => {
+      obs.observe.mock.calls.forEach((call: any[]) => {
+        obs.trigger([{ isIntersecting: true, target: call[0] }]);
+      });
+    });
+    await new Promise((r) => setTimeout(r, 100));
+    expect(document.querySelectorAll('.card-meta-badges').length).toBe(1);
+    expect(document.querySelectorAll('.ci-badge').length).toBe(1);
+  });
+
   it('renders heatmap cells', async () => {
     mockFetch.mockImplementation((url: string) => {
       if (url.includes('participation')) return mockJson({ owner: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] });

@@ -9,6 +9,7 @@ const FILTER_TAGS = ['All', 'TypeScript', 'Python', 'Docker', 'React', 'Swift'] 
 export function init(): void {
   const main = document.getElementById('main-content');
   if (!main) return;
+  if (document.querySelector('.filter-bar')) return;
 
   const filterBar = document.createElement('div');
   filterBar.className = 'filter-bar';

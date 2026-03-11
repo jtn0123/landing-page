@@ -2,7 +2,7 @@
  * Aggregate statistics — total lines of code and commits across all projects.
  * @module stats
  */
-import { API_BASE, CARD_REPOS, OWNER } from './constants.ts';
+import { API_BASE, OWNER, REPOS } from './constants.ts';
 import { cachedFetchJSON, renderError, animateCounter } from './api.ts';
 import type { LanguageData, ContributorData, StatsData, CacheEntry } from './types.ts';
 
@@ -36,7 +36,7 @@ async function loadStats(): Promise<void> {
 
   try {
     const langResults = await Promise.all(
-      CARD_REPOS.map((r) =>
+      REPOS.map((r) =>
         cachedFetchJSON<LanguageData>(`${API_BASE}/repos/${OWNER}/${r}/languages`)
           .then((res) => res.data)
           .catch(() => ({}) as LanguageData),
@@ -50,7 +50,7 @@ async function loadStats(): Promise<void> {
     const loc = Math.round(totalBytes / 40);
 
     const contribResults = await Promise.all(
-      CARD_REPOS.map((r) =>
+      REPOS.map((r) =>
         cachedFetchJSON<ContributorData[]>(`${API_BASE}/repos/${OWNER}/${r}/contributors`)
           .then((res) => res.data)
           .catch(() => [] as ContributorData[]),
@@ -72,7 +72,7 @@ async function loadStats(): Promise<void> {
       statsBar.innerHTML = `
         <div class="stat"><span class="stat-value shimmer-placeholder" id="total-loc">&nbsp;</span><span class="stat-label">Lines of Code</span></div>
         <div class="stat"><span class="stat-value shimmer-placeholder" id="total-commits">&nbsp;</span><span class="stat-label">Commits</span></div>
-        <div class="stat"><span class="stat-value" id="total-projects">5</span><span class="stat-label">Projects</span></div>`;
+        <div class="stat"><span class="stat-value" id="total-projects">${REPOS.length}</span><span class="stat-label">Projects</span></div>`;
       loadStats();
     });
   }
