@@ -1,3 +1,4 @@
+import './css/critical.css';
 import './style.css';
 
 // --- Shared constants (re-exported from constants.ts to avoid circular deps) ---
