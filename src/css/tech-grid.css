@@ -44,6 +44,56 @@
   border-color: var(--tc, var(--accent));
   transform: translateY(-2px);
 }
+
+/* Per-tech hover accent (CSP-safe replacement for inline style="--tc") */
+.tech-item[data-tech='typescript'] {
+  --tc: #3178c6;
+}
+.tech-item[data-tech='python'] {
+  --tc: #3572a5;
+}
+.tech-item[data-tech='javascript'] {
+  --tc: #f7df1e;
+}
+.tech-item[data-tech='htmlcss'] {
+  --tc: #e44d26;
+}
+.tech-item[data-tech='flask'] {
+  --tc: #000;
+}
+.tech-item[data-tech='vite'] {
+  --tc: #646cff;
+}
+.tech-item[data-tech='chartjs'] {
+  --tc: #ff6384;
+}
+.tech-item[data-tech='leaflet'] {
+  --tc: #199900;
+}
+.tech-item[data-tech='postgresql'] {
+  --tc: #336791;
+}
+.tech-item[data-tech='timescaledb'] {
+  --tc: #fdb515;
+}
+.tech-item[data-tech='redis'] {
+  --tc: #d82c20;
+}
+.tech-item[data-tech='docker'] {
+  --tc: #2496ed;
+}
+.tech-item[data-tech='github-actions'] {
+  --tc: #2088ff;
+}
+.tech-item[data-tech='cloudflare'] {
+  --tc: #f38020;
+}
+.tech-item[data-tech='playwright'] {
+  --tc: #2ead33;
+}
+.tech-item[data-tech='vitest'] {
+  --tc: #729b1b;
+}
 .tech-item svg {
   flex-shrink: 0;
 }

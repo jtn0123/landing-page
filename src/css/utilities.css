@@ -89,6 +89,29 @@
   transform: translateY(0);
 }
 
+/* Staggered reveal delays (CSP-safe replacement for inline style="--fade-delay") */
+.fade-delay-300 {
+  --fade-delay: 300ms;
+}
+.fade-delay-400 {
+  --fade-delay: 400ms;
+}
+.fade-delay-500 {
+  --fade-delay: 500ms;
+}
+.fade-delay-600 {
+  --fade-delay: 600ms;
+}
+.fade-delay-700 {
+  --fade-delay: 700ms;
+}
+.fade-delay-800 {
+  --fade-delay: 800ms;
+}
+.fade-delay-900 {
+  --fade-delay: 900ms;
+}
+
 /* Scroll progress bar */
 #scroll-progress {
   position: fixed;

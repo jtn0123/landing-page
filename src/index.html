@@ -193,10 +193,9 @@
       </article>
 
       <article
-        class="card fade-in fade-in-right"
+        class="card fade-in fade-in-right fade-delay-300"
         data-link="https://neuhard.dev/volttracker/"
         data-repo="VoltTracker"
-        style="--fade-delay: 300ms"
       >
         <div class="card-img">
           <div class="carousel" data-interval="4000">
@@ -263,9 +262,8 @@
         </div>
       </article>
       <article
-        class="card fade-in fade-in-left"
+        class="card fade-in fade-in-left fade-delay-400"
         data-repo="landing-page"
-        style="--fade-delay: 400ms"
       >
         <div class="card-img card-img-gradient">
           <span class="card-img-text">neuhard.dev</span>
@@ -302,10 +300,9 @@
       </article>
 
       <article
-        class="card fade-in fade-in-right"
+        class="card fade-in fade-in-right fade-delay-500"
         data-link="https://sat.neuhard.dev/"
         data-repo="satellite_processor"
-        style="--fade-delay: 500ms"
       >
         <div class="card-img card-img-gradient-sat">
           <span class="card-img-text">🛰️ Satellite Processor</span>
@@ -344,9 +341,8 @@
       </article>
 
       <article
-        class="card fade-in fade-in-left"
+        class="card fade-in fade-in-left fade-delay-600"
         data-repo="AudioWhisper"
-        style="--fade-delay: 600ms"
       >
         <div class="card-img card-img-gradient-audio">
           <span class="card-img-text">🎙️ AudioWhisper</span>
@@ -381,9 +377,8 @@
       </article>
 
       <article
-        class="card fade-in fade-in-right"
+        class="card fade-in fade-in-right fade-delay-700"
         data-repo="InkyPi"
-        style="--fade-delay: 700ms"
       >
         <div class="card-img card-img-gradient-inky">
           <span class="card-img-text">🖥️ InkyPi</span>
@@ -418,7 +413,7 @@
       </article>
     </main>
     <!-- Stats Bar -->
-    <section class="stats-bar fade-in" aria-label="Project statistics" aria-live="polite" style="--fade-delay: 700ms">
+    <section class="stats-bar fade-in fade-delay-700" aria-label="Project statistics" aria-live="polite">
       <div class="stat">
         <span class="stat-value shimmer-placeholder" id="total-loc">&nbsp;</span>
         <span class="stat-label">Lines of Code</span>
@@ -434,10 +429,10 @@
     </section>
 
     <!-- Tech Stack -->
-    <section id="tech-section" class="tech-grid-section fade-in" style="--fade-delay: 800ms">
+    <section id="tech-section" class="tech-grid-section fade-in fade-delay-800">
       <h2>Tech Stack</h2>
       <div class="tech-grid" aria-label="Technologies used">
-        <div class="tech-item" style="--tc: #3178c6">
+        <div class="tech-item" data-tech="typescript">
           <svg viewBox="0 0 128 128" width="28" height="28">
             <path
               fill="#3178c6"
@@ -446,7 +441,7 @@
           </svg>
           <span>TypeScript</span>
         </div>
-        <div class="tech-item" style="--tc: #3572a5">
+        <div class="tech-item" data-tech="python">
           <svg viewBox="0 0 24 24" width="20" height="20">
             <path
               fill="#3572A5"
@@ -455,7 +450,7 @@
           </svg>
           <span>Python</span>
         </div>
-        <div class="tech-item" style="--tc: #f7df1e">
+        <div class="tech-item" data-tech="javascript">
           <svg viewBox="0 0 24 24" width="20" height="20">
             <path
               fill="#f7df1e"
@@ -464,7 +459,7 @@
           </svg>
           <span>JavaScript</span>
         </div>
-        <div class="tech-item" style="--tc: #e44d26">
+        <div class="tech-item" data-tech="htmlcss">
           <svg viewBox="0 0 24 24" width="20" height="20">
             <path
               fill="#e44d26"
@@ -473,7 +468,7 @@
           </svg>
           <span>HTML/CSS</span>
         </div>
-        <div class="tech-item" style="--tc: #000">
+        <div class="tech-item" data-tech="flask">
           <svg viewBox="0 0 24 24" width="20" height="20">
             <path
               fill="currentColor"
@@ -482,7 +477,7 @@
           </svg>
           <span>Flask</span>
         </div>
-        <div class="tech-item" style="--tc: #646cff">
+        <div class="tech-item" data-tech="vite">
           <svg viewBox="0 0 24 24" width="20" height="20">
             <path
               fill="#646cff"
@@ -491,7 +486,7 @@
           </svg>
           <span>Vite</span>
         </div>
-        <div class="tech-item" style="--tc: #ff6384">
+        <div class="tech-item" data-tech="chartjs">
           <svg viewBox="0 0 24 24" width="20" height="20">
             <path
               fill="#ff6384"
@@ -500,7 +495,7 @@
           </svg>
           <span>Chart.js</span>
         </div>
-        <div class="tech-item" style="--tc: #199900">
+        <div class="tech-item" data-tech="leaflet">
           <svg viewBox="0 0 24 24" width="20" height="20">
             <path
               fill="#199900"
@@ -509,7 +504,7 @@
           </svg>
           <span>Leaflet</span>
         </div>
-        <div class="tech-item" style="--tc: #336791">
+        <div class="tech-item" data-tech="postgresql">
           <svg viewBox="0 0 24 24" width="20" height="20">
             <path
               fill="#336791"
@@ -518,7 +513,7 @@
           </svg>
           <span>PostgreSQL</span>
         </div>
-        <div class="tech-item" style="--tc: #fdb515">
+        <div class="tech-item" data-tech="timescaledb">
           <svg viewBox="0 0 24 24" width="20" height="20">
             <path
               fill="#fdb515"
@@ -527,7 +522,7 @@
           </svg>
           <span>TimescaleDB</span>
         </div>
-        <div class="tech-item" style="--tc: #d82c20">
+        <div class="tech-item" data-tech="redis">
           <svg viewBox="0 0 24 24" width="20" height="20">
             <path
               fill="#d82c20"
@@ -536,7 +531,7 @@
           </svg>
           <span>Redis</span>
         </div>
-        <div class="tech-item" style="--tc: #2496ed">
+        <div class="tech-item" data-tech="docker">
           <svg viewBox="0 0 24 24" width="20" height="20">
             <path
               fill="#2496ed"
@@ -545,7 +540,7 @@
           </svg>
           <span>Docker</span>
         </div>
-        <div class="tech-item" style="--tc: #2088ff">
+        <div class="tech-item" data-tech="github-actions">
           <svg viewBox="0 0 24 24" width="20" height="20">
             <path
               fill="#2088ff"
@@ -554,7 +549,7 @@
           </svg>
           <span>GitHub Actions</span>
         </div>
-        <div class="tech-item" style="--tc: #f38020">
+        <div class="tech-item" data-tech="cloudflare">
           <svg viewBox="0 0 24 24" width="20" height="20">
             <path
               fill="#f38020"
@@ -563,7 +558,7 @@
           </svg>
           <span>Cloudflare</span>
         </div>
-        <div class="tech-item" style="--tc: #2ead33">
+        <div class="tech-item" data-tech="playwright">
           <svg viewBox="0 0 24 24" width="20" height="20">
             <path
               fill="#2ead33"
@@ -572,7 +567,7 @@
           </svg>
           <span>Playwright</span>
         </div>
-        <div class="tech-item" style="--tc: #729b1b">
+        <div class="tech-item" data-tech="vitest">
           <svg viewBox="0 0 24 24" width="20" height="20">
             <path
               fill="#729b1b"
@@ -585,7 +580,7 @@
     </section>
 
     <!-- Recent Activity Timeline -->
-    <section id="activity" class="timeline-section fade-in" style="--fade-delay: 900ms">
+    <section id="activity" class="timeline-section fade-in fade-delay-900">
       <h2>Recent Activity</h2>
       <ul id="timeline" class="timeline">
         <li class="timeline-loading">
