@@ -68,6 +68,16 @@ describe('active-repos', () => {
       expect(result.map((r) => r.name)).toEqual(['compresso']);
     });
 
+    it('excludes manually blocklisted repos', async () => {
+      const { selectActiveRepos } = await import('../active-repos.ts');
+      const result = selectActiveRepos([
+        repo({ name: 'Claude-Code-Usage-Monitor' }),
+        repo({ name: 'RuView' }),
+        repo({ name: 'compresso' }),
+      ]);
+      expect(result.map((r) => r.name)).toEqual(['compresso']);
+    });
+
     it('sorts by most recently pushed first', async () => {
       const { selectActiveRepos } = await import('../active-repos.ts');
       const now = Date.now();

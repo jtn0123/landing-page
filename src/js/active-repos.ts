@@ -11,6 +11,9 @@ import type { UserRepo } from './types.ts';
 /** Repos count as "actively maintained" if pushed within this many days. */
 const ACTIVE_WINDOW_DAYS = 90;
 
+/** Repos to never show in the Also Active section, even when recently pushed. */
+const EXCLUDED_REPOS = ['Claude-Code-Usage-Monitor', 'RuView'];
+
 /** Filter the full repo list down to active, non-featured repos. */
 export function selectActiveRepos(repos: UserRepo[], now: number = Date.now()): UserRepo[] {
   const cutoff = now - ACTIVE_WINDOW_DAYS * 24 * 60 * 60 * 1000;
@@ -19,6 +22,7 @@ export function selectActiveRepos(repos: UserRepo[], now: number = Date.now()): 
       (r) =>
         !r.archived &&
         !REPOS.includes(r.name) &&
+        !EXCLUDED_REPOS.includes(r.name) &&
         r.pushed_at &&
         new Date(r.pushed_at).getTime() >= cutoff,
     )
