@@ -18,4 +18,8 @@ export default defineConfig({
       },
     },
   },
+  preview: {
+    // Keep `vite preview` (and CI e2e) hermetic — no live GitHub API calls
+    proxy: {},
+  },
 });
