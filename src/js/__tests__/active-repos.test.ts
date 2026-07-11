@@ -38,8 +38,11 @@ describe('active-repos', () => {
     sessionStorage.clear();
     document.body.innerHTML = `
       <span id="total-projects">6</span>
-      <section id="also-active" hidden>
-        <div id="also-active-grid"></div>
+      <section id="also-active">
+        <div id="also-active-grid">
+          <div class="repo-mini-card repo-mini-skeleton" aria-hidden="true"></div>
+          <div class="repo-mini-card repo-mini-skeleton" aria-hidden="true"></div>
+        </div>
       </section>`;
   });
 
@@ -93,7 +96,7 @@ describe('active-repos', () => {
   });
 
   describe('init', () => {
-    it('renders cards and unhides the section', async () => {
+    it('replaces skeletons with rendered cards', async () => {
       mockFetch.mockImplementation(() =>
         mockJson([
           repo({ name: 'compresso', stargazers_count: 3, homepage: 'https://example.com' }),
@@ -107,13 +110,16 @@ describe('active-repos', () => {
 
       const section = document.getElementById('also-active')!;
       expect(section.hidden).toBe(false);
+      expect(section.querySelector('.repo-mini-skeleton')).toBeNull();
       const cards = section.querySelectorAll('.repo-mini-card');
       expect(cards.length).toBe(2);
       expect(cards[0].textContent).toContain('compresso');
       expect(cards[0].textContent).toContain('⭐ 3');
       expect(cards[0].querySelector('.repo-mini-link')).not.toBeNull();
+      expect((cards[0] as HTMLElement).dataset.lang).toBe('TypeScript');
       expect(cards[1].querySelector('.repo-mini-fork-badge')).not.toBeNull();
       expect(cards[1].textContent).toContain('No description yet.');
+      expect((cards[1] as HTMLElement).dataset.lang).toBeUndefined();
     });
 
     it('updates the total projects stat', async () => {
@@ -127,7 +133,7 @@ describe('active-repos', () => {
       expect(document.getElementById('total-projects')!.textContent).toBe('7');
     });
 
-    it('leaves the section hidden when no extra repos are active', async () => {
+    it('hides the section when no extra repos are active', async () => {
       mockFetch.mockImplementation(() => mockJson([repo({ name: 'MegaBonk' })]));
 
       const { init } = await import('../active-repos.ts');
@@ -137,7 +143,7 @@ describe('active-repos', () => {
       expect(document.getElementById('also-active')!.hidden).toBe(true);
     });
 
-    it('leaves the section hidden when the API fails', async () => {
+    it('hides the section when the API fails', async () => {
       mockFetch.mockImplementation(() => mockJson({ message: 'boom' }, 500));
 
       const { init } = await import('../active-repos.ts');
@@ -146,6 +152,31 @@ describe('active-repos', () => {
 
       expect(document.getElementById('also-active')!.hidden).toBe(true);
       expect(document.getElementById('total-projects')!.textContent).toBe('6');
+    });
+
+    it('getAllProjectRepoNames merges featured and active repos', async () => {
+      mockFetch.mockImplementation(() =>
+        mockJson([repo({ name: 'compresso' }), repo({ name: 'MegaBonk' })]),
+      );
+      const { getAllProjectRepoNames } = await import('../active-repos.ts');
+      const names = await getAllProjectRepoNames();
+      expect(names).toContain('MegaBonk');
+      expect(names).toContain('compresso');
+      expect(names.filter((n) => n === 'MegaBonk').length).toBe(1);
+    });
+
+    it('getAllProjectRepoNames falls back to featured repos on API failure', async () => {
+      mockFetch.mockRejectedValue(new Error('network down'));
+      const { getAllProjectRepoNames } = await import('../active-repos.ts');
+      const names = await getAllProjectRepoNames();
+      expect(names).toEqual([
+        'MegaBonk',
+        'VoltTracker',
+        'landing-page',
+        'satellite_processor',
+        'AudioWhisper',
+        'InkyPi',
+      ]);
     });
 
     it('escapes repo-provided strings', async () => {

@@ -559,12 +559,23 @@
     </main>
 
     <!-- Also Active — auto-discovered repos pushed in the last 3 months -->
-    <section id="also-active" class="also-active-section fade-in" aria-label="Other actively maintained repositories" hidden>
+    <section id="also-active" class="also-active-section fade-in" aria-label="Other actively maintained repositories">
       <h2>Also Active</h2>
       <p class="also-active-sub">
         Everything else I've pushed to in the last 3 months — live from GitHub.
       </p>
-      <div id="also-active-grid" class="also-active-grid"></div>
+      <div id="also-active-grid" class="also-active-grid" aria-live="polite">
+        <div class="repo-mini-card repo-mini-skeleton" aria-hidden="true">
+          <div class="skeleton-line skeleton-line-title"></div>
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line skeleton-line-meta"></div>
+        </div>
+        <div class="repo-mini-card repo-mini-skeleton" aria-hidden="true">
+          <div class="skeleton-line skeleton-line-title"></div>
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line skeleton-line-meta"></div>
+        </div>
+      </div>
     </section>
 
     <!-- Stats Bar -->
@@ -782,7 +793,7 @@
           </svg>
         </a>
         <span class="footer-divider">·</span>
-        <span>v4.9.0</span>
+        <span>v4.10.0</span>
         <span class="footer-divider">·</span>
         <span>© 2026 neuhard.dev</span>
         <span class="footer-divider">·</span>

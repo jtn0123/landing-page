@@ -95,3 +95,26 @@
 .repo-mini-link:hover {
   color: var(--accent-hover);
 }
+
+/* Loading skeletons — replaced by real cards once the repo list loads */
+.repo-mini-skeleton .skeleton-line {
+  height: 0.8rem;
+  border-radius: 4px;
+  margin-bottom: 0.55rem;
+  background: linear-gradient(90deg, var(--card) 25%, var(--shimmer-mid) 37%, var(--card) 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+.repo-mini-skeleton .skeleton-line-title {
+  width: 40%;
+  height: 1rem;
+}
+.repo-mini-skeleton .skeleton-line-meta {
+  width: 60%;
+  margin-bottom: 0;
+}
+
+/* Tech filter integration — mirror the featured-card filter states */
+.repo-mini-card.filter-hidden {
+  display: none;
+}

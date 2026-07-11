@@ -14,6 +14,28 @@ const ACTIVE_WINDOW_DAYS = 90;
 /** Repos to never show in the Also Active section, even when recently pushed. */
 const EXCLUDED_REPOS = ['Claude-Code-Usage-Monitor', 'RuView'];
 
+/** Fetch the full public repo list (cached alongside other API calls). */
+export async function fetchUserRepos(): Promise<UserRepo[]> {
+  const { data } = await cachedFetchJSON<UserRepo[]>(
+    `${API_BASE}/users/${OWNER}/repos?sort=pushed&per_page=100`,
+  );
+  return Array.isArray(data) ? data : [];
+}
+
+/**
+ * All repo names the site aggregates over: featured repos plus every
+ * auto-discovered active repo. Falls back to just the featured list when
+ * the repo listing is unavailable.
+ */
+export async function getAllProjectRepoNames(): Promise<string[]> {
+  try {
+    const active = selectActiveRepos(await fetchUserRepos());
+    return [...REPOS, ...active.map((r) => r.name)];
+  } catch {
+    return [...REPOS];
+  }
+}
+
 /** Filter the full repo list down to active, non-featured repos. */
 export function selectActiveRepos(repos: UserRepo[], now: number = Date.now()): UserRepo[] {
   const cutoff = now - ACTIVE_WINDOW_DAYS * 24 * 60 * 60 * 1000;
@@ -32,6 +54,7 @@ export function selectActiveRepos(repos: UserRepo[], now: number = Date.now()): 
 function renderRepoCard(repo: UserRepo): HTMLElement {
   const card = document.createElement('article');
   card.className = 'repo-mini-card fade-in';
+  if (repo.language) card.dataset.lang = repo.language;
 
   const langDot = repo.language
     ? `<span class="repo-mini-lang"><span class="lang-dot" style="background:${
@@ -69,26 +92,39 @@ async function loadActiveRepos(): Promise<void> {
 
   let repos: UserRepo[];
   try {
-    const { data } = await cachedFetchJSON<UserRepo[]>(
-      `${API_BASE}/users/${OWNER}/repos?sort=pushed&per_page=100`,
-    );
-    repos = Array.isArray(data) ? data : [];
+    repos = await fetchUserRepos();
   } catch (err) {
     console.warn('[active-repos] Failed to load repo list:', err);
+    section.hidden = true;
     return;
   }
 
   const active = selectActiveRepos(repos);
-  if (active.length === 0) return;
+  if (active.length === 0) {
+    section.hidden = true;
+    return;
+  }
+
+  // Stagger cards in as they scroll into view, matching the rest of the page.
+  const cardObserver = new IntersectionObserver(
+    (entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          cardObserver.unobserve(e.target);
+        }
+      }
+    },
+    { threshold: 0.15 },
+  );
 
   grid.innerHTML = '';
   active.forEach((repo, idx) => {
     const card = renderRepoCard(repo);
-    card.style.setProperty('--fade-delay', `${idx * 80}ms`);
+    card.style.setProperty('--fade-delay', `${(idx % 2) * 120}ms`);
     grid.appendChild(card);
-    requestAnimationFrame(() => card.classList.add('visible'));
+    cardObserver.observe(card);
   });
-  section.hidden = false;
 
   // Reflect the true project count now that we know it.
   const totalEl = document.getElementById('total-projects');

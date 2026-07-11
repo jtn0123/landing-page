@@ -114,7 +114,26 @@ describe('worker router', () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  it('rejects repos outside the allowlist', async () => {
+  it('allows any repo under the owner account', async () => {
+    fetchMock.mockResolvedValue(
+      new Response(JSON.stringify({ Python: 1 }), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      }),
+    );
+
+    const router = await loadRouter();
+    const response = await router.fetch(
+      new Request('https://neuhard.dev/api/github/repos/jtn0123/compresso/languages'),
+      {},
+      { waitUntil() {} },
+    );
+
+    expect(response.status).toBe(200);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('rejects repos owned by other users', async () => {
     const ctx = {
       waitUntil() {
         waitUntilCalls += 1;
@@ -123,9 +142,21 @@ describe('worker router', () => {
 
     const router = await loadRouter();
     const response = await router.fetch(
-      new Request('https://neuhard.dev/api/github/repos/jtn0123/not-real/languages'),
+      new Request('https://neuhard.dev/api/github/repos/someone-else/not-real/languages'),
       {},
       ctx,
+    );
+
+    expect(response.status).toBe(404);
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it('rejects unsupported endpoints under an owner repo', async () => {
+    const router = await loadRouter();
+    const response = await router.fetch(
+      new Request('https://neuhard.dev/api/github/repos/jtn0123/compresso/issues'),
+      {},
+      { waitUntil() {} },
     );
 
     expect(response.status).toBe(404);
