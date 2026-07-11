@@ -8,4 +8,14 @@ export default defineConfig({
     sourcemap: true,
     target: 'es2022',
   },
+  server: {
+    // Dev-only stand-in for the Cloudflare Worker's GitHub API proxy
+    proxy: {
+      '/api/github': {
+        target: 'https://api.github.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/github/, ''),
+      },
+    },
+  },
 });

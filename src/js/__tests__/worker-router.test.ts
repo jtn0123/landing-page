@@ -80,6 +80,40 @@ describe('worker router', () => {
     expect(waitUntilCalls).toBe(1);
   });
 
+  it('proxies the user repo listing for the Also Active section', async () => {
+    fetchMock.mockResolvedValue(
+      new Response(JSON.stringify([{ name: 'compresso' }]), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      }),
+    );
+
+    const router = await loadRouter();
+    const response = await router.fetch(
+      new Request('https://neuhard.dev/api/github/users/jtn0123/repos?sort=pushed&per_page=100'),
+      {},
+      { waitUntil() {} },
+    );
+
+    expect(response.status).toBe(200);
+    expect(fetchMock).toHaveBeenCalledWith(
+      'https://api.github.com/users/jtn0123/repos?sort=pushed&per_page=100',
+      expect.anything(),
+    );
+  });
+
+  it('rejects repo listings for other users', async () => {
+    const router = await loadRouter();
+    const response = await router.fetch(
+      new Request('https://neuhard.dev/api/github/users/someone-else/repos'),
+      {},
+      { waitUntil() {} },
+    );
+
+    expect(response.status).toBe(404);
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
   it('rejects repos outside the allowlist', async () => {
     const ctx = {
       waitUntil() {

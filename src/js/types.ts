@@ -17,6 +17,19 @@ export interface RepoData {
   [key: string]: unknown;
 }
 
+export interface UserRepo {
+  name: string;
+  html_url: string;
+  description: string | null;
+  homepage: string | null;
+  language: string | null;
+  stargazers_count: number;
+  forks_count: number;
+  pushed_at: string;
+  fork: boolean;
+  archived: boolean;
+}
+
 export interface WorkflowRun {
   conclusion: string | null;
   [key: string]: unknown;

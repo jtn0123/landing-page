@@ -28,12 +28,14 @@ initFilter();
 
 // --- Lazy-load below-fold modules ---
 try {
-  const [stats, timeline] = await Promise.all([
+  const [stats, timeline, activeRepos] = await Promise.all([
     import('./js/stats.ts'),
     import('./js/timeline.ts'),
+    import('./js/active-repos.ts'),
   ]);
   stats.init();
   timeline.init();
+  activeRepos.init();
 } catch (e) {
   console.warn('Failed to load below-fold modules', e);
 }

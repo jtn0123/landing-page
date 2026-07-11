@@ -28,14 +28,18 @@ const ALLOWED_ORIGINS = new Set([
 const OWNER = 'jtn0123';
 const ALLOWED_REPOS = ['MegaBonk', 'VoltTracker', 'landing-page', 'satellite_processor', 'AudioWhisper', 'InkyPi'];
 
-const ALLOWED_PATH_PATTERNS = ALLOWED_REPOS.flatMap((repo) => [
-  `/repos/${OWNER}/${repo}`,
-  `/repos/${OWNER}/${repo}/languages`,
-  `/repos/${OWNER}/${repo}/contributors`,
-  `/repos/${OWNER}/${repo}/commits`,
-  `/repos/${OWNER}/${repo}/stats/participation`,
-  `/repos/${OWNER}/${repo}/actions/runs`,
-]);
+const ALLOWED_PATH_PATTERNS = [
+  // Public repo listing powers the "Also Active" section on the landing page.
+  `/users/${OWNER}/repos`,
+  ...ALLOWED_REPOS.flatMap((repo) => [
+    `/repos/${OWNER}/${repo}`,
+    `/repos/${OWNER}/${repo}/languages`,
+    `/repos/${OWNER}/${repo}/contributors`,
+    `/repos/${OWNER}/${repo}/commits`,
+    `/repos/${OWNER}/${repo}/stats/participation`,
+    `/repos/${OWNER}/${repo}/actions/runs`,
+  ]),
+];
 
 // Also allow commit detail: /repos/{owner}/{repo}/commits/{sha}
 const COMMIT_DETAIL_RE = new RegExp(
