@@ -57,9 +57,7 @@ function renderRepoCard(repo: UserRepo): HTMLElement {
   if (repo.language) card.dataset.lang = repo.language;
 
   const langDot = repo.language
-    ? `<span class="repo-mini-lang"><span class="lang-dot" style="background:${
-        LANG_COLORS[repo.language] || '#888'
-      }"></span>${escapeHTML(repo.language)}</span>`
+    ? `<span class="repo-mini-lang"><span class="lang-dot"></span>${escapeHTML(repo.language)}</span>`
     : '';
   const stars =
     repo.stargazers_count > 0
@@ -82,6 +80,9 @@ function renderRepoCard(repo: UserRepo): HTMLElement {
       <span>Updated ${relativeTime(repo.pushed_at)}</span>
       ${homepage}
     </div>`;
+  // Dot color via CSSOM — CSP forbids parsed style attributes
+  const dot = card.querySelector<HTMLElement>('.lang-dot');
+  if (dot && repo.language) dot.style.background = LANG_COLORS[repo.language] || '#888';
   return card;
 }
 

@@ -16,6 +16,27 @@
   }
 }
 
+/* Staggered entrance — replaces per-card inline --fade-delay attributes
+   (CSP: style-src has no unsafe-inline) */
+.projects .card:nth-child(2) {
+  --fade-delay: 300ms;
+}
+.projects .card:nth-child(3) {
+  --fade-delay: 400ms;
+}
+.projects .card:nth-child(4) {
+  --fade-delay: 500ms;
+}
+.projects .card:nth-child(5) {
+  --fade-delay: 600ms;
+}
+.projects .card:nth-child(6) {
+  --fade-delay: 700ms;
+}
+.projects .card:nth-child(7) {
+  --fade-delay: 800ms;
+}
+
 /* Card */
 .card {
   --shimmer-delay: var(--fade-delay, 0ms);
@@ -237,7 +258,6 @@
 /* Landing-page card gradient image */
 /* Skip dark overlay on gradient placeholder cards */
 .card-img-gradient::before,
-.card-img-gradient-sat::before,
 .card-img-gradient-audio::before,
 .card-img-gradient-inky::before,
 .card-img-gradient-compresso::before {
@@ -246,12 +266,6 @@
 
 .card-img-gradient {
   background: linear-gradient(135deg, #4fc3f7 0%, #ab47bc 35%, #ff7043 65%, #81d4fa 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.card-img-gradient-sat {
-  background: linear-gradient(135deg, #0d47a1 0%, #00897b 50%, #1a237e 100%);
   display: flex;
   align-items: center;
   justify-content: center;

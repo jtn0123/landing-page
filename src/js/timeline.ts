@@ -34,7 +34,8 @@ function badgeAttrs(repo: string): string {
   if (STYLED_BADGES.has(key)) {
     return `class="repo-badge repo-${key}"`;
   }
-  return `class="repo-badge repo-dynamic" style="--repo-hue: ${repoHue(repo)}"`;
+  // Hue applied via CSSOM after render — CSP forbids parsed style attributes
+  return `class="repo-badge repo-dynamic" data-hue="${repoHue(repo)}"`;
 }
 
 /**
@@ -107,6 +108,10 @@ function buildTimeline(commits: Commit[], timelineEl: HTMLElement): void {
   });
   timelineEl.innerHTML =
     '<div class="timeline-line"></div>' + commits.map((c, i) => buildTimelineItem(c, i)).join('');
+
+  timelineEl.querySelectorAll<HTMLElement>('.repo-dynamic[data-hue]').forEach((badge) => {
+    badge.style.setProperty('--repo-hue', badge.dataset.hue!);
+  });
 
   timelineEl.querySelectorAll('.commit-msg.expandable').forEach((msg) => {
     const el = msg as HTMLElement;
