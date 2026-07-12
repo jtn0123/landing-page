@@ -9,8 +9,10 @@ on:
 jobs:
   sonarqube:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.fork == false
-    runs-on: [self-hosted, sonar]
-    # Informational only — a failure or offline runner never blocks a PR
+    # GitHub-hosted: the scan uploads to SonarCloud, so nothing here needs
+    # local hardware (the old self-hosted runner was just a runner)
+    runs-on: ubuntu-latest
+    # Informational only — a scan failure never blocks a PR
     continue-on-error: true
     permissions:
       contents: read

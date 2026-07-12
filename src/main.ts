@@ -40,7 +40,15 @@ try {
   console.warn('Failed to load below-fold modules', e);
 }
 
-// --- Register service worker ---
+// --- Register service worker (production only) ---
+// In dev the SW would cache unhashed source modules and serve stale code
+// across sessions; unregister any leftover one to heal poisoned dev setups.
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js');
+  if (import.meta.env.DEV) {
+    navigator.serviceWorker.getRegistrations().then((regs) => {
+      for (const reg of regs) reg.unregister();
+    });
+  } else {
+    navigator.serviceWorker.register('/sw.js');
+  }
 }
