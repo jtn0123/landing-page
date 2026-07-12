@@ -369,8 +369,27 @@
         data-link="https://sat.neuhard.dev/"
         data-repo="satellite_processor"
       >
-        <div class="card-img card-img-gradient-sat">
-          <span class="card-img-text">🛰️ Satellite Processor</span>
+        <div class="card-img">
+          <div class="carousel" data-interval="4000">
+            <img
+              src="images/satellite-live.webp"
+              alt="Satellite Processor live view showing real-time GOES-19 GeoColor imagery of the continental US with spectral channel selector"
+              decoding="async"
+              class="carousel-slide active lightbox-trigger"
+              loading="lazy"
+            />
+            <img
+              src="images/satellite-dashboard.webp"
+              alt="Satellite Processor dashboard with GOES frame counts, job queue status, and storage usage"
+              decoding="async"
+              class="carousel-slide lightbox-trigger"
+              loading="lazy"
+            />
+            <div class="carousel-dots" role="tablist">
+              <span class="dot active" role="tab" aria-label="Slide 1 of 2"></span>
+              <span class="dot" role="tab" aria-label="Slide 2 of 2"></span>
+            </div>
+          </div>
           <div class="card-img-badges">
             <span class="card-img-badge blue">Docker</span>
             <span class="card-img-badge orange">Self-Hosted</span>
