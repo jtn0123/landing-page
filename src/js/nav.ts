@@ -4,7 +4,9 @@
  */
 
 function isInteractiveTarget(target: EventTarget | null): boolean {
-  return target instanceof Element && !!target.closest('a, button, input, select, textarea, dialog');
+  return (
+    target instanceof Element && !!target.closest('a, button, input, select, textarea, dialog')
+  );
 }
 
 function navigateTo(url: string): void {
@@ -18,9 +20,10 @@ function navigateTo(url: string): void {
     return;
   }
 
-  const vt = 'startViewTransition' in document
-    ? (document.startViewTransition as (cb: () => void) => void)
-    : undefined;
+  const vt =
+    'startViewTransition' in document
+      ? (document.startViewTransition as (cb: () => void) => void)
+      : undefined;
   if (vt) {
     vt(() => {
       navigate();

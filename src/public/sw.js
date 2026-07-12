@@ -6,19 +6,21 @@ const API_CACHE_TTL = 30 * 60 * 1000; // 30 minutes
 
 globalThis.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(STATIC_CACHE)
+    caches
+      .open(STATIC_CACHE)
       .then((cache) => cache.addAll(SHELL_ASSETS))
-      .then(() => globalThis.skipWaiting())
+      .then(() => globalThis.skipWaiting()),
   );
 });
 
 globalThis.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys.filter((k) => !ACTIVE_CACHES.includes(k)).map((k) => caches.delete(k))
-      ),
-    ).then(() => globalThis.clients.claim())
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(keys.filter((k) => !ACTIVE_CACHES.includes(k)).map((k) => caches.delete(k))),
+      )
+      .then(() => globalThis.clients.claim()),
   );
 });
 
@@ -45,22 +47,27 @@ globalThis.addEventListener('fetch', (event) => {
               statusText: clone.statusText,
               headers,
             });
-            const cacheWrite = caches.open(API_CACHE).then((cache) => cache.put(request, cachedResponse));
+            const cacheWrite = caches
+              .open(API_CACHE)
+              .then((cache) => cache.put(request, cachedResponse));
             event.waitUntil(cacheWrite);
           }
           return response;
         })
         .catch(() =>
-          caches.open(API_CACHE).then((cache) => cache.match(request)).then((cached) => {
-            if (!cached) return new Response('Service Unavailable', { status: 503 });
-            const cacheTime = Number(cached.headers.get('sw-cache-time') || '0');
-            const isExpired = cacheTime && Date.now() - cacheTime > API_CACHE_TTL;
-            if (isExpired) {
-              // Keep stale cached data as an offline fallback instead of deleting it.
-            }
-            return cached;
-          })
-        )
+          caches
+            .open(API_CACHE)
+            .then((cache) => cache.match(request))
+            .then((cached) => {
+              if (!cached) return new Response('Service Unavailable', { status: 503 });
+              const cacheTime = Number(cached.headers.get('sw-cache-time') || '0');
+              const isExpired = cacheTime && Date.now() - cacheTime > API_CACHE_TTL;
+              if (isExpired) {
+                // Keep stale cached data as an offline fallback instead of deleting it.
+              }
+              return cached;
+            }),
+        ),
     );
     return;
   }
@@ -90,15 +97,17 @@ globalThis.addEventListener('fetch', (event) => {
 
   // Cache-first for same-origin static assets
   event.respondWith(
-    caches.open(STATIC_CACHE).then((cache) => cache.match(request).then((cached) => {
-      if (cached) return cached;
-      return fetch(request).then((response) => {
-        if (response.ok && isSameOrigin) {
-          const clone = response.clone();
-          event.waitUntil(cache.put(request, clone));
-        }
-        return response;
-      });
-    }))
+    caches.open(STATIC_CACHE).then((cache) =>
+      cache.match(request).then((cached) => {
+        if (cached) return cached;
+        return fetch(request).then((response) => {
+          if (response.ok && isSameOrigin) {
+            const clone = response.clone();
+            event.waitUntil(cache.put(request, clone));
+          }
+          return response;
+        });
+      }),
+    ),
   );
 });

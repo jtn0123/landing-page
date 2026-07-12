@@ -54,7 +54,12 @@ if (globalThis.Touch === undefined) {
     pageY: number;
     screenX: number;
     screenY: number;
-    constructor(init: { identifier: number; target: EventTarget; clientX?: number; clientY?: number }) {
+    constructor(init: {
+      identifier: number;
+      target: EventTarget;
+      clientX?: number;
+      clientY?: number;
+    }) {
       this.identifier = init.identifier;
       this.target = init.target;
       this.clientX = init.clientX ?? 0;

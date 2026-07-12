@@ -13,7 +13,8 @@ async function loadWithMocks(overrides: { isMobile?: boolean; reducedMotion?: bo
 describe('parallax', () => {
   beforeEach(() => {
     vi.resetModules();
-    document.body.innerHTML = '<div class="card" style="width:200px;height:200px"></div><div id="parallax-mesh"></div>';
+    document.body.innerHTML =
+      '<div class="card" style="width:200px;height:200px"></div><div id="parallax-mesh"></div>';
   });
 
   it('updateParallaxMesh sets transform based on scrollY', async () => {
@@ -52,7 +53,9 @@ describe('parallax', () => {
     const { mod } = await loadWithMocks({ reducedMotion: true });
     mod.init();
     const card = document.querySelector('.card') as HTMLElement;
-    card.getBoundingClientRect = vi.fn().mockReturnValue({ left: 0, top: 0, width: 200, height: 200 });
+    card.getBoundingClientRect = vi
+      .fn()
+      .mockReturnValue({ left: 0, top: 0, width: 200, height: 200 });
     card.dispatchEvent(new MouseEvent('mousemove', { clientX: 100, clientY: 100, bubbles: true }));
     expect(card.style.transform).toBe('');
   });
@@ -61,7 +64,9 @@ describe('parallax', () => {
     const { mod } = await loadWithMocks();
     mod.init();
     const card = document.querySelector('.card') as HTMLElement;
-    card.getBoundingClientRect = vi.fn().mockReturnValue({ left: 0, top: 0, width: 200, height: 200 });
+    card.getBoundingClientRect = vi
+      .fn()
+      .mockReturnValue({ left: 0, top: 0, width: 200, height: 200 });
     card.dispatchEvent(new MouseEvent('mousemove', { clientX: 100, clientY: 100, bubbles: true }));
     expect(card.style.transform).toContain('perspective');
   });
@@ -70,7 +75,9 @@ describe('parallax', () => {
     const { mod } = await loadWithMocks();
     mod.init();
     const card = document.querySelector('.card') as HTMLElement;
-    card.getBoundingClientRect = vi.fn().mockReturnValue({ left: 0, top: 0, width: 200, height: 200 });
+    card.getBoundingClientRect = vi
+      .fn()
+      .mockReturnValue({ left: 0, top: 0, width: 200, height: 200 });
     card.dispatchEvent(new MouseEvent('mousemove', { clientX: 150, clientY: 50, bubbles: true }));
     expect(card.style.transform).toContain('perspective');
     card.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
@@ -81,7 +88,9 @@ describe('parallax', () => {
     const { mod } = await loadWithMocks({ isMobile: true });
     mod.init();
     const card = document.querySelector('.card') as HTMLElement;
-    card.getBoundingClientRect = vi.fn().mockReturnValue({ left: 0, top: 0, width: 200, height: 200 });
+    card.getBoundingClientRect = vi
+      .fn()
+      .mockReturnValue({ left: 0, top: 0, width: 200, height: 200 });
     card.dispatchEvent(new MouseEvent('mousemove', { clientX: 100, clientY: 100, bubbles: true }));
     expect(card.style.transform).toBe('');
   });
@@ -90,7 +99,9 @@ describe('parallax', () => {
     const { mod, state } = await loadWithMocks();
     mod.init();
     const card = document.querySelector('.card') as HTMLElement;
-    card.getBoundingClientRect = vi.fn().mockReturnValue({ left: 0, top: 0, width: 200, height: 200 });
+    card.getBoundingClientRect = vi
+      .fn()
+      .mockReturnValue({ left: 0, top: 0, width: 200, height: 200 });
     card.dispatchEvent(new MouseEvent('mousemove', { clientX: 150, clientY: 50, bubbles: true }));
     expect(card.style.transform).toContain('perspective');
     state.value = true;

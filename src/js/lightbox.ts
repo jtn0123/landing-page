@@ -108,7 +108,9 @@ export function init(): void {
   );
   lightboxImg.addEventListener('touchend', (e: TouchEvent) => {
     if (e.touches.length < 2) {
-      currentScale = Number.parseFloat(lightboxImg.style.transform.replaceAll(/[^0-9.]/g, '') || '1');
+      currentScale = Number.parseFloat(
+        lightboxImg.style.transform.replaceAll(/[^0-9.]/g, '') || '1',
+      );
       if (Number.isNaN(currentScale) || currentScale < 1) currentScale = 1;
     }
   });

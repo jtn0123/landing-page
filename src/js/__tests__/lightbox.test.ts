@@ -19,7 +19,9 @@ describe('lightbox', () => {
     init();
     document.querySelector<HTMLElement>('.lightbox-trigger')!.click();
     expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
-    expect((document.getElementById('lightbox-img') as HTMLImageElement).src).toContain('photo.jpg');
+    expect((document.getElementById('lightbox-img') as HTMLImageElement).src).toContain(
+      'photo.jpg',
+    );
   });
 
   it('closes lightbox on click', async () => {
@@ -84,22 +86,26 @@ describe('lightbox', () => {
     const img = document.getElementById('lightbox-img')!;
 
     // Start with two touches 100px apart
-    img.dispatchEvent(new TouchEvent('touchstart', {
-      touches: [
-        new Touch({ identifier: 0, target: img, clientX: 0, clientY: 0 }),
-        new Touch({ identifier: 1, target: img, clientX: 100, clientY: 0 }),
-      ] as any,
-      cancelable: true,
-    }));
+    img.dispatchEvent(
+      new TouchEvent('touchstart', {
+        touches: [
+          new Touch({ identifier: 0, target: img, clientX: 0, clientY: 0 }),
+          new Touch({ identifier: 1, target: img, clientX: 100, clientY: 0 }),
+        ] as any,
+        cancelable: true,
+      }),
+    );
 
     // Move to 200px apart (zoom in)
-    img.dispatchEvent(new TouchEvent('touchmove', {
-      touches: [
-        new Touch({ identifier: 0, target: img, clientX: 0, clientY: 0 }),
-        new Touch({ identifier: 1, target: img, clientX: 200, clientY: 0 }),
-      ] as any,
-      cancelable: true,
-    }));
+    img.dispatchEvent(
+      new TouchEvent('touchmove', {
+        touches: [
+          new Touch({ identifier: 0, target: img, clientX: 0, clientY: 0 }),
+          new Touch({ identifier: 1, target: img, clientX: 200, clientY: 0 }),
+        ] as any,
+        cancelable: true,
+      }),
+    );
 
     expect(img.style.transform).toContain('scale');
   });
@@ -110,12 +116,12 @@ describe('lightbox', () => {
     const img = document.getElementById('lightbox-img')!;
     img.style.transform = 'scale(2)';
 
-    img.dispatchEvent(new TouchEvent('touchend', {
-      touches: [] as any,
-      changedTouches: [
-        new Touch({ identifier: 0, target: img, clientX: 0, clientY: 0 }),
-      ] as any,
-    }));
+    img.dispatchEvent(
+      new TouchEvent('touchend', {
+        touches: [] as any,
+        changedTouches: [new Touch({ identifier: 0, target: img, clientX: 0, clientY: 0 })] as any,
+      }),
+    );
     // currentScale should be updated internally — no crash
   });
 
