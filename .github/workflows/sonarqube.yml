@@ -32,5 +32,9 @@ jobs:
       - run: npx playwright test --project=chromium
       - uses: sonarsource/sonarqube-scan-action@v8
         env:
+          # SonarCloud (the old SONAR_HOST_URL secret pointed at a LAN-only
+          # SonarQube server, unreachable from GitHub-hosted runners).
+          # SONAR_TOKEN must be a SonarCloud token: sonarcloud.io → My Account
+          # → Security → generate, then update the repo secret.
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          SONAR_HOST_URL: https://sonarcloud.io
