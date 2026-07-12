@@ -24,28 +24,23 @@ const ALLOWED_ORIGINS = new Set([
 ]);
 
 // --- Security: allowed GitHub API path patterns ---
-// Only permit the specific endpoints the landing page uses.
+// Owner-scoped: only this account's public repo listing and the specific
+// per-repo endpoints the landing page uses. Repo names are dynamic because
+// the "Also Active" section, stats, and timeline auto-discover active repos.
 const OWNER = 'jtn0123';
-const ALLOWED_REPOS = ['MegaBonk', 'VoltTracker', 'landing-page', 'satellite_processor', 'AudioWhisper', 'InkyPi'];
+const REPO_NAME = '[A-Za-z0-9._-]+';
 
-const ALLOWED_PATH_PATTERNS = ALLOWED_REPOS.flatMap((repo) => [
-  `/repos/${OWNER}/${repo}`,
-  `/repos/${OWNER}/${repo}/languages`,
-  `/repos/${OWNER}/${repo}/contributors`,
-  `/repos/${OWNER}/${repo}/commits`,
-  `/repos/${OWNER}/${repo}/stats/participation`,
-  `/repos/${OWNER}/${repo}/actions/runs`,
-]);
-
-// Also allow commit detail: /repos/{owner}/{repo}/commits/{sha}
-const COMMIT_DETAIL_RE = new RegExp(
-  `^/repos/${OWNER}/(${ALLOWED_REPOS.join('|')})/commits/[0-9a-f]{7,40}$`
-);
+const ALLOWED_PATH_RES = [
+  // Public repo listing powers the "Also Active" section on the landing page.
+  new RegExp(`^/users/${OWNER}/repos$`),
+  new RegExp(`^/repos/${OWNER}/${REPO_NAME}$`),
+  new RegExp(`^/repos/${OWNER}/${REPO_NAME}/(languages|contributors|commits|stats/participation|actions/runs)$`),
+  // Commit detail: /repos/{owner}/{repo}/commits/{sha}
+  new RegExp(`^/repos/${OWNER}/${REPO_NAME}/commits/[0-9a-f]{7,40}$`),
+];
 
 function isAllowedGitHubPath(path) {
-  if (ALLOWED_PATH_PATTERNS.includes(path)) return true;
-  if (COMMIT_DETAIL_RE.test(path)) return true;
-  return false;
+  return ALLOWED_PATH_RES.some((re) => re.test(path));
 }
 
 // --- Security headers applied to all responses ---

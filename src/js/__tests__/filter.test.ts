@@ -8,6 +8,11 @@ describe('filter', () => {
         <div class="card"><div class="tech"><span>TypeScript</span><span>React</span></div></div>
         <div class="card"><div class="tech"><span>Python</span><span>Docker</span></div></div>
         <div class="card"><div class="tech"><span>Swift</span></div></div>
+      </section>
+      <section id="also-active">
+        <article class="repo-mini-card" data-lang="Python"></article>
+        <article class="repo-mini-card" data-lang="TypeScript"></article>
+        <article class="repo-mini-card"></article>
       </section>`;
   });
 
@@ -27,6 +32,20 @@ describe('filter', () => {
     const cards = document.querySelectorAll('.card');
     expect(cards[0].classList.contains('filter-visible')).toBe(true);
     expect(cards[1].classList.contains('filter-hidden')).toBe(true);
+  });
+
+  it('filters Also Active mini cards by language', async () => {
+    const { init } = await import('../filter.ts');
+    init();
+    const pills = [...document.querySelectorAll<HTMLElement>('.filter-pill')];
+    pills.find((p) => p.dataset.filter === 'Python')!.click();
+    const miniCards = document.querySelectorAll('.repo-mini-card');
+    expect(miniCards[0].classList.contains('filter-visible')).toBe(true);
+    expect(miniCards[1].classList.contains('filter-hidden')).toBe(true);
+    // Cards without a language stay untouched (never hidden by mistake)
+    expect(miniCards[2].classList.contains('filter-hidden')).toBe(false);
+    pills.find((p) => p.dataset.filter === 'All')!.click();
+    expect(miniCards[1].classList.contains('filter-visible')).toBe(true);
   });
 
   it('shows all cards when All is clicked', async () => {

@@ -45,14 +45,22 @@ function filterCards(tag: string, filterBar: HTMLElement): void {
   cards.forEach((card) => {
     const techs = card.querySelectorAll('.tech span');
     const techNames = [...techs].map((t) => t.textContent?.trim() ?? '');
-    const matches = tag === 'All' || techNames.includes(tag);
-
-    if (matches) {
-      card.classList.remove('filter-hidden');
-      card.classList.add('filter-visible');
-    } else {
-      card.classList.remove('filter-visible');
-      card.classList.add('filter-hidden');
-    }
+    setCardVisibility(card, tag === 'All' || techNames.includes(tag));
   });
+
+  // Also Active mini cards carry their primary language as a data attribute
+  const miniCards = document.querySelectorAll<HTMLElement>('.repo-mini-card[data-lang]');
+  miniCards.forEach((card) => {
+    setCardVisibility(card, tag === 'All' || card.dataset.lang === tag);
+  });
+}
+
+function setCardVisibility(card: HTMLElement, matches: boolean): void {
+  if (matches) {
+    card.classList.remove('filter-hidden');
+    card.classList.add('filter-visible');
+  } else {
+    card.classList.remove('filter-visible');
+    card.classList.add('filter-hidden');
+  }
 }

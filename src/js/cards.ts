@@ -14,7 +14,7 @@ const HEATMAP_COLORS: Record<string, string> = {
   AudioWhisper: '233,30,99',
 };
 
-const LANG_COLORS: Record<string, string> = {
+export const LANG_COLORS: Record<string, string> = {
   TypeScript: '#3178c6',
   JavaScript: '#f1e05a',
   Python: '#3572A5',
@@ -24,6 +24,10 @@ const LANG_COLORS: Record<string, string> = {
   PLpgSQL: '#336790',
   Swift: '#F05138',
   Makefile: '#427819',
+  Rust: '#dea584',
+  'C++': '#f34b7d',
+  C: '#555555',
+  'Jupyter Notebook': '#DA5B0B',
 };
 
 function createMetaBadge(text: string, label: string): HTMLSpanElement {

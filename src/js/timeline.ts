@@ -2,8 +2,9 @@
  * Recent activity timeline — fetches and renders GitHub commit history.
  * @module timeline
  */
-import { API_BASE, REPOS, OWNER } from './constants.ts';
+import { API_BASE, OWNER } from './constants.ts';
 import { cachedFetchJSON, renderError, abbreviateNum, relativeTime, escapeHTML } from './api.ts';
+import { getAllProjectRepoNames } from './active-repos.ts';
 import type { Commit, GitHubCommitResponse, CommitDetailResponse, CacheEntry } from './types.ts';
 
 function truncate(str: string, len: number): string {
@@ -113,8 +114,10 @@ async function loadTimeline(): Promise<void> {
   }
 
   try {
+    // Pull recent commits from featured + auto-discovered active repos.
+    const repoNames = await getAllProjectRepoNames();
     const repoCommits = await Promise.all(
-      REPOS.map(async (repo) => {
+      repoNames.map(async (repo) => {
         try {
           const { data } = await cachedFetchJSON<GitHubCommitResponse[]>(
             `${API_BASE}/repos/${OWNER}/${repo}/commits?per_page=5`,

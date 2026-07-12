@@ -4,6 +4,7 @@
  */
 import { API_BASE, OWNER, REPOS } from './constants.ts';
 import { cachedFetchJSON, renderError, animateCounter } from './api.ts';
+import { getAllProjectRepoNames } from './active-repos.ts';
 import type { LanguageData, ContributorData, StatsData, CacheEntry } from './types.ts';
 
 function showStats({ loc, commits }: StatsData): void {
@@ -35,8 +36,12 @@ async function loadStats(): Promise<void> {
   }
 
   try {
+    // Aggregate over featured + auto-discovered active repos so the
+    // numbers match the Projects count.
+    const repoNames = await getAllProjectRepoNames();
+
     const langResults = await Promise.all(
-      REPOS.map((r) =>
+      repoNames.map((r) =>
         cachedFetchJSON<LanguageData>(`${API_BASE}/repos/${OWNER}/${r}/languages`)
           .then((res) => res.data)
           .catch(() => ({}) as LanguageData),
@@ -50,7 +55,7 @@ async function loadStats(): Promise<void> {
     const loc = Math.round(totalBytes / 40);
 
     const contribResults = await Promise.all(
-      REPOS.map((r) =>
+      repoNames.map((r) =>
         cachedFetchJSON<ContributorData[]>(`${API_BASE}/repos/${OWNER}/${r}/contributors`)
           .then((res) => res.data)
           .catch(() => [] as ContributorData[]),
