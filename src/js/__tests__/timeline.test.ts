@@ -106,6 +106,35 @@ describe('timeline', () => {
     expect(msg.textContent).toBe(rawMessage);
   });
 
+  it('gives styled repos their CSS class and other repos a hashed hue', async () => {
+    mockFetch.mockImplementation((url: string) => {
+      if (url.includes('commits?')) return mockJson(fakeCommits);
+      if (url.includes('/commits/abc123')) return mockJson({ stats: { additions: 1, deletions: 1 } });
+      return mockJson([]);
+    });
+    const { init } = await import('../timeline.ts');
+    init();
+    triggerObservers();
+    await vi.advanceTimersByTimeAsync(500);
+
+    // Featured repo with hand-tuned colors keeps its class
+    expect(document.querySelector('.repo-badge.repo-megabonk')).not.toBeNull();
+    // compresso has no hand-tuned class — gets a deterministic hue instead
+    const dynamic = document.querySelector<HTMLElement>('.repo-badge.repo-dynamic');
+    expect(dynamic).not.toBeNull();
+    expect(dynamic!.style.getPropertyValue('--repo-hue')).toMatch(/^\d+$/);
+  });
+
+  it('repoHue is deterministic and in range', async () => {
+    const { repoHue } = await import('../timeline.ts');
+    expect(repoHue('compresso')).toBe(repoHue('compresso'));
+    for (const name of ['compresso', 'NN-Game1', 'WebNeuralNet', 'audit-dashboard']) {
+      const hue = repoHue(name);
+      expect(hue).toBeGreaterThanOrEqual(0);
+      expect(hue).toBeLessThan(360);
+    }
+  });
+
   it('shows error with retry on API failure', async () => {
     mockFetch.mockRejectedValue(new Error('fail'));
     const { init } = await import('../timeline.ts');

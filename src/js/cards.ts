@@ -9,6 +9,7 @@ import type { RepoData, WorkflowResponse, ParticipationData, LanguageData } from
 const HEATMAP_COLORS: Record<string, string> = {
   MegaBonk: '79,195,247',
   VoltTracker: '76,175,80',
+  compresso: '38,166,154',
   'landing-page': '171,71,188',
   satellite_processor: '255,152,0',
   AudioWhisper: '233,30,99',
@@ -28,6 +29,8 @@ export const LANG_COLORS: Record<string, string> = {
   'C++': '#f34b7d',
   C: '#555555',
   'Jupyter Notebook': '#DA5B0B',
+  Vue: '#41b883',
+  SCSS: '#c6538c',
 };
 
 function createMetaBadge(text: string, label: string): HTMLSpanElement {

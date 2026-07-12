@@ -66,9 +66,9 @@ describe('active-repos', () => {
         repo({ name: 'MegaBonk' }),
         repo({ name: 'landing-page' }),
         repo({ name: 'archived-one', archived: true }),
-        repo({ name: 'compresso' }),
+        repo({ name: 'NN-Game1' }),
       ]);
-      expect(result.map((r) => r.name)).toEqual(['compresso']);
+      expect(result.map((r) => r.name)).toEqual(['NN-Game1']);
     });
 
     it('excludes manually blocklisted repos', async () => {
@@ -76,9 +76,9 @@ describe('active-repos', () => {
       const result = selectActiveRepos([
         repo({ name: 'Claude-Code-Usage-Monitor' }),
         repo({ name: 'RuView' }),
-        repo({ name: 'compresso' }),
+        repo({ name: 'NN-Game1' }),
       ]);
-      expect(result.map((r) => r.name)).toEqual(['compresso']);
+      expect(result.map((r) => r.name)).toEqual(['NN-Game1']);
     });
 
     it('sorts by most recently pushed first', async () => {
@@ -99,7 +99,7 @@ describe('active-repos', () => {
     it('replaces skeletons with rendered cards', async () => {
       mockFetch.mockImplementation(() =>
         mockJson([
-          repo({ name: 'compresso', stargazers_count: 3, homepage: 'https://example.com' }),
+          repo({ name: 'NN-Game1', stargazers_count: 3, homepage: 'https://example.com' }),
           repo({ name: 'WebNeuralNet', fork: true, description: null, language: null }),
         ]),
       );
@@ -113,7 +113,7 @@ describe('active-repos', () => {
       expect(section.querySelector('.repo-mini-skeleton')).toBeNull();
       const cards = section.querySelectorAll('.repo-mini-card');
       expect(cards.length).toBe(2);
-      expect(cards[0].textContent).toContain('compresso');
+      expect(cards[0].textContent).toContain('NN-Game1');
       expect(cards[0].textContent).toContain('⭐ 3');
       expect(cards[0].querySelector('.repo-mini-link')).not.toBeNull();
       expect((cards[0] as HTMLElement).dataset.lang).toBe('TypeScript');
@@ -123,14 +123,14 @@ describe('active-repos', () => {
     });
 
     it('updates the total projects stat', async () => {
-      mockFetch.mockImplementation(() => mockJson([repo({ name: 'compresso' })]));
+      mockFetch.mockImplementation(() => mockJson([repo({ name: 'NN-Game1' })]));
 
       const { init } = await import('../active-repos.ts');
       init();
       await new Promise((r) => setTimeout(r, 50));
 
-      // 6 featured + 1 discovered
-      expect(document.getElementById('total-projects')!.textContent).toBe('7');
+      // 7 featured + 1 discovered
+      expect(document.getElementById('total-projects')!.textContent).toBe('8');
     });
 
     it('hides the section when no extra repos are active', async () => {
@@ -156,12 +156,12 @@ describe('active-repos', () => {
 
     it('getAllProjectRepoNames merges featured and active repos', async () => {
       mockFetch.mockImplementation(() =>
-        mockJson([repo({ name: 'compresso' }), repo({ name: 'MegaBonk' })]),
+        mockJson([repo({ name: 'NN-Game1' }), repo({ name: 'MegaBonk' })]),
       );
       const { getAllProjectRepoNames } = await import('../active-repos.ts');
       const names = await getAllProjectRepoNames();
       expect(names).toContain('MegaBonk');
-      expect(names).toContain('compresso');
+      expect(names).toContain('NN-Game1');
       expect(names.filter((n) => n === 'MegaBonk').length).toBe(1);
     });
 
@@ -172,6 +172,7 @@ describe('active-repos', () => {
       expect(names).toEqual([
         'MegaBonk',
         'VoltTracker',
+        'compresso',
         'landing-page',
         'satellite_processor',
         'AudioWhisper',

@@ -64,8 +64,8 @@ test.describe('Also Active section', () => {
   });
 
   test('updates the Projects stat to include discovered repos', async ({ page }) => {
-    // 6 featured + 2 discovered
-    await expect(page.locator('#total-projects')).toHaveText('8');
+    // 7 featured + 2 discovered
+    await expect(page.locator('#total-projects')).toHaveText('9');
   });
 
   test('tech filter pills apply to mini cards', async ({ page }) => {
