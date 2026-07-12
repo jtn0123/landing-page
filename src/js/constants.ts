@@ -5,6 +5,7 @@ export const API_BASE: string = '/api/github';
 export const REPOS: string[] = [
   'MegaBonk',
   'VoltTracker',
+  'compresso',
   'landing-page',
   'satellite_processor',
   'AudioWhisper',
@@ -13,6 +14,7 @@ export const REPOS: string[] = [
 export const CARD_REPOS: string[] = [
   'MegaBonk',
   'VoltTracker',
+  'compresso',
   'satellite_processor',
   'AudioWhisper',
   'InkyPi',

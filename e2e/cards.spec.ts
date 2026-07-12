@@ -5,9 +5,9 @@ test.describe('Cards', () => {
     await page.goto('/');
   });
 
-  test('all 6 cards render', async ({ page }) => {
+  test('all 7 cards render', async ({ page }) => {
     const cards = page.locator('.card');
-    await expect(cards).toHaveCount(6);
+    await expect(cards).toHaveCount(7);
   });
 
   test('carousel dot click changes active slide', async ({ page }) => {

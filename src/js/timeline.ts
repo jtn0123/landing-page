@@ -11,6 +11,32 @@ function truncate(str: string, len: number): string {
   return str.length > len ? str.slice(0, len) + '…' : str;
 }
 
+/** Repos with hand-tuned badge colors in timeline.css. */
+const STYLED_BADGES = new Set([
+  'megabonk',
+  'volttracker',
+  'landing-page',
+  'satellite_processor',
+  'audiowhisper',
+]);
+
+/** Deterministic hue (0-359) from a repo name, for auto-discovered repos. */
+export function repoHue(name: string): number {
+  let hash = 5381;
+  for (let i = 0; i < name.length; i++) {
+    hash = (hash * 33) ^ name.charCodeAt(i);
+  }
+  return Math.abs(hash) % 360;
+}
+
+function badgeAttrs(repo: string): string {
+  const key = repo.toLowerCase();
+  if (STYLED_BADGES.has(key)) {
+    return `class="repo-badge repo-${key}"`;
+  }
+  return `class="repo-badge repo-dynamic" style="--repo-hue: ${repoHue(repo)}"`;
+}
+
 /**
  * Build the HTML for a single timeline commit item.
  * @param commit - The commit data to render.
@@ -42,7 +68,7 @@ function buildCommitMeta(commit: Commit): string {
   const delSpan = commit.deletions === null ? '' : `<span class="stat-del">-${abbreviateNum(commit.deletions)}</span>`;
 
   return `<div class="commit-meta">
-    <span class="repo-badge repo-${commit.repo.toLowerCase()}">${commit.repo}</span>
+    <span ${badgeAttrs(commit.repo)}>${escapeHTML(commit.repo)}</span>
     ${addSpan}
     ${delSpan}
     <span class="commit-time">${relativeTime(commit.date)}</span>

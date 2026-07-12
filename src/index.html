@@ -245,6 +245,36 @@
         "operatingSystem": "Raspberry Pi OS"
       }
     </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Compresso",
+        "url": "https://github.com/jtn0123/compresso",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Docker"
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Satellite Processor",
+        "url": "https://github.com/jtn0123/satellite_processor",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Web"
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "AudioWhisper",
+        "url": "https://github.com/jtn0123/AudioWhisper",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "macOS"
+      }
+    </script>
   </head>
   <body>
     <div class="parallax-mesh" id="parallax-mesh" aria-hidden="true"></div>
@@ -404,8 +434,47 @@
       </article>
       <article
         class="card fade-in fade-in-left"
-        data-repo="landing-page"
+        data-repo="compresso"
         style="--fade-delay: 400ms"
+      >
+        <div class="card-img card-img-gradient-compresso">
+          <span class="card-img-text">🗜️ Compresso</span>
+          <div class="card-img-badges">
+            <span class="card-img-badge blue">Docker</span>
+            <span class="card-img-badge orange">Self-Hosted</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <h2>Compresso <span class="subtitle">Media Library Optimizer</span></h2>
+          <p class="desc">
+            Media library optimizer with an approval workflow — transcodes are held for review with
+            side-by-side A/B preview and VMAF/SSIM quality scores before replacing originals.
+            Compression dashboards, health checks, and multi-machine processing.
+          </p>
+          <p class="card-highlight">Approval workflow · VMAF/SSIM A/B preview</p>
+          <div class="card-updated" data-repo="compresso"></div>
+          <div class="lang-bar" aria-live="polite" data-repo="jtn0123/compresso">
+            <div class="lang-bar-track shimmer-track"><div class="lang-bar-fill"></div></div>
+            <div class="heatmap-row" data-repo="compresso"></div>
+            <div class="lang-legend"></div>
+          </div>
+          <div class="tech">
+            <span>Python</span>
+            <span>Vue</span>
+            <span>FFmpeg</span>
+            <span>SQLite</span>
+            <span>Docker</span>
+          </div>
+          <div class="buttons">
+            <a href="https://github.com/jtn0123/compresso" class="btn">GitHub</a>
+          </div>
+        </div>
+      </article>
+
+      <article
+        class="card fade-in fade-in-right"
+        data-repo="landing-page"
+        style="--fade-delay: 500ms"
       >
         <div class="card-img card-img-gradient">
           <span class="card-img-text">neuhard.dev</span>
@@ -442,10 +511,10 @@
       </article>
 
       <article
-        class="card fade-in fade-in-right"
+        class="card fade-in fade-in-left"
         data-link="https://sat.neuhard.dev/"
         data-repo="satellite_processor"
-        style="--fade-delay: 500ms"
+        style="--fade-delay: 600ms"
       >
         <div class="card-img card-img-gradient-sat">
           <span class="card-img-text">🛰️ Satellite Processor</span>
@@ -484,9 +553,9 @@
       </article>
 
       <article
-        class="card fade-in fade-in-left"
+        class="card fade-in fade-in-right"
         data-repo="AudioWhisper"
-        style="--fade-delay: 600ms"
+        style="--fade-delay: 700ms"
       >
         <div class="card-img card-img-gradient-audio">
           <span class="card-img-text">🎙️ AudioWhisper</span>
@@ -521,12 +590,18 @@
       </article>
 
       <article
-        class="card fade-in fade-in-right"
+        class="card fade-in fade-in-left"
         data-repo="InkyPi"
-        style="--fade-delay: 700ms"
+        style="--fade-delay: 800ms"
       >
-        <div class="card-img card-img-gradient-inky">
-          <span class="card-img-text">🖥️ InkyPi</span>
+        <div class="card-img">
+          <img
+            src="images/inkypi.webp"
+            alt="InkyPi e-ink display in a wooden picture frame showing a clock face"
+            decoding="async"
+            loading="lazy"
+            class="lightbox-trigger"
+          />
           <div class="card-img-badges">
             <span class="card-img-badge blue">Open Source</span>
             <span class="card-img-badge orange">IoT</span>
@@ -589,7 +664,7 @@
         <span class="stat-label">Commits</span>
       </div>
       <div class="stat">
-        <span class="stat-value" id="total-projects">6</span>
+        <span class="stat-value" id="total-projects">7</span>
         <span class="stat-label">Projects</span>
       </div>
     </section>
@@ -793,7 +868,7 @@
           </svg>
         </a>
         <span class="footer-divider">·</span>
-        <span>v4.10.0</span>
+        <span>v4.11.0</span>
         <span class="footer-divider">·</span>
         <span>© 2026 neuhard.dev</span>
         <span class="footer-divider">·</span>
