@@ -16,6 +16,27 @@
   }
 }
 
+/* Staggered entrance — replaces per-card inline --fade-delay attributes
+   (CSP: style-src has no unsafe-inline) */
+.projects .card:nth-child(2) {
+  --fade-delay: 300ms;
+}
+.projects .card:nth-child(3) {
+  --fade-delay: 400ms;
+}
+.projects .card:nth-child(4) {
+  --fade-delay: 500ms;
+}
+.projects .card:nth-child(5) {
+  --fade-delay: 600ms;
+}
+.projects .card:nth-child(6) {
+  --fade-delay: 700ms;
+}
+.projects .card:nth-child(7) {
+  --fade-delay: 800ms;
+}
+
 /* Card */
 .card {
   --shimmer-delay: var(--fade-delay, 0ms);

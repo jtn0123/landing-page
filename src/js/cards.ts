@@ -194,23 +194,25 @@ function buildLangLegend(
   langs: { name: string; pct: number }[],
   totalLoc: number,
 ): void {
+  const top = langs.slice(0, 4);
   legend.innerHTML =
     '<span class="lang-total">' +
     totalLoc.toLocaleString() +
     ' lines</span>' +
-    langs
-      .slice(0, 4)
+    top
       .map(
         (l) =>
-          '<span class="lang-legend-item"><span class="lang-dot" style="background:' +
-          (LANG_COLORS[l.name] || '#888') +
-          '"></span>' +
+          '<span class="lang-legend-item"><span class="lang-dot"></span>' +
           l.name +
           ' ' +
           l.pct.toFixed(1) +
           '%</span>',
       )
       .join('');
+  // Dot colors via CSSOM — CSP forbids parsed style attributes
+  legend.querySelectorAll<HTMLElement>('.lang-dot').forEach((dot, i) => {
+    dot.style.background = LANG_COLORS[top[i].name] || '#888';
+  });
 }
 
 async function loadLangBar(el: HTMLElement): Promise<void> {

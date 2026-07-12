@@ -73,3 +73,8 @@
     gap: 1rem;
   }
 }
+
+/* Entrance delay (was an inline style attribute; CSP forbids those now) */
+.stats-bar {
+  --fade-delay: 700ms;
+}

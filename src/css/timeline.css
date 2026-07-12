@@ -223,3 +223,8 @@ a.timeline-link:hover {
     left: -7px;
   }
 }
+
+/* Entrance delay (was an inline style attribute; CSP forbids those now) */
+.timeline-section {
+  --fade-delay: 900ms;
+}

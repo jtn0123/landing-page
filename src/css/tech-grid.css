@@ -63,3 +63,58 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* Entrance delay (was an inline style attribute; CSP forbids those now) */
+.tech-grid-section {
+  --fade-delay: 800ms;
+}
+
+/* Per-technology brand colors — replaces inline --tc style attributes */
+.tech-grid .tech-item:nth-child(1) {
+  --tc: #3178c6;
+} /* TypeScript */
+.tech-grid .tech-item:nth-child(2) {
+  --tc: #3572a5;
+} /* Python */
+.tech-grid .tech-item:nth-child(3) {
+  --tc: #f7df1e;
+} /* JavaScript */
+.tech-grid .tech-item:nth-child(4) {
+  --tc: #e44d26;
+} /* HTML/CSS */
+.tech-grid .tech-item:nth-child(5) {
+  --tc: #000;
+} /* Flask */
+.tech-grid .tech-item:nth-child(6) {
+  --tc: #646cff;
+} /* Vite */
+.tech-grid .tech-item:nth-child(7) {
+  --tc: #ff6384;
+} /* Chart.js */
+.tech-grid .tech-item:nth-child(8) {
+  --tc: #199900;
+} /* Leaflet */
+.tech-grid .tech-item:nth-child(9) {
+  --tc: #336791;
+} /* PostgreSQL */
+.tech-grid .tech-item:nth-child(10) {
+  --tc: #fdb515;
+} /* TimescaleDB */
+.tech-grid .tech-item:nth-child(11) {
+  --tc: #d82c20;
+} /* Redis */
+.tech-grid .tech-item:nth-child(12) {
+  --tc: #2496ed;
+} /* Docker */
+.tech-grid .tech-item:nth-child(13) {
+  --tc: #2088ff;
+} /* GitHub Actions */
+.tech-grid .tech-item:nth-child(14) {
+  --tc: #f38020;
+} /* Cloudflare */
+.tech-grid .tech-item:nth-child(15) {
+  --tc: #2ead33;
+} /* Playwright */
+.tech-grid .tech-item:nth-child(16) {
+  --tc: #729b1b;
+} /* Vitest */
