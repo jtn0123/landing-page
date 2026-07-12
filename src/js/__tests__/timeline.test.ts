@@ -15,16 +15,25 @@ globalThis.fetch = mockFetch;
 
 function mockJson(data: any) {
   return Promise.resolve({
-    ok: true, status: 200,
+    ok: true,
+    status: 200,
     headers: new Headers({ 'content-type': 'application/json' }),
     json: () => Promise.resolve(data),
   });
 }
 
-const fakeCommits = [{
-  commit: { message: 'feat: add feature', committer: { date: new Date().toISOString() }, author: { name: 'Test' } },
-  author: { avatar_url: '' }, html_url: 'https://github.com/test', sha: 'abc123',
-}];
+const fakeCommits = [
+  {
+    commit: {
+      message: 'feat: add feature',
+      committer: { date: new Date().toISOString() },
+      author: { name: 'Test' },
+    },
+    author: { avatar_url: '' },
+    html_url: 'https://github.com/test',
+    sha: 'abc123',
+  },
+];
 
 function triggerObservers(): void {
   MockIntersectionObserver.instances.forEach((obs) => {
@@ -44,12 +53,15 @@ describe('timeline', () => {
     document.body.innerHTML = `<section id="activity"><div id="timeline"></div></section>`;
   });
 
-  afterEach(() => { vi.useRealTimers(); });
+  afterEach(() => {
+    vi.useRealTimers();
+  });
 
   it('renders timeline items from API', async () => {
     mockFetch.mockImplementation((url: string) => {
       if (url.includes('commits?')) return mockJson(fakeCommits);
-      if (url.includes('/commits/abc123')) return mockJson({ stats: { additions: 10, deletions: 5 } });
+      if (url.includes('/commits/abc123'))
+        return mockJson({ stats: { additions: 10, deletions: 5 } });
       return mockJson([]);
     });
     const { init } = await import('../timeline.ts');
@@ -60,10 +72,25 @@ describe('timeline', () => {
   });
 
   it('uses cached commits from sessionStorage', async () => {
-    sessionStorage.setItem('nd_commits', JSON.stringify({
-      ts: Date.now(),
-      data: [{ message: 'cached', date: new Date().toISOString(), author: 'Test', avatar: '', repo: 'MegaBonk', url: '#', sha: 'x', additions: 1, deletions: 0 }],
-    }));
+    sessionStorage.setItem(
+      'nd_commits',
+      JSON.stringify({
+        ts: Date.now(),
+        data: [
+          {
+            message: 'cached',
+            date: new Date().toISOString(),
+            author: 'Test',
+            avatar: '',
+            repo: 'MegaBonk',
+            url: '#',
+            sha: 'x',
+            additions: 1,
+            deletions: 0,
+          },
+        ],
+      }),
+    );
     const { init } = await import('../timeline.ts');
     init();
     triggerObservers();
@@ -72,10 +99,18 @@ describe('timeline', () => {
   });
 
   it('renders expandable long commit messages', async () => {
-    const longCommits = [{
-      commit: { message: 'A'.repeat(70), committer: { date: new Date().toISOString() }, author: { name: 'T' } },
-      author: { avatar_url: '' }, html_url: '#', sha: 'def456',
-    }];
+    const longCommits = [
+      {
+        commit: {
+          message: 'A'.repeat(70),
+          committer: { date: new Date().toISOString() },
+          author: { name: 'T' },
+        },
+        author: { avatar_url: '' },
+        html_url: '#',
+        sha: 'def456',
+      },
+    ];
     mockFetch.mockImplementation((url: string) => {
       if (url.includes('commits?')) return mockJson(longCommits);
       return mockJson({ stats: { additions: 0, deletions: 0 } });
@@ -89,10 +124,18 @@ describe('timeline', () => {
 
   it('expands commit messages without showing escaped HTML entities', async () => {
     const rawMessage = 'fix: A & B "quoted"';
-    const commits = [{
-      commit: { message: rawMessage, committer: { date: new Date().toISOString() }, author: { name: 'T' } },
-      author: { avatar_url: '' }, html_url: '#', sha: 'def789',
-    }];
+    const commits = [
+      {
+        commit: {
+          message: rawMessage,
+          committer: { date: new Date().toISOString() },
+          author: { name: 'T' },
+        },
+        author: { avatar_url: '' },
+        html_url: '#',
+        sha: 'def789',
+      },
+    ];
     mockFetch.mockImplementation((url: string) => {
       if (url.includes('commits?')) return mockJson(commits);
       return mockJson({ stats: { additions: 0, deletions: 0 } });
@@ -109,7 +152,8 @@ describe('timeline', () => {
   it('gives styled repos their CSS class and other repos a hashed hue', async () => {
     mockFetch.mockImplementation((url: string) => {
       if (url.includes('commits?')) return mockJson(fakeCommits);
-      if (url.includes('/commits/abc123')) return mockJson({ stats: { additions: 1, deletions: 1 } });
+      if (url.includes('/commits/abc123'))
+        return mockJson({ stats: { additions: 1, deletions: 1 } });
       return mockJson([]);
     });
     const { init } = await import('../timeline.ts');
@@ -151,7 +195,7 @@ describe('timeline', () => {
   });
 
   it('shows empty message when no commits returned', async () => {
-    // Return empty arrays for all repos  
+    // Return empty arrays for all repos
     mockFetch.mockImplementation(() => mockJson([]));
     const { init } = await import('../timeline.ts');
     init();

@@ -43,11 +43,22 @@ describe('cards', () => {
 
   it('renders card meta with stars and forks', async () => {
     mockFetch.mockImplementation((url: string) => {
-      if (url.includes('/repos/jtn0123/MegaBonk') && !url.includes('actions') && !url.includes('stats') && !url.includes('languages')) {
-        return mockJson({ pushed_at: new Date().toISOString(), stargazers_count: 5, forks_count: 2 });
+      if (
+        url.includes('/repos/jtn0123/MegaBonk') &&
+        !url.includes('actions') &&
+        !url.includes('stats') &&
+        !url.includes('languages')
+      ) {
+        return mockJson({
+          pushed_at: new Date().toISOString(),
+          stargazers_count: 5,
+          forks_count: 2,
+        });
       }
-      if (url.includes('actions/runs')) return mockJson({ workflow_runs: [{ conclusion: 'success' }] });
-      if (url.includes('participation')) return mockJson({ owner: [1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0] });
+      if (url.includes('actions/runs'))
+        return mockJson({ workflow_runs: [{ conclusion: 'success' }] });
+      if (url.includes('participation'))
+        return mockJson({ owner: [1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0] });
       if (url.includes('languages')) return mockJson({ TypeScript: 10000 });
       return mockJson({});
     });
@@ -68,7 +79,8 @@ describe('cards', () => {
 
   it('renders CI success badge', async () => {
     mockFetch.mockImplementation((url: string) => {
-      if (url.includes('actions/runs')) return mockJson({ workflow_runs: [{ conclusion: 'success' }] });
+      if (url.includes('actions/runs'))
+        return mockJson({ workflow_runs: [{ conclusion: 'success' }] });
       if (url.includes('participation')) return mockJson({ owner: [] });
       if (url.includes('languages')) return mockJson({});
       return mockJson({ pushed_at: null, stargazers_count: 0, forks_count: 0 });
@@ -81,7 +93,8 @@ describe('cards', () => {
 
   it('renders CI failure badge', async () => {
     mockFetch.mockImplementation((url: string) => {
-      if (url.includes('actions/runs')) return mockJson({ workflow_runs: [{ conclusion: 'failure' }] });
+      if (url.includes('actions/runs'))
+        return mockJson({ workflow_runs: [{ conclusion: 'failure' }] });
       return mockJson({ pushed_at: null, stargazers_count: 0, forks_count: 0 });
     });
     const { init } = await import('../cards.ts');
@@ -92,10 +105,20 @@ describe('cards', () => {
 
   it('does not duplicate metadata or CI badges on repeated init', async () => {
     mockFetch.mockImplementation((url: string) => {
-      if (url.includes('/repos/jtn0123/MegaBonk') && !url.includes('actions') && !url.includes('stats') && !url.includes('languages')) {
-        return mockJson({ pushed_at: new Date().toISOString(), stargazers_count: 5, forks_count: 2 });
+      if (
+        url.includes('/repos/jtn0123/MegaBonk') &&
+        !url.includes('actions') &&
+        !url.includes('stats') &&
+        !url.includes('languages')
+      ) {
+        return mockJson({
+          pushed_at: new Date().toISOString(),
+          stargazers_count: 5,
+          forks_count: 2,
+        });
       }
-      if (url.includes('actions/runs')) return mockJson({ workflow_runs: [{ conclusion: 'success' }] });
+      if (url.includes('actions/runs'))
+        return mockJson({ workflow_runs: [{ conclusion: 'success' }] });
       if (url.includes('participation')) return mockJson({ owner: [1, 2, 3] });
       if (url.includes('languages')) return mockJson({ TypeScript: 10000 });
       return mockJson({});
@@ -116,7 +139,8 @@ describe('cards', () => {
 
   it('renders heatmap cells', async () => {
     mockFetch.mockImplementation((url: string) => {
-      if (url.includes('participation')) return mockJson({ owner: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] });
+      if (url.includes('participation'))
+        return mockJson({ owner: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] });
       if (url.includes('actions')) return mockJson({ workflow_runs: [] });
       if (url.includes('languages')) return mockJson({});
       return mockJson({ pushed_at: null, stargazers_count: 0, forks_count: 0 });
@@ -129,7 +153,8 @@ describe('cards', () => {
 
   it('renders lang bar segments', async () => {
     mockFetch.mockImplementation((url: string) => {
-      if (url.includes('languages')) return mockJson({ TypeScript: 50000, Python: 30000, CSS: 20000 });
+      if (url.includes('languages'))
+        return mockJson({ TypeScript: 50000, Python: 30000, CSS: 20000 });
       if (url.includes('participation')) return mockJson({ owner: [] });
       if (url.includes('actions')) return mockJson({ workflow_runs: [] });
       return mockJson({ pushed_at: null, stargazers_count: 0, forks_count: 0 });
@@ -142,7 +167,9 @@ describe('cards', () => {
       });
     });
     await new Promise((r) => setTimeout(r, 100));
-    expect(document.querySelector('.lang-bar-fill')!.querySelectorAll('span').length).toBeGreaterThan(0);
+    expect(
+      document.querySelector('.lang-bar-fill')!.querySelectorAll('span').length,
+    ).toBeGreaterThan(0);
   });
 
   it('handles API errors gracefully', async () => {

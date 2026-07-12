@@ -20,7 +20,9 @@ describe('carousel', () => {
       </div>`;
   });
 
-  afterEach(() => { vi.useRealTimers(); });
+  afterEach(() => {
+    vi.useRealTimers();
+  });
 
   it('auto-advances slides', async () => {
     const { init } = await import('../carousel.ts');
@@ -66,13 +68,21 @@ describe('carousel', () => {
     const { init } = await import('../carousel.ts');
     init();
     const carousel = document.querySelector('.carousel')!;
-    carousel.dispatchEvent(new TouchEvent('touchstart', {
-      touches: [new Touch({ identifier: 0, target: carousel, clientX: 200, clientY: 100 })] as any,
-    }));
-    carousel.dispatchEvent(new TouchEvent('touchend', {
-      changedTouches: [new Touch({ identifier: 0, target: carousel, clientX: 100, clientY: 100 })] as any,
-      touches: [] as any,
-    }));
+    carousel.dispatchEvent(
+      new TouchEvent('touchstart', {
+        touches: [
+          new Touch({ identifier: 0, target: carousel, clientX: 200, clientY: 100 }),
+        ] as any,
+      }),
+    );
+    carousel.dispatchEvent(
+      new TouchEvent('touchend', {
+        changedTouches: [
+          new Touch({ identifier: 0, target: carousel, clientX: 100, clientY: 100 }),
+        ] as any,
+        touches: [] as any,
+      }),
+    );
     expect(document.querySelectorAll('.carousel-slide')[1].classList.contains('active')).toBe(true);
   });
 
@@ -82,13 +92,21 @@ describe('carousel', () => {
     // First advance to slide 1
     vi.advanceTimersByTime(1000);
     const carousel = document.querySelector('.carousel')!;
-    carousel.dispatchEvent(new TouchEvent('touchstart', {
-      touches: [new Touch({ identifier: 0, target: carousel, clientX: 100, clientY: 100 })] as any,
-    }));
-    carousel.dispatchEvent(new TouchEvent('touchend', {
-      changedTouches: [new Touch({ identifier: 0, target: carousel, clientX: 200, clientY: 100 })] as any,
-      touches: [] as any,
-    }));
+    carousel.dispatchEvent(
+      new TouchEvent('touchstart', {
+        touches: [
+          new Touch({ identifier: 0, target: carousel, clientX: 100, clientY: 100 }),
+        ] as any,
+      }),
+    );
+    carousel.dispatchEvent(
+      new TouchEvent('touchend', {
+        changedTouches: [
+          new Touch({ identifier: 0, target: carousel, clientX: 200, clientY: 100 }),
+        ] as any,
+        touches: [] as any,
+      }),
+    );
     expect(document.querySelectorAll('.carousel-slide')[0].classList.contains('active')).toBe(true);
   });
 
@@ -96,17 +114,29 @@ describe('carousel', () => {
     const { init } = await import('../carousel.ts');
     init();
     const carousel = document.querySelector('.carousel')!;
-    carousel.dispatchEvent(new TouchEvent('touchstart', {
-      touches: [new Touch({ identifier: 0, target: carousel, clientX: 200, clientY: 100 })] as any,
-    }));
+    carousel.dispatchEvent(
+      new TouchEvent('touchstart', {
+        touches: [
+          new Touch({ identifier: 0, target: carousel, clientX: 200, clientY: 100 }),
+        ] as any,
+      }),
+    );
     // Vertical move should cancel swipe
-    carousel.dispatchEvent(new TouchEvent('touchmove', {
-      touches: [new Touch({ identifier: 0, target: carousel, clientX: 200, clientY: 200 })] as any,
-    }));
-    carousel.dispatchEvent(new TouchEvent('touchend', {
-      changedTouches: [new Touch({ identifier: 0, target: carousel, clientX: 100, clientY: 200 })] as any,
-      touches: [] as any,
-    }));
+    carousel.dispatchEvent(
+      new TouchEvent('touchmove', {
+        touches: [
+          new Touch({ identifier: 0, target: carousel, clientX: 200, clientY: 200 }),
+        ] as any,
+      }),
+    );
+    carousel.dispatchEvent(
+      new TouchEvent('touchend', {
+        changedTouches: [
+          new Touch({ identifier: 0, target: carousel, clientX: 100, clientY: 200 }),
+        ] as any,
+        touches: [] as any,
+      }),
+    );
     // Should still be on slide 0
     expect(document.querySelectorAll('.carousel-slide')[0].classList.contains('active')).toBe(true);
   });
@@ -115,18 +145,27 @@ describe('carousel', () => {
     const { init } = await import('../carousel.ts');
     init();
     const carousel = document.querySelector('.carousel')!;
-    carousel.dispatchEvent(new TouchEvent('touchstart', {
-      touches: [new Touch({ identifier: 0, target: carousel, clientX: 200, clientY: 100 })] as any,
-    }));
-    carousel.dispatchEvent(new TouchEvent('touchend', {
-      changedTouches: [new Touch({ identifier: 0, target: carousel, clientX: 180, clientY: 100 })] as any,
-      touches: [] as any,
-    }));
+    carousel.dispatchEvent(
+      new TouchEvent('touchstart', {
+        touches: [
+          new Touch({ identifier: 0, target: carousel, clientX: 200, clientY: 100 }),
+        ] as any,
+      }),
+    );
+    carousel.dispatchEvent(
+      new TouchEvent('touchend', {
+        changedTouches: [
+          new Touch({ identifier: 0, target: carousel, clientX: 180, clientY: 100 }),
+        ] as any,
+        touches: [] as any,
+      }),
+    );
     expect(document.querySelectorAll('.carousel-slide')[0].classList.contains('active')).toBe(true);
   });
 
   it('skips carousel with fewer than 2 slides', async () => {
-    document.body.innerHTML = '<div class="carousel"><div class="carousel-slide active">Only one</div><span class="dot active"></span></div>';
+    document.body.innerHTML =
+      '<div class="carousel"><div class="carousel-slide active">Only one</div><span class="dot active"></span></div>';
     const { init } = await import('../carousel.ts');
     init();
     vi.advanceTimersByTime(5000);
@@ -174,7 +213,9 @@ describe('carousel with reducedMotion', () => {
       </div>`;
   });
 
-  afterEach(() => { vi.useRealTimers(); });
+  afterEach(() => {
+    vi.useRealTimers();
+  });
 
   it('does not auto-advance with reduced motion', async () => {
     const { init } = await import('../carousel.ts');

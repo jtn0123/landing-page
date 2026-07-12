@@ -52,7 +52,6 @@ function initProgressDots(): void {
   });
 }
 
-
 /** Initialize scroll-driven UI: progress bar, back-to-top, parallax, section dots, fade-in. */
 export function init(): void {
   if (initialized) return;
@@ -63,21 +62,25 @@ export function init(): void {
   const backToTop = document.getElementById('back-to-top');
   const header = document.getElementById('site-header');
 
-  globalThis.addEventListener('scroll', () => {
-    const scrollTop = globalThis.scrollY;
-    if (scrollProgress) {
-      const docHeight = document.documentElement.scrollHeight - globalThis.innerHeight;
-      const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-      scrollProgress.style.width = pct + '%';
-    }
-    if (backToTop) {
-      backToTop.classList.toggle('visible', scrollTop > 400);
-    }
-    if (header) {
-      header.classList.toggle('scrolled', scrollTop > 40);
-    }
-    updateParallaxMesh();
-  }, { passive: true });
+  globalThis.addEventListener(
+    'scroll',
+    () => {
+      const scrollTop = globalThis.scrollY;
+      if (scrollProgress) {
+        const docHeight = document.documentElement.scrollHeight - globalThis.innerHeight;
+        const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        scrollProgress.style.width = pct + '%';
+      }
+      if (backToTop) {
+        backToTop.classList.toggle('visible', scrollTop > 400);
+      }
+      if (header) {
+        header.classList.toggle('scrolled', scrollTop > 40);
+      }
+      updateParallaxMesh();
+    },
+    { passive: true },
+  );
 
   if (backToTop) {
     backToTop.addEventListener('click', () => {

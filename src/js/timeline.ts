@@ -64,8 +64,14 @@ function buildTimelineItem(commit: Commit, index: number): string {
  * @returns An HTML string for the commit metadata.
  */
 function buildCommitMeta(commit: Commit): string {
-  const addSpan = commit.additions === null ? '' : `<span class="stat-add">+${abbreviateNum(commit.additions)}</span>`;
-  const delSpan = commit.deletions === null ? '' : `<span class="stat-del">-${abbreviateNum(commit.deletions)}</span>`;
+  const addSpan =
+    commit.additions === null
+      ? ''
+      : `<span class="stat-add">+${abbreviateNum(commit.additions)}</span>`;
+  const delSpan =
+    commit.deletions === null
+      ? ''
+      : `<span class="stat-del">-${abbreviateNum(commit.deletions)}</span>`;
 
   return `<div class="commit-meta">
     <span ${badgeAttrs(commit.repo)}>${escapeHTML(commit.repo)}</span>
@@ -96,10 +102,11 @@ function renderTimeline(commits: Commit[]): void {
 
 function buildTimeline(commits: Commit[], timelineEl: HTMLElement): void {
   // Add aria-live after content is built so screen readers don't announce all items on load
-  requestAnimationFrame(() => { timelineEl.ariaLive = 'polite'; });
+  requestAnimationFrame(() => {
+    timelineEl.ariaLive = 'polite';
+  });
   timelineEl.innerHTML =
-    '<div class="timeline-line"></div>' +
-    commits.map((c, i) => buildTimelineItem(c, i)).join('');
+    '<div class="timeline-line"></div>' + commits.map((c, i) => buildTimelineItem(c, i)).join('');
 
   timelineEl.querySelectorAll('.commit-msg.expandable').forEach((msg) => {
     const el = msg as HTMLElement;

@@ -15,7 +15,8 @@ globalThis.fetch = mockFetch;
 
 function mockJson(data: any) {
   return Promise.resolve({
-    ok: true, status: 200,
+    ok: true,
+    status: 200,
     headers: new Headers({ 'content-type': 'application/json' }),
     json: () => Promise.resolve(data),
   });
@@ -41,10 +42,15 @@ describe('stats', () => {
         <div class="stat"><span class="stat-value shimmer-placeholder" id="total-loc">&nbsp;</span></div>
         <div class="stat"><span class="stat-value shimmer-placeholder" id="total-commits">&nbsp;</span></div>
       </div>`;
-    vi.spyOn(globalThis, 'requestAnimationFrame').mockImplementation((cb) => { cb(performance.now() + 1300); return 0; });
+    vi.spyOn(globalThis, 'requestAnimationFrame').mockImplementation((cb) => {
+      cb(performance.now() + 1300);
+      return 0;
+    });
   });
 
-  afterEach(() => { vi.useRealTimers(); });
+  afterEach(() => {
+    vi.useRealTimers();
+  });
 
   it('loads stats from API', async () => {
     mockFetch.mockImplementation((url: string) => {
@@ -70,12 +76,19 @@ describe('stats', () => {
     triggerObservers();
     await vi.advanceTimersByTimeAsync(200);
     const calledUrls = mockFetch.mock.calls.map((call) => String(call[0]));
-    expect(calledUrls.some((url) => url.includes('/repos/jtn0123/landing-page/languages'))).toBe(true);
-    expect(calledUrls.some((url) => url.includes('/repos/jtn0123/landing-page/contributors'))).toBe(true);
+    expect(calledUrls.some((url) => url.includes('/repos/jtn0123/landing-page/languages'))).toBe(
+      true,
+    );
+    expect(calledUrls.some((url) => url.includes('/repos/jtn0123/landing-page/contributors'))).toBe(
+      true,
+    );
   });
 
   it('uses cached stats', async () => {
-    sessionStorage.setItem('nd_stats', JSON.stringify({ ts: Date.now(), data: { loc: 5000, commits: 200 } }));
+    sessionStorage.setItem(
+      'nd_stats',
+      JSON.stringify({ ts: Date.now(), data: { loc: 5000, commits: 200 } }),
+    );
     const { init } = await import('../stats.ts');
     init();
     triggerObservers();

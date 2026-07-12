@@ -54,7 +54,10 @@ describe('scroll', () => {
     const { init } = await import('../scroll.ts');
     init();
     Object.defineProperty(globalThis, 'scrollY', { value: 500, configurable: true });
-    Object.defineProperty(document.documentElement, 'scrollHeight', { value: 2000, configurable: true });
+    Object.defineProperty(document.documentElement, 'scrollHeight', {
+      value: 2000,
+      configurable: true,
+    });
     Object.defineProperty(globalThis, 'innerHeight', { value: 800, configurable: true });
     globalThis.dispatchEvent(new Event('scroll'));
     expect(document.getElementById('back-to-top')!.classList.contains('visible')).toBe(true);
@@ -72,7 +75,10 @@ describe('scroll', () => {
     const { init } = await import('../scroll.ts');
     init();
     Object.defineProperty(globalThis, 'scrollY', { value: 600, configurable: true });
-    Object.defineProperty(document.documentElement, 'scrollHeight', { value: 1800, configurable: true });
+    Object.defineProperty(document.documentElement, 'scrollHeight', {
+      value: 1800,
+      configurable: true,
+    });
     Object.defineProperty(globalThis, 'innerHeight', { value: 600, configurable: true });
     globalThis.dispatchEvent(new Event('scroll'));
     const pct = document.getElementById('scroll-progress')!.style.width;
@@ -124,7 +130,10 @@ describe('scroll', () => {
     const { init } = await import('../scroll.ts');
     init();
     Object.defineProperty(globalThis, 'scrollY', { value: 0, configurable: true });
-    Object.defineProperty(document.documentElement, 'scrollHeight', { value: 800, configurable: true });
+    Object.defineProperty(document.documentElement, 'scrollHeight', {
+      value: 800,
+      configurable: true,
+    });
     Object.defineProperty(globalThis, 'innerHeight', { value: 800, configurable: true });
     globalThis.dispatchEvent(new Event('scroll'));
     expect(document.getElementById('scroll-progress')!.style.width).toBe('0%');

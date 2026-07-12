@@ -1,5 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { abbreviateNum, relativeTime, fetchJSON, renderError, parseRateLimit, cachedFetchJSON, animateCounter } from '../api.ts';
+import {
+  abbreviateNum,
+  relativeTime,
+  fetchJSON,
+  renderError,
+  parseRateLimit,
+  cachedFetchJSON,
+  animateCounter,
+} from '../api.ts';
 
 describe('abbreviateNum', () => {
   it('returns number as-is below 10000', () => {
@@ -48,7 +56,8 @@ describe('fetchJSON', () => {
 
   it('returns parsed JSON on success', async () => {
     mockFetch.mockResolvedValue({
-      ok: true, status: 200,
+      ok: true,
+      status: 200,
       headers: new Headers({ 'content-type': 'application/json' }),
       json: () => Promise.resolve({ foo: 'bar' }),
     });
@@ -58,7 +67,8 @@ describe('fetchJSON', () => {
 
   it('throws on non-ok response', async () => {
     mockFetch.mockResolvedValue({
-      ok: false, status: 500,
+      ok: false,
+      status: 500,
       headers: new Headers({ 'content-type': 'application/json' }),
     });
     await expect(fetchJSON('/test')).rejects.toThrow('API error (500)');
@@ -66,7 +76,8 @@ describe('fetchJSON', () => {
 
   it('throws on non-JSON content type', async () => {
     mockFetch.mockResolvedValue({
-      ok: true, status: 200,
+      ok: true,
+      status: 200,
       headers: new Headers({ 'content-type': 'text/html' }),
       json: () => Promise.resolve({}),
     });
@@ -76,7 +87,8 @@ describe('fetchJSON', () => {
   it('throws rate limit message on 403 with rate limit headers', async () => {
     const resetTime = Math.floor(Date.now() / 1000) + 120;
     mockFetch.mockResolvedValue({
-      ok: false, status: 403,
+      ok: false,
+      status: 403,
       headers: new Headers({
         'X-RateLimit-Remaining': '0',
         'X-RateLimit-Reset': String(resetTime),
@@ -87,7 +99,8 @@ describe('fetchJSON', () => {
 
   it('throws generic error on 429 without rate limit headers', async () => {
     mockFetch.mockResolvedValue({
-      ok: false, status: 429,
+      ok: false,
+      status: 429,
       headers: new Headers({}),
     });
     await expect(fetchJSON('/test')).rejects.toThrow('API error (429)');
@@ -101,13 +114,17 @@ describe('parseRateLimit', () => {
   });
 
   it('returns null when remaining > 0', () => {
-    const res = new Response('', { headers: { 'X-RateLimit-Remaining': '5', 'X-RateLimit-Reset': '123' } });
+    const res = new Response('', {
+      headers: { 'X-RateLimit-Remaining': '5', 'X-RateLimit-Reset': '123' },
+    });
     expect(parseRateLimit(res)).toBeNull();
   });
 
   it('returns message when remaining is 0', () => {
     const resetTime = Math.floor(Date.now() / 1000) + 120;
-    const res = new Response('', { headers: { 'X-RateLimit-Remaining': '0', 'X-RateLimit-Reset': String(resetTime) } });
+    const res = new Response('', {
+      headers: { 'X-RateLimit-Remaining': '0', 'X-RateLimit-Reset': String(resetTime) },
+    });
     const msg = parseRateLimit(res);
     expect(msg).toContain('Rate limited');
   });
@@ -143,7 +160,10 @@ describe('cachedFetchJSON', () => {
   });
 
   it('returns cached data when available', async () => {
-    sessionStorage.setItem('nd_api_/test', JSON.stringify({ ts: Date.now(), data: { cached: true } }));
+    sessionStorage.setItem(
+      'nd_api_/test',
+      JSON.stringify({ ts: Date.now(), data: { cached: true } }),
+    );
     const result = await cachedFetchJSON('/test');
     expect(result.data).toEqual({ cached: true });
     expect(mockFetch).not.toHaveBeenCalled();
@@ -151,7 +171,8 @@ describe('cachedFetchJSON', () => {
 
   it('fetches and caches when no cache', async () => {
     mockFetch.mockResolvedValue({
-      ok: true, status: 200,
+      ok: true,
+      status: 200,
       headers: new Headers({ 'content-type': 'application/json' }),
       json: () => Promise.resolve({ fresh: true }),
     });
@@ -161,9 +182,13 @@ describe('cachedFetchJSON', () => {
   });
 
   it('refetches when cache is expired', async () => {
-    sessionStorage.setItem('nd_api_/test3', JSON.stringify({ ts: Date.now() - 9999999, data: { old: true } }));
+    sessionStorage.setItem(
+      'nd_api_/test3',
+      JSON.stringify({ ts: Date.now() - 9999999, data: { old: true } }),
+    );
     mockFetch.mockResolvedValue({
-      ok: true, status: 200,
+      ok: true,
+      status: 200,
       headers: new Headers({ 'content-type': 'application/json' }),
       json: () => Promise.resolve({ new: true }),
     });
@@ -177,7 +202,10 @@ describe('animateCounter', () => {
     vi.useFakeTimers();
     const el = document.createElement('span');
     el.classList.add('shimmer-placeholder');
-    vi.spyOn(globalThis, 'requestAnimationFrame').mockImplementation((cb) => { cb(performance.now() + 1300); return 0; });
+    vi.spyOn(globalThis, 'requestAnimationFrame').mockImplementation((cb) => {
+      cb(performance.now() + 1300);
+      return 0;
+    });
     animateCounter(el, 100);
     expect(el.classList.contains('shimmer-placeholder')).toBe(false);
     expect(el.textContent).toBe('100');

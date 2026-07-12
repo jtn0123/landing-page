@@ -3,7 +3,8 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 describe('theme', () => {
   beforeEach(() => {
     delete document.documentElement.dataset.theme;
-    document.body.innerHTML = '<button id="theme-toggle"></button><meta id="meta-theme-color" content="">';
+    document.body.innerHTML =
+      '<button id="theme-toggle"></button><meta id="meta-theme-color" content="">';
     localStorage.clear();
     vi.resetModules();
   });

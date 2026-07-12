@@ -12,7 +12,10 @@
     <meta name="theme-color" content="#0a0a0a" id="meta-theme-color" />
 
     <!-- Security: Content Security Policy -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-pLul+KGGy9NBXOBG5MrclKwsChSNY4qhBlaL10EUv+Y=' 'sha256-7Yr2sKvAVk8mv4HBm3EU+MAgADJU9nRENh8a/koDcp4=' 'sha256-QNiEQ11awzziOSwW/ivttiHD4zxqOokDRN77cLL63TU='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.githubusercontent.com https://avatars.githubusercontent.com; connect-src 'self' https://api.github.com;" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'sha256-pLul+KGGy9NBXOBG5MrclKwsChSNY4qhBlaL10EUv+Y=' 'sha256-7Yr2sKvAVk8mv4HBm3EU+MAgADJU9nRENh8a/koDcp4=' 'sha256-QNiEQ11awzziOSwW/ivttiHD4zxqOokDRN77cLL63TU='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.githubusercontent.com https://avatars.githubusercontent.com; connect-src 'self' https://api.github.com;"
+    />
 
     <!-- SEO: Canonical URL -->
     <link rel="canonical" href="https://neuhard.dev/" />
@@ -432,11 +435,7 @@
           </div>
         </div>
       </article>
-      <article
-        class="card fade-in fade-in-left"
-        data-repo="compresso"
-        style="--fade-delay: 400ms"
-      >
+      <article class="card fade-in fade-in-left" data-repo="compresso" style="--fade-delay: 400ms">
         <div class="card-img card-img-gradient-compresso">
           <span class="card-img-text">🗜️ Compresso</span>
           <div class="card-img-badges">
@@ -589,11 +588,7 @@
         </div>
       </article>
 
-      <article
-        class="card fade-in fade-in-left"
-        data-repo="InkyPi"
-        style="--fade-delay: 800ms"
-      >
+      <article class="card fade-in fade-in-left" data-repo="InkyPi" style="--fade-delay: 800ms">
         <div class="card-img">
           <img
             src="images/inkypi.webp"
@@ -634,7 +629,11 @@
     </main>
 
     <!-- Also Active — auto-discovered repos pushed in the last 3 months -->
-    <section id="also-active" class="also-active-section fade-in" aria-label="Other actively maintained repositories">
+    <section
+      id="also-active"
+      class="also-active-section fade-in"
+      aria-label="Other actively maintained repositories"
+    >
       <h2>Also Active</h2>
       <p class="also-active-sub">
         Everything else I've pushed to in the last 3 months — live from GitHub.
@@ -654,7 +653,12 @@
     </section>
 
     <!-- Stats Bar -->
-    <section class="stats-bar fade-in" aria-label="Project statistics" aria-live="polite" style="--fade-delay: 700ms">
+    <section
+      class="stats-bar fade-in"
+      aria-label="Project statistics"
+      aria-live="polite"
+      style="--fade-delay: 700ms"
+    >
       <div class="stat">
         <span class="stat-value shimmer-placeholder" id="total-loc">&nbsp;</span>
         <span class="stat-label">Lines of Code</span>
@@ -842,13 +846,22 @@
 
     <!-- Lightbox -->
     <dialog id="lightbox" class="lightbox" aria-label="Image preview">
-      <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Close image preview">&times;</button>
+      <button
+        type="button"
+        class="lightbox-close"
+        id="lightbox-close"
+        aria-label="Close image preview"
+      >
+        &times;
+      </button>
       <img id="lightbox-img" src="" alt="" />
     </dialog>
 
     <div class="wave-divider" aria-hidden="true">
       <svg viewBox="0 0 1200 36" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0 18 Q150 0 300 18 T600 18 T900 18 T1200 18 T1500 18 T1800 18 T2100 18 T2400 18 V36 H0 Z"/>
+        <path
+          d="M0 18 Q150 0 300 18 T600 18 T900 18 T1200 18 T1500 18 T1800 18 T2100 18 T2400 18 V36 H0 Z"
+        />
       </svg>
     </div>
 
