@@ -24,7 +24,7 @@
     "jsdom": "^29.1.1",
     "monocart-coverage-reports": "^2.12.9",
     "prettier": "^3.9.5",
-    "typescript": "^5.9.3",
+    "typescript": "^7.0.2",
     "vite": "^8.0.7",
     "vitest": "^4.1.8"
   }
