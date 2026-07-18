@@ -16,16 +16,16 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
-    "@playwright/test": "^1.59.1",
-    "@typescript-eslint/eslint-plugin": "^8.63.0",
+    "@playwright/test": "^1.61.1",
+    "@typescript-eslint/eslint-plugin": "^8.64.0",
     "@typescript-eslint/parser": "^8.63.0",
     "@vitest/coverage-v8": "^4.1.8",
     "eslint": "^10.7.0",
     "jsdom": "^29.1.1",
-    "monocart-coverage-reports": "^2.12.9",
+    "monocart-coverage-reports": "^2.12.12",
     "prettier": "^3.9.5",
     "typescript": "^5.9.3",
-    "vite": "^8.0.7",
+    "vite": "^8.1.5",
     "vitest": "^4.1.8"
   }
 }
