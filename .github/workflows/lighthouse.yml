@@ -12,24 +12,18 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - name: Run Lighthouse
+      # This workflow audits the deployed production site, so it must NOT pick
+      # up the root lighthouserc.json. LHCI auto-discovers that file from the
+      # working directory, and it carries
+      #   startServerCommand: "npm run build && npm run preview"
+      # With no node_modules installed in this job, that failed with
+      #   sh: 1: vite: not found      (exit 127)
+      # on every run. Passing configPath: '' does not opt out of discovery, so
+      # this points at a dedicated prod config instead. The two steps were also
+      # collapsed into one: the second re-ran the same collection purely to
+      # apply assertions, which the config now carries directly.
+      - name: Run Lighthouse against production
         uses: treosh/lighthouse-ci-action@v12
         with:
-          urls: https://neuhard.dev
-          budgetPath: ''
+          configPath: ./.github/lighthouse/lighthouserc-prod.json
           uploadArtifacts: true
-
-      - name: Check thresholds
-        uses: treosh/lighthouse-ci-action@v12
-        with:
-          urls: https://neuhard.dev
-          configPath: ''
-        env:
-          LHCI_ASSERT__PRESET: ''
-          LHCI_ASSERT__ASSERTIONS: |
-            {
-              "categories:performance": ["warn", {"minScore": 0.85}],
-              "categories:accessibility": ["warn", {"minScore": 0.9}],
-              "categories:best-practices": ["warn", {"minScore": 0.9}],
-              "categories:seo": ["warn", {"minScore": 0.9}]
-            }
