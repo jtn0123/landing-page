@@ -5,3 +5,8 @@ dist/
 test-results/
 coverage/
 playwright-report/
+
+# Local environment configuration -- real values, never committed
+.env
+.env.local
+.env.*.local

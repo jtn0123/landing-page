@@ -5,12 +5,15 @@ on:
     branches: [master]
     paths: ['src/**']
 
+permissions:
+  contents: read
+
 jobs:
   lighthouse:
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       # This workflow audits the deployed production site, so it must NOT pick
       # up the root lighthouserc.json. LHCI auto-discovers that file from the
@@ -23,7 +26,7 @@ jobs:
       # collapsed into one: the second re-ran the same collection purely to
       # apply assertions, which the config now carries directly.
       - name: Run Lighthouse against production
-        uses: treosh/lighthouse-ci-action@v12
+        uses: treosh/lighthouse-ci-action@3e7e23fb74242897f95c0ba9cabad3d0227b9b18 # v12.6.2
         with:
           configPath: ./.github/lighthouse/lighthouserc-prod.json
           uploadArtifacts: true
