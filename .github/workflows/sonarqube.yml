@@ -15,8 +15,6 @@ jobs:
     # GitHub-hosted: the scan uploads to SonarCloud, so nothing here needs
     # local hardware (the old self-hosted runner was just a runner)
     runs-on: ubuntu-latest
-    # Informational only — a scan failure never blocks a PR
-    continue-on-error: true
     permissions:
       contents: read
       pull-requests: read
@@ -33,7 +31,19 @@ jobs:
       - run: npm run test:coverage
       # CI runners only have Chromium; Firefox/WebKit are for local testing
       - run: npx playwright test --project=chromium
+      # Informational only - a scan failure never blocks a PR.
+      #
+      # This was previously continue-on-error at JOB level, which did not work:
+      # a job-level flag stops the workflow failing but leaves the check itself
+      # reporting red, which is why `sonarqube` showed as failing on every PR
+      # despite the comment claiming otherwise. On a step, the step fails, the
+      # job concludes success, and the check is green.
+      #
+      # Moving it also stops it masking real failures: npm ci, the Playwright
+      # install and the coverage run share this job, and at job level their
+      # failures were being swallowed too.
       - uses: sonarsource/sonarqube-scan-action@22918119ff8e1ca75a623e15c8296b6ea4fbe28f # v8.2.1
+        continue-on-error: true
         env:
           # SonarCloud (the old SONAR_HOST_URL secret pointed at a LAN-only
           # SonarQube server, unreachable from GitHub-hosted runners).
