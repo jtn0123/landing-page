@@ -17,15 +17,15 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
     "@playwright/test": "^1.62.1",
-    "@typescript-eslint/eslint-plugin": "^8.67.0",
+    "@typescript-eslint/eslint-plugin": "^8.69.0",
     "@typescript-eslint/parser": "^8.63.0",
-    "@vitest/coverage-v8": "^4.1.8",
-    "eslint": "^10.8.1",
+    "@vitest/coverage-v8": "^4.1.11",
+    "eslint": "^10.9.1",
     "jsdom": "^30.0.1",
-    "monocart-coverage-reports": "^2.12.12",
+    "monocart-coverage-reports": "^2.13.0",
     "prettier": "^3.9.6",
     "typescript": "^5.9.3",
-    "vite": "^8.2.1",
+    "vite": "^8.2.2",
     "vitest": "^4.1.8"
   }
 }
