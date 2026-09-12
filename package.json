@@ -19,7 +19,7 @@
     "@playwright/test": "^1.62.1",
     "@typescript-eslint/eslint-plugin": "^8.69.0",
     "@typescript-eslint/parser": "^8.63.0",
-    "@vitest/coverage-v8": "^4.1.11",
+    "@vitest/coverage-v8": "^5.0.0",
     "eslint": "^10.9.1",
     "jsdom": "^30.0.1",
     "monocart-coverage-reports": "^2.13.0",
