@@ -17,7 +17,7 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.14.0",
     "@playwright/test": "^1.64.1",
-    "@typescript-eslint/eslint-plugin": "^8.71.2",
+    "@typescript-eslint/eslint-plugin": "^8.72.0",
     "@typescript-eslint/parser": "^8.63.0",
     "@vitest/coverage-v8": "^5.0.5",
     "eslint": "^10.13.0",
@@ -25,7 +25,7 @@
     "monocart-coverage-reports": "^2.13.0",
     "prettier": "^3.9.10",
     "typescript": "^5.9.3",
-    "vite": "^8.3.4",
+    "vite": "^8.3.5",
     "vitest": "^5.0.3"
   }
 }
